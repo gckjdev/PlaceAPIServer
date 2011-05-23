@@ -1,6 +1,7 @@
 package com.orange.common.cassandra;
 
 import java.util.List;
+import java.util.Map;
 
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
@@ -19,13 +20,15 @@ public class CassandraClient {
 	Cluster  cluster;
 	Keyspace keyspace;
 	
-	public CassandraClient(String serverNameAndPort, String keyspaceName){
-		this.initServer(serverNameAndPort);
+	public CassandraClient(String serverNameAndPort, String clusterName, String keyspaceName){
+		this.initServer(serverNameAndPort, clusterName);
 		this.initKeyspace(keyspaceName);
+		
+		assert(cluster != null && keyspace != null);
 	}
 	
-	public void initServer(String serverNameAndPort){	// e.g. "localhost:9160"
-		cluster = HFactory.getOrCreateCluster("Test Cluster", new CassandraHostConfigurator(serverNameAndPort));		
+	public void initServer(String serverNameAndPort, String clusterName){	// e.g. "localhost:9160"
+		cluster = HFactory.getOrCreateCluster(clusterName, new CassandraHostConfigurator(serverNameAndPort));		
 	}
 	
 	public void initKeyspace(String keyspaceName){
@@ -48,14 +51,35 @@ public class CassandraClient {
 		for (int i=0; i<len; i++){
 			String columnName = columnNames[i];
 			String columnValue = columnValues[i];
-			if (columnValue == null)
-				columnValue = "";
-			mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
+			if (columnValue == null){
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
+			}
+			else{
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, ""));				
+			}
 		}
 		mutator.execute();
 		return true;
 	}
 	
+	public boolean insert(String columnFamilyName, String key, Map<String, String> columnValueMap){
+		
+		Mutator<String> mutator = HFactory.createMutator(keyspace, StringSerializer.get());
+		for (Map.Entry<String, String> entry : columnValueMap.entrySet()) {
+			String columnName = entry.getKey();
+			String columnValue = entry.getValue();		
+			if (columnValue == null){
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
+			}
+			else{
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, ""));				
+			}
+		}
+		
+		mutator.execute();
+		return true;
+	}
+
 	public String getColumnValue(String columnFamilyName, String key, String columnName){
 		ColumnQuery<String, String, String> columnQuery = HFactory.createStringColumnQuery(keyspace);
 		if (columnQuery == null)

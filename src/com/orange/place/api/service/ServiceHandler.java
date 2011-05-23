@@ -14,7 +14,8 @@ import com.orange.place.constant.ServiceConstant;
 
 public class ServiceHandler {
 
-	public static final CassandraClient cassandraClient = new CassandraClient(DBConstants.SERVER, DBConstants.KEYSPACE);
+	public static final CassandraClient cassandraClient = 
+		new CassandraClient(DBConstants.SERVER, DBConstants.CLUSTERNAME, DBConstants.KEYSPACE);
 	
 	private static final Logger log = Logger.getLogger(PlaceAPIServer.class.getName());
 	
@@ -28,7 +29,7 @@ public class ServiceHandler {
 		printRequest(request);			
 		
 		String method = request.getParameter(ServiceConstant.METHOD);		
-		CommonServiceObject obj = CommonServiceObject.createServiceObjectByMethod(method);		
+		CommonService obj = CommonService.createServiceObjectByMethod(method);		
 		if (obj == null){
 			sendResponseByErrorCode(response, ErrorCode.ERROR_PARA_METHOD_NOT_FOUND);
 			return;			

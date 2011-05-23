@@ -1,10 +1,12 @@
 package com.orange.place.dao;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.eclipse.jetty.util.log.Log;
 
 import com.orange.common.cassandra.CassandraClient;
+import com.orange.common.utils.DateUtil;
 import com.orange.common.utils.StringUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
@@ -12,52 +14,79 @@ import com.orange.place.constant.ServiceConstant;
 
 public class UserManager {
 
-	String loginId;
-	String loginIdType;
-	String appId;
-	String deviceModel;
-	String deviceId;
-	String deviceOS;
-	String deviceToken;	
-
-	String language;
-	String countryCode;
-	String nickName;
+	public static boolean isLoginIdExist(CassandraClient cc, String loginId, String loginIdType){
+		if (Integer.parseInt(loginIdType) != DBConstants.LOGINID_OWN)
+			return false;
+		String value = cc.getColumnValue(DBConstants.INDEX_USER, DBConstants.KEY_LOGINID, loginId);		
+		return (value != null);
+	}
 	
-	String password;
+	public static boolean isDeviceIdExist(CassandraClient cc, String deviceId){
+		String value = cc.getColumnValue(DBConstants.INDEX_USER, DBConstants.KEY_DEVICEID, deviceId);				
+		return (value != null);
+	}
+	
+	public static boolean createUserLoginIdIndex(CassandraClient cc, String userId, String loginId, String loginIdType){
+		if (Integer.parseInt(loginIdType) == DBConstants.LOGINID_OWN)
+			return false;
+		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_LOGINID, loginId, userId);		
+	}
+
+	public static boolean createUserDeviceIdIndex(CassandraClient cc, String userId, String deviceId){
+		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_DEVICEID, deviceId, userId);				
+	}
+	
 	public static String createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
 			String deviceModel, String deviceId, String deviceOS,
 			String deviceToken, String language, String countryCode,
-			String password){
+			String password, String nickName){
 		
-		String uuid = UUID.randomUUID().toString();
-		String[] names = StringUtil.getStringList(
-				ServiceConstant.PARA_LOGINID,
-				ServiceConstant.PARA_LOGINIDTYPE,
-				ServiceConstant.PARA_APPID,
-				ServiceConstant.PARA_DEVICEMODEL,
-				ServiceConstant.PARA_DEVICEID,
-				ServiceConstant.PARA_DEVICEOS,
-				ServiceConstant.PARA_DEVICETOKEN,
-				ServiceConstant.PARA_LANGUAGE,
-				ServiceConstant.PARA_COUNTRYCODE,
-				ServiceConstant.PARA_PASSWORD				
-				);
+		String userId = IdGenerator.generateId();
 		
-		String[] values = StringUtil.getStringList(
-				loginId, loginIdType, appId,
-				deviceModel, deviceId, deviceOS,
-				deviceToken, language, countryCode,
-				password
-				);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(DBConstants.F_USERID, userId);
+		map.put(DBConstants.F_APPID, loginIdType);
+		map.put(DBConstants.F_DEVICEMODEL, deviceModel);
+		map.put(DBConstants.F_DEVICEID, deviceId);
+		map.put(DBConstants.F_DEVICEOS, deviceOS);
+		map.put(DBConstants.F_DEVICETOKEN, deviceToken);
+		map.put(DBConstants.F_LANGUAGE, language);
+		map.put(DBConstants.F_COUNTRYCODE, countryCode);
+		map.put(DBConstants.F_PASSWORD, password);		
+		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
+		map.put(DBConstants.F_CREATE_SOURCE_ID, appId);
+		map.put(DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
+		map.put(DBConstants.F_NICKNAME, nickName);
 		
-		if (names.length != values.length){
-			Log.warn("<createUser> but name and value size not the same");
-			return null;
+		// TODO
+		map.put(DBConstants.F_AUTHCODE, "");
+		map.put(DBConstants.F_AUTHSECRET, "");
+				
+		// set loginID, sina ID, qqID by loginIdType...
+		switch (Integer.parseInt(loginIdType)){
+			case DBConstants.LOGINID_OWN:
+				map.put(DBConstants.F_LOGINID, loginId);
+				break;
+			case DBConstants.LOGINID_SINA:
+				map.put(DBConstants.F_SINAID, loginId);
+				break;
+			case DBConstants.LOGINID_QQ:
+				map.put(DBConstants.F_QQID, loginId);
+				break;
+			case DBConstants.LOGINID_RENREN:
+				map.put(DBConstants.F_RENRENID, loginId);
+				break;
+			case DBConstants.LOGINID_TWITTER:
+				map.put(DBConstants.F_TWITTERID, loginId);
+				break;
+			case DBConstants.LOGINID_FACEBOOK:
+				map.put(DBConstants.F_FACEBOOKID, loginId);
+				break;
 		}
 		
-		cc.insert(DBConstants.USER, uuid, names, values);
+		Log.info("<createUser> loginId="+loginId+", userId="+userId);
+		cc.insert(DBConstants.USER, userId, map);
 		
-		return uuid;
+		return userId;
 	}
 }

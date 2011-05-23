@@ -37,6 +37,7 @@ public class ErrorCode {
 	static public final int ERROR_DEVICEID_EXIST            = 20002;
 	static public final int ERROR_LOGINID_DEVICE_BOTH_EXIST = 20003; 
 	static public final int ERROR_USERID_NOT_FOUND          = 20004;
+	static public final int ERROR_CREATE_USER				= 20005;
 
 	// Place Error
 	static public final int ERROR_PLACE_NAME_EXIST          = 30001;

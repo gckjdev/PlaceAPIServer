@@ -8,7 +8,7 @@ import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.UserManager;
 
-public class RegisterUser extends CommonServiceObject {
+public class RegisterUser extends CommonService {
 
 	String loginId;
 	String loginIdType;
@@ -27,15 +27,37 @@ public class RegisterUser extends CommonServiceObject {
 	@Override
 	public void handleData() {
 		// TODO Auto-generated method stub
-		String userId = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, deviceModel, deviceId, deviceOS, deviceToken, language, countryCode, password);
+		
+		boolean isLoginIdExist = UserManager.isLoginIdExist(cassandraClient, loginId, loginIdType);
+		boolean isDeviceIdExist = UserManager.isDeviceIdExist(cassandraClient, deviceId);
+		if (isLoginIdExist && isDeviceIdExist){
+			resultCode = ErrorCode.ERROR_LOGINID_DEVICE_BOTH_EXIST;
+			return;
+		}
+		else if (isLoginIdExist){
+			resultCode = ErrorCode.ERROR_LOGINID_EXIST;
+			return;
+		}
+		else if (isDeviceIdExist){
+			resultCode = ErrorCode.ERROR_DEVICEID_EXIST;
+			return;
+		}		
+		
+		String userId = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
+				deviceModel, deviceId, deviceOS, deviceToken, 
+				language, countryCode, password, nickName);
 		if (userId == null){
-			resultCode = ErrorCode.ERROR_CASSANDRA;
+			resultCode = ErrorCode.ERROR_CREATE_USER;
+			return;
 		}
-		else{
-			JSONObject obj = new JSONObject();
-			obj.put(ServiceConstant.PARA_USERID, userId);
-			resultData = obj;
-		}
+
+		UserManager.createUserDeviceIdIndex(cassandraClient, userId, deviceId);
+		UserManager.createUserLoginIdIndex(cassandraClient, userId, loginId, loginIdType);
+		
+		// set result data, return userId
+		JSONObject obj = new JSONObject();
+		obj.put(ServiceConstant.PARA_USERID, userId);
+		resultData = obj;
 	}
 
 	@Override
@@ -93,6 +115,11 @@ public class RegisterUser extends CommonServiceObject {
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY, ErrorCode.ERROR_PARAMETER_APPID_NULL))
 			return false;
 
+		// set nick name the same as login Id if it doesn't exist
+		if (nickName == null || nickName.length() == 0){
+			nickName = loginId;
+		}
+		
 		return true;
 	}
 
