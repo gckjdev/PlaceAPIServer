@@ -52,10 +52,10 @@ public class CassandraClient {
 			String columnName = columnNames[i];
 			String columnValue = columnValues[i];
 			if (columnValue == null){
-				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, ""));				
 			}
 			else{
-				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, ""));				
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
 			}
 		}
 		mutator.execute();
@@ -69,10 +69,10 @@ public class CassandraClient {
 			String columnName = entry.getKey();
 			String columnValue = entry.getValue();		
 			if (columnValue == null){
-				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, ""));				
 			}
 			else{
-				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, ""));				
+				mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
 			}
 		}
 		
@@ -91,6 +91,10 @@ public class CassandraClient {
 			return null;
 		}
 		
+		HColumn<String, String> columnNameValue = result.get();
+		if (columnNameValue == null)
+			return null;
+		
         return result.get().getValue();		
 	}
 
@@ -108,7 +112,12 @@ public class CassandraClient {
 			return null;
 		}
 		
-		List<HColumn<String, String>> result = r.get().getColumns();
+		ColumnSlice<String, String> slices = r.get();
+		if (slices == null){
+			return null;
+		}
+		
+		List<HColumn<String, String>> result = slices.getColumns();
 		
 		// print for test
 		System.out.println("get data result size="+result.size());

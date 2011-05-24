@@ -45,8 +45,8 @@ public class DBConstants {
 	public static final String F_FACEBOOKID = "facebookID";
 	public static final String F_TWITTERID = "twitterID";
 	
-	public static final String F_AUTHCODE = "authCode";
-	public static final String F_AUTHSECRET = "authSecret";
+	public static final String F_ACCESSTOKEN = "accToken";
+	public static final String F_ACCESSTOKEN_SECRET = "accSecret";
 	
 	// DB Place Fields
 	

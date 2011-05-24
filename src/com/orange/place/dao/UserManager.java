@@ -12,7 +12,7 @@ import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 
-public class UserManager {
+public class UserManager extends CommonManager {
 
 	public static boolean isLoginIdExist(CassandraClient cc, String loginId, String loginIdType){
 		if (Integer.parseInt(loginIdType) != DBConstants.LOGINID_OWN)
@@ -27,19 +27,22 @@ public class UserManager {
 	}
 	
 	public static boolean createUserLoginIdIndex(CassandraClient cc, String userId, String loginId, String loginIdType){
-		if (Integer.parseInt(loginIdType) == DBConstants.LOGINID_OWN)
+		if (Integer.parseInt(loginIdType) != DBConstants.LOGINID_OWN)
 			return false;
+		log.info("<createUserLoginIdIndex> loginId="+loginId+", userId="+userId);
 		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_LOGINID, loginId, userId);		
 	}
 
 	public static boolean createUserDeviceIdIndex(CassandraClient cc, String userId, String deviceId){
+		log.info("<createUserDeviceIdIndex> deviceId="+deviceId+", userId="+userId);
 		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_DEVICEID, deviceId, userId);				
 	}
 	
 	public static String createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
 			String deviceModel, String deviceId, String deviceOS,
 			String deviceToken, String language, String countryCode,
-			String password, String nickName){
+			String password, String nickName,
+			String accessToken, String accessTokenSecret){
 		
 		String userId = IdGenerator.generateId();
 		
@@ -56,11 +59,9 @@ public class UserManager {
 		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
 		map.put(DBConstants.F_CREATE_SOURCE_ID, appId);
 		map.put(DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
-		map.put(DBConstants.F_NICKNAME, nickName);
-		
-		// TODO
-		map.put(DBConstants.F_AUTHCODE, "");
-		map.put(DBConstants.F_AUTHSECRET, "");
+		map.put(DBConstants.F_NICKNAME, nickName);		
+		map.put(DBConstants.F_ACCESSTOKEN, accessToken);
+		map.put(DBConstants.F_ACCESSTOKEN_SECRET, accessTokenSecret);
 				
 		// set loginID, sina ID, qqID by loginIdType...
 		switch (Integer.parseInt(loginIdType)){
@@ -84,7 +85,7 @@ public class UserManager {
 				break;
 		}
 		
-		Log.info("<createUser> loginId="+loginId+", userId="+userId);
+		log.info("<createUser> loginId="+loginId+", userId="+userId);
 		cc.insert(DBConstants.USER, userId, map);
 		
 		return userId;

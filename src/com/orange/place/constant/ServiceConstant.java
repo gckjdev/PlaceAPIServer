@@ -63,7 +63,8 @@ public class ServiceConstant {
 	public static String PARA_SYNC_SNS = "ss";
 	public static String PARA_PLACEID = "pid" ;
 
-
+	public static String PARA_ACCESS_TOKEN        = "at";
+	public static String PARA_ACCESS_TOKEN_SECRET = "ats";
 
 
 

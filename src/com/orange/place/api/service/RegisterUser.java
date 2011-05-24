@@ -21,6 +21,8 @@ public class RegisterUser extends CommonService {
 	String language;
 	String countryCode;
 	String nickName;
+	String accessToken;
+	String accessTokenSecret;
 	
 	String password;
 	
@@ -31,23 +33,27 @@ public class RegisterUser extends CommonService {
 		boolean isLoginIdExist = UserManager.isLoginIdExist(cassandraClient, loginId, loginIdType);
 		boolean isDeviceIdExist = UserManager.isDeviceIdExist(cassandraClient, deviceId);
 		if (isLoginIdExist && isDeviceIdExist){
+			log.info("<registerUser> user loginId("+loginId+") and deviceId("+deviceId+") exist");
 			resultCode = ErrorCode.ERROR_LOGINID_DEVICE_BOTH_EXIST;
 			return;
 		}
 		else if (isLoginIdExist){
 			resultCode = ErrorCode.ERROR_LOGINID_EXIST;
+			log.info("<registerUser> user loginId exist, loginId="+loginId);
 			return;
 		}
 		else if (isDeviceIdExist){
 			resultCode = ErrorCode.ERROR_DEVICEID_EXIST;
+			log.info("<registerUser> user deviceId exist, deviceId="+deviceId);
 			return;
 		}		
 		
 		String userId = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
 				deviceModel, deviceId, deviceOS, deviceToken, 
-				language, countryCode, password, nickName);
+				language, countryCode, password, nickName, accessToken, accessTokenSecret);
 		if (userId == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
+			log.info("<registerUser> fail to create user, loginId="+loginId);
 			return;
 		}
 
@@ -90,6 +96,8 @@ public class RegisterUser extends CommonService {
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		nickName = request.getParameter(ServiceConstant.PARA_NICKNAME);
 		deviceToken = request.getParameter(ServiceConstant.PARA_DEVICETOKEN);
+		accessToken = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN);
+		accessTokenSecret = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN_SECRET);
 		
 		if (!check(loginId, ErrorCode.ERROR_PARAMETER_USERID_EMPTY, ErrorCode.ERROR_PARAMETER_USERID_NULL))
 			return false;

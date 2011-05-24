@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.prettyprint.hector.api.exceptions.HectorException;
+
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.place.api.PlaceAPIServer;
 import com.orange.place.constant.DBConstants;
@@ -53,6 +55,16 @@ public class ServiceHandler {
 			
 			// handle request
 			obj.handleData();
+		}
+		catch (HectorException e){
+			obj.resultCode = ErrorCode.ERROR_CASSANDRA;
+			log.severe("catch DB exception="+e.toString());
+			e.printStackTrace();
+		}
+		catch (Exception e){
+			obj.resultCode = ErrorCode.ERROR_SYSTEM;
+			log.severe("catch general exception="+e.toString());
+			e.printStackTrace();
 		}
 		finally{
 		}
