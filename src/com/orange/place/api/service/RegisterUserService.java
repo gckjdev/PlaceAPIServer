@@ -6,9 +6,10 @@ import net.sf.json.JSONObject;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
-import com.orange.place.dao.UserManager;
+import com.orange.place.dao.User;
+import com.orange.place.manager.UserManager;
 
-public class RegisterUser extends CommonService {
+public class RegisterUserService extends CommonService {
 
 	String loginId;
 	String loginIdType;
@@ -48,15 +49,16 @@ public class RegisterUser extends CommonService {
 			return;
 		}		
 		
-		String userId = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
+		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
 				deviceModel, deviceId, deviceOS, deviceToken, 
 				language, countryCode, password, nickName, accessToken, accessTokenSecret);
-		if (userId == null){
+		if (user == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
 			log.info("<registerUser> fail to create user, loginId="+loginId);
 			return;
 		}
-
+		
+		String userId = user.getUserId();
 		UserManager.createUserDeviceIdIndex(cassandraClient, userId, deviceId);
 		UserManager.createUserLoginIdIndex(cassandraClient, userId, loginId, loginIdType);
 		
@@ -64,6 +66,8 @@ public class RegisterUser extends CommonService {
 		JSONObject obj = new JSONObject();
 		obj.put(ServiceConstant.PARA_USERID, userId);
 		resultData = obj;
+		
+		// TODO if there is any exception, shall clean all inconsistent data and index
 	}
 
 	@Override

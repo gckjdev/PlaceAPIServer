@@ -2,10 +2,6 @@ package com.orange.place.constant;
 
 public class ServiceConstant {
 
-	// "dd/MM/yyyy-hh:mm:ss"
-	public static String DATE_FORMAT = "yyyyMMddHHmmss";
-	
-	
 	// method name
 	public static String METHOD = "m";
 	public static String METHOD_TEST = "test";

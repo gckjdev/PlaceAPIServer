@@ -95,7 +95,7 @@ public class CassandraClient {
 		if (columnNameValue == null)
 			return null;
 		
-        return result.get().getValue();		
+        return columnNameValue.getValue();		
 	}
 
 	public List<HColumn<String, String>> getColumnKey(String columnFamilyName, String key, String... columnNames){

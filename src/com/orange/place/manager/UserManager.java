@@ -1,4 +1,4 @@
-package com.orange.place.dao;
+package com.orange.place.manager;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -11,6 +11,8 @@ import com.orange.common.utils.StringUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
+import com.orange.place.dao.IdGenerator;
+import com.orange.place.dao.User;
 
 public class UserManager extends CommonManager {
 
@@ -38,7 +40,7 @@ public class UserManager extends CommonManager {
 		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_DEVICEID, deviceId, userId);				
 	}
 	
-	public static String createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
+	public static User createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
 			String deviceModel, String deviceId, String deviceOS,
 			String deviceToken, String language, String countryCode,
 			String password, String nickName,
@@ -48,7 +50,7 @@ public class UserManager extends CommonManager {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(DBConstants.F_USERID, userId);
-		map.put(DBConstants.F_APPID, loginIdType);
+		map.put(DBConstants.F_APPID, appId);
 		map.put(DBConstants.F_DEVICEMODEL, deviceModel);
 		map.put(DBConstants.F_DEVICEID, deviceId);
 		map.put(DBConstants.F_DEVICEOS, deviceOS);
@@ -88,6 +90,10 @@ public class UserManager extends CommonManager {
 		log.info("<createUser> loginId="+loginId+", userId="+userId);
 		cc.insert(DBConstants.USER, userId, map);
 		
-		return userId;
+		return new User(map);
+	}
+
+	public static String getUserNickName(CassandraClient cc, String userId) {
+		return cc.getColumnValue(DBConstants.USER, userId, DBConstants.F_NICKNAME);
 	}
 }

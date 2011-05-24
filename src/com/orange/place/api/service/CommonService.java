@@ -33,8 +33,11 @@ public abstract class CommonService {
 		
 		CommonService obj = null;
 		if (method.equalsIgnoreCase(ServiceConstant.METHOD_REGISTRATION)){
-			obj = new RegisterUser();
+			obj = new RegisterUserService();
 		}		
+		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_CREATEPLACE)){
+			obj = new CreatePlaceService();
+		}				
 		
 		if (obj == null){
 			log.warning("Cannot find service object for METHOD = "+method);

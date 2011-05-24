@@ -1,4 +1,4 @@
-package com.orange.place.dao;
+package com.orange.place.manager;
 
 import java.util.logging.Logger;
 

@@ -49,9 +49,23 @@ public class DBConstants {
 	public static final String F_ACCESSTOKEN_SECRET = "accSecret";
 	
 	// DB Place Fields
+	public static final String F_PLACEID = "placeId";	
+	public static final String F_LONGITUDE = "long";
+	public static final String F_LATITUDE = "lat";
+	public static final String F_NAME = "name";
+	public static final String F_RADIUS = "radius";
+	public static final String F_POST_TYPE = "postType";
+	public static final String F_DESC = "desc";
+	public static final String F_PLACE_TYPE = "type";
+	public static final String F_AUTH_FLAG = "auth";
+
 	
 	// DB Post Fields
-	
+	public static final String F_POSTID = "postId";
+	public static final String F_USER_LONGITUDE = "userLong";
+	public static final String F_USER_LATITUDE = "userLat";
+	public static final String F_TEXT_CONTENT = "text";
+	public static final String F_CONTENT_TYPE = "type";
 	
 	// Value
 	public static final String STATUS_NORMAL = "1";
@@ -63,4 +77,8 @@ public class DBConstants {
 	public static final int LOGINID_RENREN 		= 4;
 	public static final int LOGINID_FACEBOOK 	= 5;
 	public static final int LOGINID_TWITTER 	= 6;
+	
+	public static final String AUTH_FLAG_NONE = "0";
+	
+	public static final String PLACE_TYPE_UNKNOWN = "0";
 }
