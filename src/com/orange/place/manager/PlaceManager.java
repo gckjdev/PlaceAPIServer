@@ -1,12 +1,21 @@
 package com.orange.place.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.beans.Rows;
 
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
 import com.orange.place.dao.Place;
+import com.orange.place.dao.Post;
 
 public class PlaceManager extends CommonManager {
 
@@ -35,6 +44,42 @@ public class PlaceManager extends CommonManager {
 		cc.insert(DBConstants.PLACE, placeId, map);
 		
 		return new Place(map);
+	}
+	
+	public static List<Place> getAllPlaces(CassandraClient cassandraClient) {
+		
+		Rows<String, String, String> rows = cassandraClient.getMultiRow(DBConstants.PLACE, UNLIMITED_COUNT);
+		if (rows == null){
+			return null;
+		}
+		
+		// convert rows to List<Place>
+		// TODO the code below can be better
+		List<Place> placeList = new ArrayList<Place>();
+		for (Row<String, String, String> row : rows){
+			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
+			List<HColumn<String, String>> columns = columnSlice.getColumns();
+			if (columns != null){
+				Place place = new Place(columns);
+				placeList.add(place);
+			}
+		}
+		
+		return placeList;
+	}
+
+	public static void createUserOwnPlaceIndex(CassandraClient cassandraClient,
+			String userId, String placeId) {	
+		
+		UUID uuid = UUID.fromString(placeId);		
+		cassandraClient.insert(DBConstants.INDEX_USER_OWN_PLACE, userId, uuid, "");
+		return;
+	}
+
+	public static void createUserFollowPlaceIndex(
+			CassandraClient cassandraClient, String userId, String placeId) {
+		UUID uuid = UUID.fromString(placeId);		
+		cassandraClient.insert(DBConstants.INDEX_USER_FOLLOW_PLACE, userId, uuid, "");
 	}
 
 }

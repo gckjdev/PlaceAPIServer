@@ -14,6 +14,7 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.Serializer;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
@@ -22,6 +23,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
+import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
 
 public class CassandraClient {
@@ -213,6 +215,35 @@ public class CassandraClient {
 		}
 		
 		return rows;
+	}
+
+	public Rows<String, String, String> getMultiRow(String columnFamilyName,
+			int maxCount) {
+		
+		RangeSlicesQuery<String, String, String> q =
+		    HFactory.createRangeSlicesQuery(keyspace, ss, ss, ss);
+
+		q.setColumnFamily(columnFamilyName);
+		q.setKeys("", "");
+		q.setRange("", "", false, maxCount);
+		QueryResult<OrderedRows<String, String, String>> result = q.execute();
+		OrderedRows<String, String, String> rows = result.get();
+		if (rows == null){
+			return null;
+		}
+
+		// for test, TODO rem the code
+		for (Row<String, String, String> row : rows){
+			System.out.println("row key : "+row.getKey());
+			ColumnSlice<String, String> columns = row.getColumnSlice();
+			List<HColumn<String, String>> list = columns.getColumns();
+			for (HColumn<String, String> data : list){
+				System.out.println("column["+data.getName()+"]="+data.getValue());
+			}
+		}
+		
+		return rows;
+
 	}
 
 

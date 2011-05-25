@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONException;
+
 import me.prettyprint.hector.api.exceptions.HectorException;
 
 import com.orange.common.cassandra.CassandraClient;
@@ -51,6 +53,8 @@ public class ServiceHandler {
 				sendResponseByErrorCode(response, obj.resultCode);
 				return;
 			}		
+			
+			// print parameters
 			obj.printData();
 			
 			// handle request
@@ -59,6 +63,11 @@ public class ServiceHandler {
 		catch (HectorException e){
 			obj.resultCode = ErrorCode.ERROR_CASSANDRA;
 			log.severe("catch DB exception="+e.toString());
+			e.printStackTrace();
+		}
+		catch (JSONException e){
+			obj.resultCode = ErrorCode.ERROR_JSON;
+			log.severe("catch JSON exception="+e.toString());
 			e.printStackTrace();
 		}
 		catch (Exception e){

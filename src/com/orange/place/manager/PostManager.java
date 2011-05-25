@@ -1,10 +1,13 @@
 package com.orange.place.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
 
 import com.orange.common.cassandra.CassandraClient;
@@ -75,8 +78,17 @@ public class PostManager extends CommonManager {
 		}
 		
 		// convert rows to List<Post>
+		List<Post> postList = new ArrayList<Post>();
+		for (Row<String, String, String> row : rows){
+			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
+			List<HColumn<String, String>> columns = columnSlice.getColumns();
+			if (columns != null){
+				Post post = new Post(columns);
+				postList.add(post);
+			}
+		}
 		
-		return null;
+		return postList;
 	}
 
 	public static void createPlacePostIndex(CassandraClient cassandraClient,
@@ -84,6 +96,32 @@ public class PostManager extends CommonManager {
 
 		UUID uuid = UUID.fromString(postId);		
 		cassandraClient.insert(DBConstants.INDEX_PLACE_POST, placeId, uuid, "");
+	}
+
+	public static void createUserPostIndex(CassandraClient cassandraClient,
+			String userId, String postId) {
+
+		UUID uuid = UUID.fromString(postId);		
+		cassandraClient.insert(DBConstants.INDEX_USER_POST, postId, uuid, "");		
+	}
+
+	public static void createUserViewPostIndex(
+			CassandraClient cassandraClient, String placeId, String postId) {
+
+		// TODO this method could take a long time, so maybe it shall be run in another thread or process
+		
+		// get users who follow the place
+		List<HColumn<UUID, String>> columnValues = cassandraClient.getColumnKeyByRange(DBConstants.INDEX_PLACE_FOLLOW_USERS, placeId, null, UNLIMITED_COUNT);
+		if (columnValues == null){
+			return;
+		}
+		
+		// insert postId for each user
+		UUID postUUID = UUID.fromString(postId);
+		for (HColumn<UUID, String> columnValue : columnValues){
+			String userId = columnValue.getName().toString();
+			cassandraClient.insert(DBConstants.INDEX_USER_VIEW_POSTS, userId, postUUID, "");
+		}
 	}
 
 }

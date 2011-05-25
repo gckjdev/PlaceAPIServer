@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
+import com.orange.place.constant.ServiceConstant;
 
 import me.prettyprint.hector.api.beans.HColumn;
 
@@ -25,4 +26,33 @@ public class Place extends CommonData {
 	public String getCreateDate() {
 		return getKey(DBConstants.F_CREATE_DATE);
 	}
+	
+	public String getRadius() {
+		return getKey(DBConstants.F_RADIUS);
+	}
+
+	public String getPostType() {
+		return getKey(DBConstants.F_POST_TYPE);
+	}
+
+	public String getDesc() {
+		return getKey(DBConstants.F_DESC);
+	}
+	
+	public String getName() {
+		return getKey(DBConstants.F_NAME);
+	}
+	
+	public String getLatitude() {
+		return getKey(DBConstants.F_LATITUDE);
+	}
+	
+	public String getLongitude() {
+		return getKey(DBConstants.F_LONGITUDE);
+	}
+	
+	public String getCreateUserId() {
+		return getKey(DBConstants.F_USERID);
+	}
+	
 }

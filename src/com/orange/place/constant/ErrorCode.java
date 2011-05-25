@@ -68,6 +68,8 @@ public class ErrorCode {
 	static public final int ERROR_PLACE_NAME_EXIST          = 30001;
 	static public final int ERROR_PLACE_NOT_FOUND           = 30002;
 	public static final int ERROR_CREATE_PLACE 				= 30003;
+	public static final int ERROR_GET_NEARBY_PLACES 		= 30004;
+
 
 	// Post Error
 	static public final int ERROR_POST_NOT_FOUND            = 40001;
@@ -84,6 +86,8 @@ public class ErrorCode {
 	static public final int ERROR_NOT_GET_METHOD            = 90002;
 	static public final int ERROR_INVALID_SECURITY			= 90003;
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
+	public static final int ERROR_JSON 						= 90005;
+
 
 
 

@@ -41,6 +41,12 @@ public abstract class CommonService {
 		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_CREATEPOST)){
 			obj = new CreatePostService();
 		}				
+		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_GETPLACEPOST)){
+			obj = new GetPlacePostService();
+		}				
+		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_GETNEARBYPLACE)){
+			obj = new GetNearbyPlaceService();
+		}				
 		
 		if (obj == null){
 			log.warning("Cannot find service object for METHOD = "+method);

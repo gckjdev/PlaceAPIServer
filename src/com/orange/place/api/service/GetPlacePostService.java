@@ -39,19 +39,22 @@ public class GetPlacePostService extends CommonService {
 		for (Post post : resultList){
 			JSONObject json = new JSONObject();
 			json.put(ServiceConstant.PARA_POSTID, post.getPostId());
-//			json.put(ServiceConstant.PARA_USERID, post.getUserId());
-//			json.put(ServiceConstant.PARA_PLACEID, post.getPlaceId());
-//			json.put(ServiceConstant.PARA_LONGTITUDE, post.getLongitude());
-//			json.put(ServiceConstant.PARA_LATITUDE, post.getLatitude());
-//			json.put(ServiceConstant.PARA_USER_LONGITUDE, post.getUserLongitude());
-//			json.put(ServiceConstant.PARA_USER_LATITUDE, post.getUserLatitude());
-//			json.put(ServiceConstant.PARA_TEXT_CONTENT, post.getTextContent());
-//			json.put(ServiceConstant.PARA_CONTENT_TYPE, post.getContentType());
-//			json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
-//			json.put(ServiceConstant.PARA_TOTAL_VIEW, post.getTotalView());
-//			json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
-//			json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
-//			json.put(ServiceConstant.PARA_TOTAL_VIEW, post.getTotalView());
+			json.put(ServiceConstant.PARA_USERID, post.getUserId());
+			json.put(ServiceConstant.PARA_PLACEID, post.getPlaceId());
+			json.put(ServiceConstant.PARA_LONGTITUDE, post.getLongitude());
+			json.put(ServiceConstant.PARA_LATITUDE, post.getLatitude());
+			json.put(ServiceConstant.PARA_USER_LONGITUDE, post.getUserLongitude());
+			json.put(ServiceConstant.PARA_USER_LATITUDE, post.getUserLatitude());
+			json.put(ServiceConstant.PARA_TEXT_CONTENT, post.getTextContent());
+			json.put(ServiceConstant.PARA_CONTENT_TYPE, post.getContentType());
+			json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
+			json.put(ServiceConstant.PARA_TOTAL_VIEW, post.getTotalView());
+			json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
+			json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
+			json.put(ServiceConstant.PARA_TOTAL_REPLY, post.getTotalReply());
+			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());
+			
+			obj.add(json);
 		}
 		
 	}

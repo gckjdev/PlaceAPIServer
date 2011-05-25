@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 
 public class CommonData {
@@ -26,6 +27,7 @@ public class CommonData {
 	}
 	
 	public String getKey(String key){
-		return keyValueList.get(key);
+		String value = keyValueList.get(key);
+		return (value == null) ? "" : value;
 	}
 }

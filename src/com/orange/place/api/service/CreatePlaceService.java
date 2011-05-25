@@ -48,6 +48,10 @@ public class CreatePlaceService extends CommonService {
 		String placeId = place.getPlaceId();
 		String createDate = place.getCreateDate();
 		
+		// create index
+		PlaceManager.createUserOwnPlaceIndex(cassandraClient, userId, placeId);
+		PlaceManager.createUserFollowPlaceIndex(cassandraClient, userId, placeId);
+		
 		// set result data, return userId
 		JSONObject obj = new JSONObject();
 		obj.put(ServiceConstant.PARA_PLACEID, placeId);

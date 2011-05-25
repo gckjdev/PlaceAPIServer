@@ -14,6 +14,13 @@ public class DBConstants {
 	
 	// column family for index
 	public static final String INDEX_USER = "idx_user";
+	public static final String INDEX_USER_OWN_PLACE = "idx_user_own_places";
+	public static final String INDEX_USER_FOLLOW_PLACE = "idx_user_follow_places";
+	public static final String INDEX_USER_POST = "idx_user_posts";
+	public static final String INDEX_PLACE_FOLLOW_USERS = "idx_place_followed_users";
+	public static final String INDEX_USER_VIEW_POSTS = "idex_user_timeline";
+
+	
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
 	
@@ -69,7 +76,11 @@ public class DBConstants {
 	public static final String F_USER_LATITUDE = "userLat";
 	public static final String F_TEXT_CONTENT = "text";
 	public static final String F_CONTENT_TYPE = "type";
-	
+	public static final String F_IMAGE_URL = "image";
+	public static final String F_TOTAL_VIEW = "totalView";
+	public static final String F_TOTAL_FORWARD = "totalForward";
+	public static final String F_TOTAL_QUOTE = "totalQuote";
+	public static final String F_TOTAL_REPLY = "totalReply";	
 	// Value
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";
@@ -84,4 +95,5 @@ public class DBConstants {
 	public static final String AUTH_FLAG_NONE = "0";
 	
 	public static final String PLACE_TYPE_UNKNOWN = "0";
+
 }

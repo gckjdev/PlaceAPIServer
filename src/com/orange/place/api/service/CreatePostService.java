@@ -51,8 +51,10 @@ public class CreatePostService extends CommonService {
 		String postId = post.getPostId();
 		String createDate = post.getCreateDate();
 
-		// add post into place_post index
+		// add post into index
 		PostManager.createPlacePostIndex(cassandraClient, placeId, postId);		
+		PostManager.createUserPostIndex(cassandraClient, userId, postId);
+		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId);
 		
 		// set result data, return postId, nick name, and create date
 		JSONObject obj = new JSONObject();
