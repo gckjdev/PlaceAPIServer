@@ -2,23 +2,37 @@ package com.orange.common.cassandra;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import me.prettyprint.cassandra.serializers.LongSerializer;
+import me.prettyprint.cassandra.serializers.ObjectSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.Serializer;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.MutationResult;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
+import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.SliceQuery;
 
 public class CassandraClient {
 	Cluster  cluster;
 	Keyspace keyspace;
+	
+    final static StringSerializer ss = StringSerializer.get();
+    final static LongSerializer ls = LongSerializer.get();
+    final static UUIDSerializer us = UUIDSerializer.get();
+    
+    final static int MAX_COUNT_FOR_MULTI_ROW = 50;
 	
 	public CassandraClient(String serverNameAndPort, String clusterName, String keyspaceName){
 		this.initServer(serverNameAndPort, clusterName);
@@ -42,6 +56,23 @@ public class CassandraClient {
 		Mutator<String> mutator = HFactory.createMutator(keyspace, StringSerializer.get());
 		mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
 		mutator.execute();
+		return true;
+	}
+	
+	public boolean insert(String columnFamilyName, String key, String columnName, Object columnValue){
+		
+		if (columnValue instanceof String){
+			Mutator<String> mutator = HFactory.createMutator(keyspace, StringSerializer.get());
+			mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, (String)columnValue));
+			mutator.execute();
+		}
+		else if (columnValue instanceof UUID){
+			Mutator<Object> mutator = HFactory.createMutator(keyspace, ObjectSerializer.get());
+			Serializer<String> nameSerializer = StringSerializer.get();
+			Serializer<Object> valueSerializer = ObjectSerializer.get();
+			mutator.addInsertion(key, columnFamilyName, HFactory.createColumn(columnName, columnValue, nameSerializer, valueSerializer));
+			mutator.execute();			
+		}
 		return true;
 	}
 	
@@ -77,6 +108,13 @@ public class CassandraClient {
 		}
 		
 		mutator.execute();
+		return true;
+	}
+	
+	public boolean insert(String columnFamilyName, String key, UUID columnName, String columnValue){		
+		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
+		HColumn<UUID, String> column = HFactory.createColumn(columnName, columnValue, us, ss);
+		mutator.insert(key, columnFamilyName, column);
 		return true;
 	}
 
@@ -119,7 +157,7 @@ public class CassandraClient {
 		
 		List<HColumn<String, String>> result = slices.getColumns();
 		
-		// print for test
+		// print for test TODO rem the code
 		System.out.println("get data result size="+result.size());
 		for (HColumn<String, String> data : result){
 			System.out.println("column["+data.getName()+"]="+data.getValue());
@@ -127,4 +165,55 @@ public class CassandraClient {
 		
         return result;		
 	}
+	
+	public List<HColumn<UUID, String>> getColumnKeyByRange(String columnFamilyName, String key, UUID start, int size){
+		SliceQuery<String, UUID, String> q = HFactory.createSliceQuery(keyspace, ss, us, ss);		
+		if (q == null){
+			return null;
+		}
+		
+		q.setColumnFamily(columnFamilyName).setKey(key).setRange(start, null, false, size);
+		
+		QueryResult<ColumnSlice<UUID, String>> r = q.execute();
+		if (r == null){
+			return null;
+		}
+		
+		List<HColumn<UUID, String>> result = r.get().getColumns();
+		
+		// print for test TODO rem the code
+		System.out.println("get data result size="+result.size());
+		for (HColumn<UUID, String> data : result){
+			System.out.println("column["+data.getName()+"]="+data.getValue());
+		}
+		
+        return result;		
+	}
+	
+	public Rows<String, String, String> getMultiRow(String columnFamilyName, String...keys){	
+		MultigetSliceQuery<String, String, String> multigetSliceQuery =
+		    HFactory.createMultigetSliceQuery(keyspace, ss, ss, ss);
+		multigetSliceQuery.setColumnFamily(columnFamilyName);
+		multigetSliceQuery.setKeys(keys);	
+		multigetSliceQuery.setRange("", "", false, MAX_COUNT_FOR_MULTI_ROW);
+		QueryResult<Rows<String, String, String>> result = multigetSliceQuery.execute();
+		Rows<String, String, String> rows = result.get();
+		if (rows == null){
+			return null;
+		}
+
+		// for test, TODO rem the code
+		for (Row<String, String, String> row : rows){
+			System.out.println("row key : "+row.getKey());
+			ColumnSlice<String, String> columns = row.getColumnSlice();
+			List<HColumn<String, String>> list = columns.getColumns();
+			for (HColumn<String, String> data : list){
+				System.out.println("column["+data.getName()+"]="+data.getValue());
+			}
+		}
+		
+		return rows;
+	}
+
+
 }

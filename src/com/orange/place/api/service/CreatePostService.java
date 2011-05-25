@@ -35,7 +35,7 @@ public class CreatePostService extends CommonService {
 			return;
 		}
 		
-		// create place
+		// create post
 		Post post = PostManager.createPost(cassandraClient, userId, appId, placeId,
 				longitude, latitude, userLongitude, userLatitude,
 				textContent, contentType);
@@ -47,8 +47,12 @@ public class CreatePostService extends CommonService {
 		
 		// TODO return image URL if it's a image
 		
+		
 		String postId = post.getPostId();
 		String createDate = post.getCreateDate();
+
+		// add post into place_post index
+		PostManager.createPlacePostIndex(cassandraClient, placeId, postId);		
 		
 		// set result data, return postId, nick name, and create date
 		JSONObject obj = new JSONObject();
@@ -92,6 +96,9 @@ public class CreatePostService extends CommonService {
 			return false;
 
 		if (!check(userId, ErrorCode.ERROR_PARAMETER_USERID_EMPTY, ErrorCode.ERROR_PARAMETER_USERID_NULL))
+			return false;
+
+		if (!check(placeId, ErrorCode.ERROR_PARAMETER_PLACEID_EMPTY, ErrorCode.ERROR_PARAMETER_PLACEID_NULL))
 			return false;
 
 		if (!check(longitude, ErrorCode.ERROR_PARAMETER_LONGITUDE_EMPTY, ErrorCode.ERROR_PARAMETER_LONGITUDE_NULL))

@@ -17,6 +17,9 @@ public class DBConstants {
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
 	
+	// index place post
+	public static final String INDEX_PLACE_POST = "idx_place_posts";
+	
 	// DB User Fields
 	public static final String F_USERID = "userId";
 	public static final String F_LOGINID = "loginId";

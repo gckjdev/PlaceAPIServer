@@ -1,6 +1,11 @@
 package com.orange.place.manager;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.Rows;
 
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
@@ -37,6 +42,48 @@ public class PostManager extends CommonManager {
 		cassandraClient.insert(DBConstants.POST, postId, map);
 		
 		return new Post(map);
+	}
+
+	public static List<Post> getPostByPlace(CassandraClient cassandraClient,
+			String placeId, String beforeTimeStamp, String maxCount) {
+	
+		int max = MAX_COUNT; 		
+		if (maxCount != null){
+			max = Integer.parseInt(maxCount);
+		}
+				
+		UUID startUUID = null;
+		if (beforeTimeStamp != null){
+			startUUID = UUID.fromString(beforeTimeStamp);
+		}
+		
+		List<HColumn<UUID, String>> resultList = cassandraClient.getColumnKeyByRange(DBConstants.INDEX_PLACE_POST, placeId, startUUID, max);
+		if (resultList == null){
+			return null;
+		}
+		
+		String[] postIds = new String[resultList.size()];
+		int i=0;
+		for (HColumn<UUID, String> result : resultList){
+			String postId = result.getName().toString();
+			postIds[i++] = postId;
+		}
+		
+		Rows<String, String, String> rows = cassandraClient.getMultiRow(DBConstants.POST, postIds);
+		if (rows == null){
+			return null;
+		}
+		
+		// convert rows to List<Post>
+		
+		return null;
+	}
+
+	public static void createPlacePostIndex(CassandraClient cassandraClient,
+			String placeId, String postId) {
+
+		UUID uuid = UUID.fromString(postId);		
+		cassandraClient.insert(DBConstants.INDEX_PLACE_POST, placeId, uuid, "");
 	}
 
 }
