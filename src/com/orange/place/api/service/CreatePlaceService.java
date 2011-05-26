@@ -50,7 +50,7 @@ public class CreatePlaceService extends CommonService {
 		
 		// create index
 		PlaceManager.createUserOwnPlaceIndex(cassandraClient, userId, placeId);
-		PlaceManager.createUserFollowPlaceIndex(cassandraClient, userId, placeId);
+		PlaceManager.userFollowPlace(cassandraClient, userId, placeId);
 		
 		// set result data, return userId
 		JSONObject obj = new JSONObject();

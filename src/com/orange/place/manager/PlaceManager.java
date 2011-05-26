@@ -63,7 +63,7 @@ public class PlaceManager extends CommonManager {
 				Place place = new Place(columns);
 				placeList.add(place);
 			}
-		}
+		} 
 		
 		return placeList;
 	}
@@ -80,6 +80,20 @@ public class PlaceManager extends CommonManager {
 			CassandraClient cassandraClient, String userId, String placeId) {
 		UUID uuid = UUID.fromString(placeId);		
 		cassandraClient.insert(DBConstants.INDEX_USER_FOLLOW_PLACE, userId, uuid, "");
+	}
+
+	public static void createPlaceFollowedUserIndex(
+			CassandraClient cassandraClient, String userId, String placeId) {
+
+		UUID uuid = UUID.fromString(userId);		
+		cassandraClient.insert(DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId, uuid, "");
+	}
+	
+	public static void userFollowPlace(
+			CassandraClient cassandraClient, String userId, String placeId){
+		
+		createUserFollowPlaceIndex(cassandraClient, userId, placeId);
+		createPlaceFollowedUserIndex(cassandraClient, userId, placeId);
 	}
 
 }

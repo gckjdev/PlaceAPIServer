@@ -75,6 +75,7 @@ public class ErrorCode {
 	static public final int ERROR_POST_NOT_FOUND            = 40001;
 	public static final int ERROR_CREATE_POST 				= 40002;
 	public static final int ERROR_GET_POST_BY_PLACE 		= 40003;
+	public static final int ERROR_GET_USER_TIMELINE 		= 40004;
 
 
 	// DB Error
@@ -87,6 +88,7 @@ public class ErrorCode {
 	static public final int ERROR_INVALID_SECURITY			= 90003;
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
 	public static final int ERROR_JSON 						= 90005;
+
 
 
 

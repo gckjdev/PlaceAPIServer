@@ -47,27 +47,28 @@ public class PostManager extends CommonManager {
 		return new Post(map);
 	}
 
-	public static List<Post> getPostByPlace(CassandraClient cassandraClient,
-			String placeId, String beforeTimeStamp, String maxCount) {
-	
+	public static int getMaxCount(String maxCount){
 		int max = MAX_COUNT; 		
 		if (maxCount != null){
 			max = Integer.parseInt(maxCount);
 		}
-				
+		
+		return max;
+	}
+	
+	public static UUID getStartUUID(String beforeTimeStamp){
 		UUID startUUID = null;
-		if (beforeTimeStamp != null){
+		if (beforeTimeStamp != null && beforeTimeStamp.length() > 0){
 			startUUID = UUID.fromString(beforeTimeStamp);
 		}
+		return startUUID;
+	}
+	
+	public static List<Post> getPostList(CassandraClient cassandraClient, List<HColumn<UUID, String>> postIdIndexList){
 		
-		List<HColumn<UUID, String>> resultList = cassandraClient.getColumnKeyByRange(DBConstants.INDEX_PLACE_POST, placeId, startUUID, max);
-		if (resultList == null){
-			return null;
-		}
-		
-		String[] postIds = new String[resultList.size()];
+		String[] postIds = new String[postIdIndexList.size()];
 		int i=0;
-		for (HColumn<UUID, String> result : resultList){
+		for (HColumn<UUID, String> result : postIdIndexList){
 			String postId = result.getName().toString();
 			postIds[i++] = postId;
 		}
@@ -87,7 +88,22 @@ public class PostManager extends CommonManager {
 				postList.add(post);
 			}
 		}
+
+		return postList;
+	}
+	
+	public static List<Post> getPostByPlace(CassandraClient cassandraClient,
+			String placeId, String beforeTimeStamp, String maxCount) {
+	
+		UUID startUUID = getStartUUID(beforeTimeStamp);
+		int max = getMaxCount(maxCount);		
 		
+		List<HColumn<UUID, String>> resultList = cassandraClient.getColumnKeyByRange(DBConstants.INDEX_PLACE_POST, placeId, startUUID, max);
+		if (resultList == null){
+			return null;
+		}
+		
+		List<Post> postList = getPostList(cassandraClient, resultList);		
 		return postList;
 	}
 
@@ -111,7 +127,8 @@ public class PostManager extends CommonManager {
 		// TODO this method could take a long time, so maybe it shall be run in another thread or process
 		
 		// get users who follow the place
-		List<HColumn<UUID, String>> columnValues = cassandraClient.getColumnKeyByRange(DBConstants.INDEX_PLACE_FOLLOW_USERS, placeId, null, UNLIMITED_COUNT);
+		List<HColumn<UUID, String>> columnValues = cassandraClient.getColumnKeyByRange(
+				DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId, null, UNLIMITED_COUNT);
 		if (columnValues == null){
 			return;
 		}
@@ -122,6 +139,22 @@ public class PostManager extends CommonManager {
 			String userId = columnValue.getName().toString();
 			cassandraClient.insert(DBConstants.INDEX_USER_VIEW_POSTS, userId, postUUID, "");
 		}
+	}
+
+	public static List<Post> getUserTimeline(
+			CassandraClient cassandraClient, String userId,
+			String beforeTimeStamp, String maxCount) {
+
+		UUID startUUID = getStartUUID(beforeTimeStamp);
+		int max = getMaxCount(maxCount);		
+		
+		List<HColumn<UUID, String>> resultList = cassandraClient.getColumnKeyByRange(DBConstants.INDEX_USER_VIEW_POSTS, userId, startUUID, max);
+		if (resultList == null){
+			return null;
+		}
+		
+		List<Post> postList = getPostList(cassandraClient, resultList);		
+		return postList;
 	}
 
 }

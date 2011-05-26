@@ -47,6 +47,12 @@ public abstract class CommonService {
 		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_GETNEARBYPLACE)){
 			obj = new GetNearbyPlaceService();
 		}				
+		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_USERFOLLOWPLACE)){
+			obj = new UserFollowPlaceService();
+		}				
+		else if (method.equalsIgnoreCase(ServiceConstant.METHOD_GETUSERFOLLOWPOSTS)){
+			obj = new GetUserTimelineService();
+		}				
 		
 		if (obj == null){
 			log.warning("Cannot find service object for METHOD = "+method);

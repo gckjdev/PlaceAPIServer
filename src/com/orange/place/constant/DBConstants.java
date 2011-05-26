@@ -17,8 +17,8 @@ public class DBConstants {
 	public static final String INDEX_USER_OWN_PLACE = "idx_user_own_places";
 	public static final String INDEX_USER_FOLLOW_PLACE = "idx_user_follow_places";
 	public static final String INDEX_USER_POST = "idx_user_posts";
-	public static final String INDEX_PLACE_FOLLOW_USERS = "idx_place_followed_users";
-	public static final String INDEX_USER_VIEW_POSTS = "idex_user_timeline";
+	public static final String INDEX_PLACE_FOLLOWED_USERS = "idx_place_followed_users";
+	public static final String INDEX_USER_VIEW_POSTS = "idx_user_timeline";
 
 	
 	public static final String KEY_LOGINID = "loginId";
@@ -85,6 +85,7 @@ public class DBConstants {
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";
 	
+	// Constants
 	public static final int LOGINID_OWN 		= 1;
 	public static final int LOGINID_SINA 		= 2;
 	public static final int LOGINID_QQ 			= 3;

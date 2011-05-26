@@ -54,27 +54,11 @@ public class CassandraClient {
 		keyspace = HFactory.createKeyspace(keyspaceName, cluster);				
 	}
 	
+	
 	public boolean insert(String columnFamilyName, String key, String columnName, String columnValue){
 		Mutator<String> mutator = HFactory.createMutator(keyspace, StringSerializer.get());
 		mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, columnValue));
 		mutator.execute();
-		return true;
-	}
-	
-	public boolean insert(String columnFamilyName, String key, String columnName, Object columnValue){
-		
-		if (columnValue instanceof String){
-			Mutator<String> mutator = HFactory.createMutator(keyspace, StringSerializer.get());
-			mutator.addInsertion(key, columnFamilyName, HFactory.createStringColumn(columnName, (String)columnValue));
-			mutator.execute();
-		}
-		else if (columnValue instanceof UUID){
-			Mutator<Object> mutator = HFactory.createMutator(keyspace, ObjectSerializer.get());
-			Serializer<String> nameSerializer = StringSerializer.get();
-			Serializer<Object> valueSerializer = ObjectSerializer.get();
-			mutator.addInsertion(key, columnFamilyName, HFactory.createColumn(columnName, columnValue, nameSerializer, valueSerializer));
-			mutator.execute();			
-		}
 		return true;
 	}
 	
