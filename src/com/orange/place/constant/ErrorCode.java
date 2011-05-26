@@ -69,7 +69,7 @@ public class ErrorCode {
 	static public final int ERROR_PLACE_NOT_FOUND           = 30002;
 	public static final int ERROR_CREATE_PLACE 				= 30003;
 	public static final int ERROR_GET_NEARBY_PLACES 		= 30004;
-
+	public static final int ERROR_GET_NEARBY_POSTS	 		= 30005;
 
 	// Post Error
 	static public final int ERROR_POST_NOT_FOUND            = 40001;

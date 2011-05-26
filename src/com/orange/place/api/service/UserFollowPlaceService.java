@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.manager.PlaceManager;
-import com.orange.place.manager.UserManager;
 
 public class UserFollowPlaceService extends CommonService {
 

@@ -1,39 +1,32 @@
 package com.orange.place.api.service;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
-import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
-import com.orange.place.manager.PlaceManager;
+import com.orange.place.manager.PostManager;
 
-import java.util.List;
-
-public class GetNearbyPlaceService extends CommonService {
-
+public class GetNearbyPostService extends CommonService {
 	String userId;
 	String appId;
 	String longitude;
 	String latitude;
 	String beforeTimeStamp;	
 	String maxCount;
-	
 	@Override
 	public void handleData() {
 		// TODO Auto-generated method stub
-		
-		// Fake implementation, return all place data
-		List<Place> placeList = PlaceManager.getAllPlaces(cassandraClient);
-		if (placeList == null){
-			resultCode = ErrorCode.ERROR_GET_NEARBY_PLACES;
-			log.info("fail to get nearby places");
+		// Fake implementation, return all post data
+		List<Post> postList = PostManager.getAllPosts(cassandraClient);
+		if (postList == null){
+			resultCode = ErrorCode.ERROR_GET_NEARBY_POSTS;
+			log.info("fail to get nearby posts");
 			return;
 		}
-		resultData = CommonServiceUtils.placeListToJSON(placeList);
+		resultData = CommonServiceUtils.postListToJSON(postList);
 	}
 
 	@Override
@@ -49,11 +42,11 @@ public class GetNearbyPlaceService extends CommonService {
 				+"beforeTimeStamp=%s, maxCount=%s, longitude=%s, latitude=%s",
 				userId, appId, beforeTimeStamp, maxCount,
 				longitude, latitude));
-
 	}
 
 	@Override
 	public boolean setDataFromRequest(HttpServletRequest request) {
+		// TODO Auto-generated method stub
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
 		longitude = request.getParameter(ServiceConstant.PARA_LONGTITUDE);

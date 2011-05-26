@@ -15,6 +15,7 @@ public class ServiceConstant {
 	public static String METHOD_USERFOLLOWPLACE = "ufp";
 	public static String METHOD_GETUSERFOLLOWPOSTS = "guf";
 	public static String METHOD_GETNEARBYPOSTS = "gne";
+	
 
 	// request parameters
 
