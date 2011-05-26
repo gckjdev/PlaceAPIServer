@@ -13,7 +13,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ImageUtil {
 
-	private static String SmallImageSuffix = "_s";
+	private static String SmallImageSuffix = "_s.jpg";
 
 	public static String getSmallImageName(File imageFile) {
 		if (imageFile == null)
@@ -23,10 +23,27 @@ public class ImageUtil {
 		if (index < 0)
 			return null;
 		String smallImageName = imageName.substring(0, index)
-				+ SmallImageSuffix + imageName.substring(index);
+				+ SmallImageSuffix;
 		return smallImageName;
 	}
 
+	public static File setImageSize(File imageFile, int height){
+		Image src = null;
+		File outFile = null;
+		try {
+			src = ImageIO.read(imageFile);
+			int oWidth = src.getWidth(null);
+			int oHeight = src.getHeight(null);
+			int width = oWidth * height / oHeight;
+			String name = getSmallImageName(imageFile);
+			outFile = setImageSize(imageFile, width, height, name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return outFile;
+	}
 	public static File setImageSize(File imageFile, double scale) {
 		Image src = null;
 		File outFile = null;

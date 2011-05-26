@@ -9,26 +9,26 @@ public class DateUtil {
 
 	public static String DATE_FORMAT = "yyyyMMddHHmmss";
 
-	public static String currentDate(){
+	public static String currentDate() {
 		Date date = new Date();
 		return DateUtil.dateToStringByFormat(date, DATE_FORMAT);
 	}
 
-	//format example "dd/MM/yyyy-hh:mm:ss"
-	public static String dateToStringByFormat(Date date, String format){
+	// format example "dd/MM/yyyy-hh:mm:ss"
+	public static String dateToStringByFormat(Date date, String format) {
 		if (date == null || format == null)
 			return null;
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat (format);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-	    return dateFormat.format(date);
+		return dateFormat.format(date);
 	}
 
-	public static Date dateFromStringByFormat(String dateString, String format){
+	public static Date dateFromStringByFormat(String dateString, String format) {
 		if (dateString == null || format == null)
 			return null;
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat (format);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		try {
 			return dateFormat.parse(dateString);
@@ -37,7 +37,7 @@ public class DateUtil {
 		}
 	}
 
-	public static String dateDescription(Date date){
+	public static String dateDescription(Date date) {
 		if (date == null)
 			return "(null)";
 		else
