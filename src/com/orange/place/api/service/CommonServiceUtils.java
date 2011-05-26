@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.orange.place.constant.ServiceConstant;
+import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 
 public class CommonServiceUtils {
@@ -30,11 +31,30 @@ public class CommonServiceUtils {
 			json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
 			json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
 			json.put(ServiceConstant.PARA_TOTAL_REPLY, post.getTotalReply());
-			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());
-			
+			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());			
 			obj.add(json);
 		}
 		
+		return obj;
+	}
+	
+	public static JSONArray placeListToJSON(List<Place> placeList){
+		// TODO if JSON value is null, don't put into the JSON object
+		// set result data, return postArray
+		JSONArray obj = new JSONArray();
+		for (Place place : placeList){
+			JSONObject json = new JSONObject();
+			json.put(ServiceConstant.PARA_CREATE_USERID, place.getCreateUserId());
+			json.put(ServiceConstant.PARA_PLACEID, place.getPlaceId());
+			json.put(ServiceConstant.PARA_LONGTITUDE, place.getLongitude());
+			json.put(ServiceConstant.PARA_LATITUDE, place.getLatitude());
+			json.put(ServiceConstant.PARA_NAME, place.getName());
+			json.put(ServiceConstant.PARA_DESC, place.getDesc());
+			json.put(ServiceConstant.PARA_RADIUS, place.getRadius());
+			json.put(ServiceConstant.PARA_POSTTYPE, place.getPostType());
+			json.put(ServiceConstant.PARA_CREATE_DATE, place.getCreateDate());			
+			obj.add(json);
+		}		
 		return obj;
 	}
 
