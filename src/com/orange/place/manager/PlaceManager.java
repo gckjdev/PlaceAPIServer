@@ -94,9 +94,49 @@ public class PlaceManager extends CommonManager {
 
 	public static void userFollowPlace(CassandraClient cassandraClient,
 			String userId, String placeId) {
-
 		createUserFollowPlaceIndex(cassandraClient, userId, placeId);
 		createPlaceFollowedUserIndex(cassandraClient, userId, placeId);
 	}
 
+	public static void deleteUserFollowPlaceIndex(
+			CassandraClient cassandraClient, String userId, String placeId) {
+		UUID uuid = UUID.fromString(placeId);
+		cassandraClient.deleteUUIDColumn(DBConstants.INDEX_USER_FOLLOW_PLACE,
+				userId, uuid);
+	}
+
+	public static void deletePlaceFollowedUserIndex(
+			CassandraClient cassandraClient, String userId, String placeId) {
+		UUID uuid = UUID.fromString(userId);
+		cassandraClient.deleteUUIDColumn(
+				DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId, uuid);
+	}
+
+	public static void userUnFollowPlace(CassandraClient cassandraClient,
+			String userId, String placeId) {
+		deletePlaceFollowedUserIndex(cassandraClient, userId, placeId);
+		deleteUserFollowPlaceIndex(cassandraClient, userId, placeId);
+	}
+
+	public static List<Place> getUserFollowPlace(
+			CassandraClient cassandraClient, String userId) {
+		// TODO Auto-generated method stub
+
+		Rows<String, String, String> rows = cassandraClient.getMultiRow(
+				DBConstants.PLACE, userId);
+		if (rows == null) {
+			return null;
+		}
+		// convert rows to List<Place>
+		List<Place> placeList = new ArrayList<Place>();
+		for (Row<String, String, String> row : rows) {
+			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
+			List<HColumn<String, String>> columns = columnSlice.getColumns();
+			if (columns != null) {
+				Place place = new Place(columns);
+				placeList.add(place);
+			}
+		}
+		return placeList;
+	}
 }

@@ -1,5 +1,6 @@
 package com.orange.place.api.service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -24,6 +25,7 @@ public abstract class CommonService {
 	static private void initMethodMap() {
 		if (methodMap != null)
 			return;
+		methodMap = new HashMap<String, CommonService>();
 		methodMap.put(ServiceConstant.METHOD_REGISTRATION,
 				new RegisterUserService());
 		methodMap.put(ServiceConstant.METHOD_CREATEPLACE,
@@ -40,6 +42,10 @@ public abstract class CommonService {
 				new GetUserTimelineService());
 		methodMap.put(ServiceConstant.METHOD_GETNEARBYPOSTS,
 				new GetNearbyPostService());
+		methodMap.put(ServiceConstant.METHOD_USERUNFOLLOWPLACE,
+				new UserUnFollowPlaceService());
+		methodMap.put(ServiceConstant.METHOD_GETUSERFOLLOWPLACE,
+				new GetUserFollowPlaceService());
 	}
 
 	public CassandraClient getCassandraClient() {

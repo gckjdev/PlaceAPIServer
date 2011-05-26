@@ -2,13 +2,10 @@ package com.orange.place.api.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Place;
-import com.orange.place.dao.Post;
 import com.orange.place.manager.PlaceManager;
 
 import java.util.List;

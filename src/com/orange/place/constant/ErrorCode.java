@@ -76,7 +76,7 @@ public class ErrorCode {
 	public static final int ERROR_CREATE_POST 				= 40002;
 	public static final int ERROR_GET_POST_BY_PLACE 		= 40003;
 	public static final int ERROR_GET_USER_TIMELINE 		= 40004;
-
+	public static final int ERROR_GET_USER_FOLLOW_PLACE		= 40005;
 
 	// DB Error
 	static public final int ERROR_CASSANDRA                 = 80001;

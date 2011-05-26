@@ -13,9 +13,10 @@ public class ServiceConstant {
 	public static String METHOD_GETPLACEPOST = "gpp";
 	public static String METHOD_GETNEARBYPLACE = "gnp";
 	public static String METHOD_USERFOLLOWPLACE = "ufp";
+	public static String METHOD_USERUNFOLLOWPLACE = "unfp";	
 	public static String METHOD_GETUSERFOLLOWPOSTS = "guf";
+	public static String METHOD_GETUSERFOLLOWPLACE = "gufp";
 	public static String METHOD_GETNEARBYPOSTS = "gne";
-	
 
 	// request parameters
 

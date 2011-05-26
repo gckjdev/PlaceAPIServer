@@ -7,7 +7,6 @@ import net.sf.json.JSONObject;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Post;
-import com.orange.place.manager.PlaceManager;
 import com.orange.place.manager.PostManager;
 import com.orange.place.manager.UserManager;
 
@@ -60,7 +59,7 @@ public class CreatePostService extends CommonService {
 		JSONObject obj = new JSONObject();
 		obj.put(ServiceConstant.PARA_POSTID, postId);
 		obj.put(ServiceConstant.PARA_NICKNAME, nickName);
-//		obj.put(ServiceConstant.PARA_CREATE_DATE, createDate);
+		obj.put(ServiceConstant.PARA_CREATE_DATE, createDate);
 		resultData = obj;
 	}
 

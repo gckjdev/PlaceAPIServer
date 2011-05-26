@@ -6,15 +6,15 @@ import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.manager.PlaceManager;
 
-public class UserFollowPlaceService extends CommonService {
-
+public class UserUnFollowPlaceService extends CommonService {
 	String userId;
 	String placeId;
 	String appId;
-
+	
 	@Override
 	public void handleData() {
-		PlaceManager.userFollowPlace(cassandraClient, userId, placeId);
+		// TODO Auto-generated method stub
+		PlaceManager.userUnFollowPlace(cassandraClient, userId, placeId);
 	}
 
 	@Override
@@ -28,12 +28,11 @@ public class UserFollowPlaceService extends CommonService {
 		// TODO Auto-generated method stub
 		log.info(String.format("userId=%s, appId=%s, placeId=%s,", userId,
 				appId, placeId));
-
 	}
 
 	@Override
 	public boolean setDataFromRequest(HttpServletRequest request) {
-
+		// TODO Auto-generated method stub
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
 		placeId = request.getParameter(ServiceConstant.PARA_PLACEID);
