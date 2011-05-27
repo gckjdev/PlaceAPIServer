@@ -3,88 +3,90 @@ package com.orange.place.constant;
 public class ServiceConstant {
 
 	// method name
-	public static String METHOD = "m";
-	public static String METHOD_TEST = "test";
-	public static String METHOD_ONLINESTATUS = "srpt";
-	public static String METHOD_REGISTRATION = "reg";
-	public static String METHOD_CREATEPOST = "cp";
-	public static String METHOD_CREATEPLACE = "cpl";
-	public static String METHOD_GETUSERPLACES = "gup";
-	public static String METHOD_GETPLACEPOST = "gpp";
-	public static String METHOD_GETNEARBYPLACE = "gnp";
-	public static String METHOD_USERFOLLOWPLACE = "ufp";
-	public static String METHOD_USERUNFOLLOWPLACE = "unfp";	
-	public static String METHOD_GETUSERFOLLOWPOSTS = "guf";
-	public static String METHOD_GETUSERFOLLOWPLACE = "gufp";
-	public static String METHOD_GETNEARBYPOSTS = "gne";
+	public static final String METHOD = "m";
+	public static final String METHOD_TEST = "test";
+	public static final String METHOD_ONLINESTATUS = "srpt";
+	public static final String METHOD_REGISTRATION = "reg";
+	public static final String METHOD_CREATEPOST = "cp";
+	public static final String METHOD_CREATEPLACE = "cpl";
+	public static final String METHOD_GETUSERPLACES = "gup";
+	public static final String METHOD_GETPLACEPOST = "gpp";
+	public static final String METHOD_GETNEARBYPLACE = "gnp";
+	public static final String METHOD_USERFOLLOWPLACE = "ufp";
+	public static final String METHOD_USERUNFOLLOWPLACE = "unfp";	
+	public static final String METHOD_GETUSERFOLLOWPOSTS = "guf";
+	public static final String METHOD_GETUSERFOLLOWPLACE = "gufp";
+	public static final String METHOD_GETNEARBYPOSTS = "gne";
 
 	// request parameters
 
-	public static String PARA_USERID = "uid";
-	public static String PARA_LOGINID = "lid";
-	public static String PARA_LOGINIDTYPE = "lty";
-	public static String PARA_USERTYPE = "uty";
-	public static String PARA_PASSWORD = "pwd";
+	public static final String PARA_USERID = "uid";
+	public static final String PARA_LOGINID = "lid";
+	public static final String PARA_LOGINIDTYPE = "lty";
+	public static final String PARA_USERTYPE = "uty";
+	public static final String PARA_PASSWORD = "pwd";
 
-	public static String PARA_DEVICEID = "did";
-	public static String PARA_DEVICETYPE = "dty";
-	public static String PARA_DEVICEMODEL = "dm";
-	public static String PARA_DEVICEOS = "dos";
-	public static String PARA_DEVICETOKEN = "dto";
-	public static String PARA_NICKNAME = "nn";
+	public static final String PARA_DEVICEID = "did";
+	public static final String PARA_DEVICETYPE = "dty";
+	public static final String PARA_DEVICEMODEL = "dm";
+	public static final String PARA_DEVICEOS = "dos";
+	public static final String PARA_DEVICETOKEN = "dto";
+	public static final String PARA_NICKNAME = "nn";
 
-	public static String PARA_COUNTRYCODE = "cc";
-	public static String PARA_LANGUAGE = "lang";
-	public static String PARA_APPID = "app";
+	public static final String PARA_COUNTRYCODE = "cc";
+	public static final String PARA_LANGUAGE = "lang";
+	public static final String PARA_APPID = "app";
 
-	public static String PARA_RADIUS = "ra";
-	public static String PARA_POSTTYPE = "pt";
-	public static String PARA_NAME = "na";
-	public static String PARA_DESC = "de";
-	public static String PARA_AFTER_TIMESTAMP = "at";
-	public static String PARA_BEFORE_TIMESTAMP = "bt";
-	public static String PARA_MAX_COUNT = "mc";
+	public static final String PARA_RADIUS = "ra";
+	public static final String PARA_POSTTYPE = "pt";
+	public static final String PARA_NAME = "na";
+	public static final String PARA_DESC = "de";
+	public static final String PARA_AFTER_TIMESTAMP = "at";
+	public static final String PARA_BEFORE_TIMESTAMP = "bt";
+	public static final String PARA_MAX_COUNT = "mc";
 
-	public static String PARA_TOTAL_VIEW     = "tv";
-	public static String PARA_TOTAL_FORWARD  = "tf";
-	public static String PARA_TOTAL_QUOTE    = "tq";
-	public static String PARA_TOTAL_REPLY    = "tr";
-	public static String PARA_CREATE_DATE    = "cd";
-	public static String PARA_SEQ            = "sq";
+	public static final String PARA_TOTAL_VIEW     = "tv";
+	public static final String PARA_TOTAL_FORWARD  = "tf";
+	public static final String PARA_TOTAL_QUOTE    = "tq";
+	public static final String PARA_TOTAL_REPLY    = "tr";
+	public static final String PARA_CREATE_DATE    = "cd";
+	public static final String PARA_SEQ            = "sq";
 
-	public static String PARA_POSTID         = "pi";
-	public static String PARA_IMAGE_URL      = "iu";
-	public static String PARA_CONTENT_TYPE   = "ct";
-	public static String PARA_TEXT_CONTENT   = "t";
-	public static String PARA_USER_LATITUDE  = "ula";
-	public static String PARA_USER_LONGITUDE = "ulo";
-	public static String PARA_SYNC_SNS = "ss";
-	public static String PARA_PLACEID = "pid" ;
+	public static final String PARA_POSTID         = "pi";
+	public static final String PARA_IMAGE_URL      = "iu";
+	public static final String PARA_CONTENT_TYPE   = "ct";
+	public static final String PARA_TEXT_CONTENT   = "t";
+	public static final String PARA_USER_LATITUDE  = "ula";
+	public static final String PARA_USER_LONGITUDE = "ulo";
+	public static final String PARA_SYNC_SNS = "ss";
+	public static final String PARA_SRC_POSTID = "spi";
+	
+	public static final String PARA_PLACEID = "pid" ;
 
-	public static String PARA_ACCESS_TOKEN        = "at";
-	public static String PARA_ACCESS_TOKEN_SECRET = "ats";
+	public static final String PARA_ACCESS_TOKEN        = "at";
+	public static final String PARA_ACCESS_TOKEN_SECRET = "ats";
 
 
 
-	public static String PARA_CREATE_USERID = "cuid";
+	public static final String PARA_CREATE_USERID = "cuid";
 
-	public static String PARA_STATUS = "s";
+	public static final String PARA_STATUS = "s";
 
-	public static String PARA_TIMESTAMP = "ts";
-	public static String PARA_MAC = "mac";
+	public static final String PARA_TIMESTAMP = "ts";
+	public static final String PARA_MAC = "mac";
 
-	public static String PARA_DATA = "dat";
+	public static final String PARA_DATA = "dat";
 
-	public static String PARA_LONGTITUDE = "lo";
-	public static String PARA_LATITUDE = "lat";
-	public static String PARA_MESSAGETEXT = "t";
+	public static final String PARA_LONGTITUDE = "lo";
+	public static final String PARA_LATITUDE = "lat";
+	public static final String PARA_MESSAGETEXT = "t";
 
-	public static String PARA_VERSION = "v";
+	public static final String PARA_VERSION = "v";
 
 	// response parameters
 
-	public static String RET_MESSAGE = "msg";
-	public static String RET_CODE = "ret";
-	public static String RET_DATA = "dat";
+	public static final String RET_MESSAGE = "msg";
+	public static final String RET_CODE = "ret";
+	public static final String RET_DATA = "dat";
 
 }

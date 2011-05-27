@@ -90,5 +90,10 @@ public class Post extends CommonData {
 		// TODO Auto-generated method stub
 		return getKey(DBConstants.F_TOTAL_REPLY);
 	}
+
+	public String getSrcPostId() {
+		// TODO Auto-generated method stub
+		return getKey(DBConstants.F_SRC_POSTID);
+	}
 	
 }

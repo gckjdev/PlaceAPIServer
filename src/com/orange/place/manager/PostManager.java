@@ -21,7 +21,7 @@ public class PostManager extends CommonManager {
 	public static Post createPost(CassandraClient cassandraClient,
 			String userId, String appId, String placeId, String longitude,
 			String latitude, String userLongitude, String userLatitude,
-			String textContent, String contentType) {
+			String textContent, String contentType, String srcPostId) {
 
 		String postId = IdGenerator.generateId();
 
@@ -35,6 +35,13 @@ public class PostManager extends CommonManager {
 		map.put(DBConstants.F_USER_LATITUDE, userLatitude);
 		map.put(DBConstants.F_TEXT_CONTENT, textContent);
 		map.put(DBConstants.F_CONTENT_TYPE, contentType);
+		
+		if (srcPostId != null && srcPostId.length() > 0){
+			map.put(DBConstants.F_SRC_POSTID, srcPostId);
+		}
+		else{
+			map.put(DBConstants.F_SRC_POSTID, postId);			
+		}
 
 		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
 		map.put(DBConstants.F_CREATE_SOURCE_ID, appId);
@@ -124,6 +131,13 @@ public class PostManager extends CommonManager {
 		cassandraClient.insert(DBConstants.INDEX_USER_POST, postId, uuid, "");
 	}
 
+	public static void createPostRelatedPostIndex(CassandraClient cassandraClient,
+			String postId, String srcPostId) {
+
+		UUID uuid = UUID.fromString(postId);
+		cassandraClient.insert(DBConstants.INDEX_POST_RELATED_POST, srcPostId, uuid, "");
+	}	
+	
 	public static void createUserViewPostIndex(CassandraClient cassandraClient,
 			String placeId, String postId) {
 
