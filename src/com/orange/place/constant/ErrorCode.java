@@ -57,10 +57,11 @@ public class ErrorCode {
 	
 	// User Errors
 	static public final int ERROR_LOGINID_EXIST             = 20001;
-	static public final int ERROR_DEVICEID_EXIST            = 20002;
-	static public final int ERROR_LOGINID_DEVICE_BOTH_EXIST = 20003; 
-	static public final int ERROR_USERID_NOT_FOUND          = 20004;
-	static public final int ERROR_CREATE_USER				= 20005;
+	static public final int ERROR_DEVICEID_BIND            	= 20002;
+	public static final int ERROR_DEVICE_NOT_BIND 			= 20003;
+	static public final int ERROR_LOGINID_DEVICE_BOTH_EXIST = 20004; 
+	static public final int ERROR_USERID_NOT_FOUND          = 20005;
+	static public final int ERROR_CREATE_USER				= 20006;
 	public static final int ERROR_USER_GET_NICKNAME 		= 20007;
 
 
@@ -88,6 +89,7 @@ public class ErrorCode {
 	static public final int ERROR_INVALID_SECURITY			= 90003;
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
 	public static final int ERROR_JSON 						= 90005;
+
 
 
 

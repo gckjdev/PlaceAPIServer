@@ -8,6 +8,7 @@ import net.sf.json.JSONObject;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
+import com.orange.place.dao.User;
 
 public class CommonServiceUtils {
 
@@ -55,6 +56,17 @@ public class CommonServiceUtils {
 			json.put(ServiceConstant.PARA_CREATE_DATE, place.getCreateDate());			
 			obj.add(json);
 		}		
+		return obj;
+	}
+
+	public static JSONObject userToJSON(User user) {
+		JSONObject obj = new JSONObject();
+		obj.put(ServiceConstant.PARA_USERID, user.getUserId());
+		obj.put(ServiceConstant.PARA_SINA_ACCESS_TOKEN, user.getSinaAccessToken());
+		obj.put(ServiceConstant.PARA_SINA_ACCESS_TOKEN_SECRET, user.getSinaAccessTokenSecret());
+		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN, user.getQQAccessToken());
+		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN_SECRET, user.getQQAccessTokenSecret());
+		obj.put(ServiceConstant.PARA_NICKNAME, user.getNickName());
 		return obj;
 	}
 

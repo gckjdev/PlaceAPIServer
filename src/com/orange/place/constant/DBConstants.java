@@ -55,8 +55,22 @@ public class DBConstants {
 	public static final String F_FACEBOOKID = "facebookID";
 	public static final String F_TWITTERID = "twitterID";
 	
-	public static final String F_ACCESSTOKEN = "accToken";
-	public static final String F_ACCESSTOKEN_SECRET = "accSecret";
+	public static final String F_SINA_ACCESS_TOKEN 			= "sinaAT";
+	public static final String F_SINA_ACCESS_TOKEN_SECRET 	= "sinaATS";
+	public static final String F_QQ_ACCESS_TOKEN 			= "qqAT";
+	public static final String F_QQ_ACCESS_TOKEN_SECRET 	= "qqATS";
+	
+//	public static final String F_ACCESSTOKEN = "accToken";
+//	public static final String F_ACCESSTOKEN_SECRET = "accSecret";
+	public static final String F_PROVINCE			= "province";
+	public static final String F_CITY				= "city";
+	public static final String F_LOCATION			= "location";
+	public static final String F_GENDER				= "gender";
+	public static final String F_BIRTHDAY			= "birthday";
+	public static final String F_SINA_NICKNAME		= "sinaNickName";
+	public static final String F_SINA_DOMAIN		= "sinaDomain";
+	public static final String F_QQ_NICKNAME		= "qqNickName";
+	public static final String F_QQ_DOMAIN			= "qqDomain";
 	
 	// DB Place Fields
 	public static final String F_PLACEID = "placeId";	

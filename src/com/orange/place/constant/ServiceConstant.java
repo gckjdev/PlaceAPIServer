@@ -17,6 +17,7 @@ public class ServiceConstant {
 	public static String METHOD_GETUSERFOLLOWPOSTS = "guf";
 	public static String METHOD_GETUSERFOLLOWPLACE = "gufp";
 	public static String METHOD_GETNEARBYPOSTS = "gne";
+	public static final String METHOD_DEVICELOGIN = "dl";
 
 	// request parameters
 
@@ -61,9 +62,24 @@ public class ServiceConstant {
 	public static String PARA_SYNC_SNS = "ss";
 	public static String PARA_PLACEID = "pid" ;
 
-	public static String PARA_ACCESS_TOKEN        = "at";
-	public static String PARA_ACCESS_TOKEN_SECRET = "ats";
-
+	public static String PARA_ACCESS_TOKEN			= "at";
+	public static String PARA_ACCESS_TOKEN_SECRET	= "ats";
+	public static final String PARA_SINA_ACCESS_TOKEN = "sat";
+	public static final String PARA_SINA_ACCESS_TOKEN_SECRET = "sats";
+	public static final String PARA_QQ_ACCESS_TOKEN = "qat";
+	public static final String PARA_QQ_ACCESS_TOKEN_SECRET = "qats";
+	
+	public static String PARA_PROVINCE				= "pro";
+	public static String PARA_CITY					= "ci";
+	public static String PARA_LOCATION				= "lo";
+	public static String PARA_GENDER				= "ge";
+	public static String PARA_BIRTHDAY				= "bi";
+	public static String PARA_SINA_NICKNAME			= "sn";
+	public static String PARA_SINA_DOMAIN			= "sd";
+	public static String PARA_QQ_NICKNAME			= "qn";
+	public static String PARA_QQ_DOMAIN				= "qd";
+	
+	public static final String PARA_NEED_RETURN_USER = "r";
 
 
 	public static String PARA_CREATE_USERID = "cuid";

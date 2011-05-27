@@ -24,6 +24,15 @@ public class RegisterUserService extends CommonService {
 	String nickName;
 	String accessToken;
 	String accessTokenSecret;
+	String province;
+	String city;
+	String location;
+	String gender;
+	String birthday;
+	String sinaNickName;
+	String sinaDomain;
+	String qqNickName;
+	String qqDomain;
 	
 	String password;
 	
@@ -44,14 +53,16 @@ public class RegisterUserService extends CommonService {
 			return;
 		}
 		else if (isDeviceIdExist){
-			resultCode = ErrorCode.ERROR_DEVICEID_EXIST;
+			resultCode = ErrorCode.ERROR_DEVICEID_BIND;
 			log.info("<registerUser> user deviceId exist, deviceId="+deviceId);
 			return;
 		}		
 		
 		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
 				deviceModel, deviceId, deviceOS, deviceToken, 
-				language, countryCode, password, nickName, accessToken, accessTokenSecret);
+				language, countryCode, password, nickName, accessToken, accessTokenSecret,
+				province, city, location, gender, birthday,
+				sinaNickName, sinaDomain, qqNickName, qqDomain);
 		if (user == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
 			log.info("<registerUser> fail to create user, loginId="+loginId);
@@ -102,6 +113,15 @@ public class RegisterUserService extends CommonService {
 		deviceToken = request.getParameter(ServiceConstant.PARA_DEVICETOKEN);
 		accessToken = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN);
 		accessTokenSecret = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN_SECRET);
+		province = request.getParameter(ServiceConstant.PARA_PROVINCE);
+		city = request.getParameter(ServiceConstant.PARA_CITY);
+		location = request.getParameter(ServiceConstant.PARA_LOCATION);
+		gender = request.getParameter(ServiceConstant.PARA_GENDER);
+		birthday = request.getParameter(ServiceConstant.PARA_BIRTHDAY);
+		sinaNickName = request.getParameter(ServiceConstant.PARA_SINA_NICKNAME);
+		sinaDomain = request.getParameter(ServiceConstant.PARA_SINA_DOMAIN);
+		qqNickName = request.getParameter(ServiceConstant.PARA_QQ_NICKNAME);
+		qqDomain = request.getParameter(ServiceConstant.PARA_QQ_DOMAIN);
 		
 		if (!check(loginId, ErrorCode.ERROR_PARAMETER_USERID_EMPTY, ErrorCode.ERROR_PARAMETER_USERID_NULL))
 			return false;

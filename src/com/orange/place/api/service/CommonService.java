@@ -46,6 +46,8 @@ public abstract class CommonService {
 				new UserUnFollowPlaceService());
 		methodMap.put(ServiceConstant.METHOD_GETUSERFOLLOWPLACE,
 				new GetUserFollowPlaceService());
+		methodMap.put(ServiceConstant.METHOD_DEVICELOGIN,
+				new DeviceLoginService());
 	}
 
 	public CassandraClient getCassandraClient() {

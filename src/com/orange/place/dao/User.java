@@ -20,5 +20,25 @@ public class User extends CommonData {
 	public String getUserId() {
 		return getKey(DBConstants.F_USERID);
 	}
+
+	public String getSinaAccessToken() {
+		return getKey(DBConstants.F_SINA_ACCESS_TOKEN);
+	}
+
+	public String getSinaAccessTokenSecret() {
+		return getKey(DBConstants.F_SINA_ACCESS_TOKEN_SECRET);
+	}
+
+	public String getQQAccessToken() {
+		return getKey(DBConstants.F_QQ_ACCESS_TOKEN);
+	}
+	
+	public String getQQAccessTokenSecret() {
+		return getKey(DBConstants.F_QQ_ACCESS_TOKEN_SECRET);
+	}
+
+	public String getNickName() {
+		return getKey(DBConstants.F_NICKNAME);
+	}
 	
 }
