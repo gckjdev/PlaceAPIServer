@@ -22,6 +22,7 @@ public class CreatePostService extends CommonService {
 	String textContent;
 	String contentType;
 	String syncSNS;
+	String srcPostId;
 	
 	@Override
 	public void handleData() {
@@ -37,7 +38,7 @@ public class CreatePostService extends CommonService {
 		// create post
 		Post post = PostManager.createPost(cassandraClient, userId, appId, placeId,
 				longitude, latitude, userLongitude, userLatitude,
-				textContent, contentType);
+				textContent, contentType, srcPostId);
 		if (post == null){
 			log.info("fail to create post, placeId="+placeId+", userId="+userId);
 			resultCode = ErrorCode.ERROR_CREATE_POST;
@@ -54,6 +55,12 @@ public class CreatePostService extends CommonService {
 		PostManager.createPlacePostIndex(cassandraClient, placeId, postId);		
 		PostManager.createUserPostIndex(cassandraClient, userId, postId);
 		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId);
+		
+		// create post related post index
+		if (srcPostId == null || srcPostId.length() == 0){
+			srcPostId = postId;
+		}
+		PostManager.createPostRelatedPostIndex(cassandraClient, postId, srcPostId);
 		
 		// set result data, return postId, nick name, and create date
 		JSONObject obj = new JSONObject();
@@ -92,6 +99,7 @@ public class CreatePostService extends CommonService {
 		textContent = request.getParameter(ServiceConstant.PARA_TEXT_CONTENT);
 		contentType = request.getParameter(ServiceConstant.PARA_CONTENT_TYPE);
 		syncSNS = request.getParameter(ServiceConstant.PARA_SYNC_SNS);
+		srcPostId = request.getParameter(ServiceConstant.PARA_SRC_POSTID);
 		
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY, ErrorCode.ERROR_PARAMETER_APPID_NULL))
 			return false;

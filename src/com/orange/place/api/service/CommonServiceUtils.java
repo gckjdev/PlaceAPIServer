@@ -32,7 +32,8 @@ public class CommonServiceUtils {
 			json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
 			json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
 			json.put(ServiceConstant.PARA_TOTAL_REPLY, post.getTotalReply());
-			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());			
+			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());	
+			json.put(ServiceConstant.PARA_SRC_POSTID, post.getSrcPostId());
 			obj.add(json);
 		}
 		

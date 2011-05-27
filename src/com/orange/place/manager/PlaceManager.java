@@ -123,8 +123,9 @@ public class PlaceManager extends CommonManager {
 		// TODO Auto-generated method stub
 
 		Rows<String, String, String> rows = cassandraClient.getMultiRow(
-				DBConstants.PLACE, userId);
+				DBConstants.INDEX_USER_FOLLOW_PLACE, userId);
 		if (rows == null) {
+			log.info("<getUserFollowPlace> cannot find any places followed by user("+userId+")");
 			return null;
 		}
 		// convert rows to List<Place>
