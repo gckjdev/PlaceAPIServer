@@ -49,7 +49,8 @@ public class DBConstants {
 	public static final String F_PASSWORD = "password";
 	public static final String F_STATUS = "status";	
 	
-	public static final String F_NICKNAME = "nickName";	
+	public static final String F_NICKNAME = "nickName";
+	public static final String F_AVATAR = "avatar";
 	public static final String F_SINAID = "sinaID";
 	public static final String F_QQID = "qqID";
 	public static final String F_RENRENID = "renrenID";
@@ -61,8 +62,6 @@ public class DBConstants {
 	public static final String F_QQ_ACCESS_TOKEN 			= "qqAT";
 	public static final String F_QQ_ACCESS_TOKEN_SECRET 	= "qqATS";
 	
-//	public static final String F_ACCESSTOKEN = "accToken";
-//	public static final String F_ACCESSTOKEN_SECRET = "accSecret";
 	public static final String F_PROVINCE			= "province";
 	public static final String F_CITY				= "city";
 	public static final String F_LOCATION			= "location";

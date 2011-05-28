@@ -22,6 +22,7 @@ public class RegisterUserService extends CommonService {
 	String language;
 	String countryCode;
 	String nickName;
+	String avatar;
 	String accessToken;
 	String accessTokenSecret;
 	String province;
@@ -60,7 +61,8 @@ public class RegisterUserService extends CommonService {
 		
 		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
 				deviceModel, deviceId, deviceOS, deviceToken, 
-				language, countryCode, password, nickName, accessToken, accessTokenSecret,
+				language, countryCode, password, nickName, avatar,
+				accessToken, accessTokenSecret,
 				province, city, location, gender, birthday,
 				sinaNickName, sinaDomain, qqNickName, qqDomain);
 		if (user == null){
@@ -110,6 +112,7 @@ public class RegisterUserService extends CommonService {
 		language = request.getParameter(ServiceConstant.PARA_LANGUAGE);
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		nickName = request.getParameter(ServiceConstant.PARA_NICKNAME);
+		avatar = request.getParameter(ServiceConstant.PARA_AVATAR);
 		deviceToken = request.getParameter(ServiceConstant.PARA_DEVICETOKEN);
 		accessToken = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN);
 		accessTokenSecret = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN_SECRET);
