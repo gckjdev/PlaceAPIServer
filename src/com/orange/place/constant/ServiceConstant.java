@@ -18,6 +18,7 @@ public class ServiceConstant {
 	public static final String METHOD_GETUSERFOLLOWPLACE = "gufp";
 	public static final String METHOD_GETNEARBYPOSTS = "gne";
 	public static final String METHOD_DEVICELOGIN = "dl";
+	public static final String METHOD_GETPOSTRELATEDPOST = "gpr";
 
 	// request parameters
 

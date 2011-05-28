@@ -50,6 +50,8 @@ public abstract class CommonService {
 				GetUserFollowPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_DEVICELOGIN,
 				DeviceLoginService.class);
+		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST, 
+				GetPostRelatedPostService.class);
 	}
 
 	public CassandraClient getCassandraClient() {
