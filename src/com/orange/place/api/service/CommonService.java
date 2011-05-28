@@ -20,34 +20,36 @@ public abstract class CommonService {
 	Object resultData = null;
 	CassandraClient cassandraClient = null;
 
-	static private Map<String, CommonService> methodMap = null;
+	@SuppressWarnings("unchecked")
+	static private Map<String, Class> methodMap = null;
 
+	@SuppressWarnings("unchecked")
 	static private void initMethodMap() {
 		if (methodMap != null)
 			return;
-		methodMap = new HashMap<String, CommonService>();
+		methodMap = new HashMap<String, Class>();
 		methodMap.put(ServiceConstant.METHOD_REGISTRATION,
-				new RegisterUserService());
+				RegisterUserService.class);
 		methodMap.put(ServiceConstant.METHOD_CREATEPLACE,
-				new CreatePlaceService());
+				CreatePlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_CREATEPOST,
-				new CreatePostService());
+				CreatePostService.class);
 		methodMap.put(ServiceConstant.METHOD_GETPLACEPOST,
-				new GetPlacePostService());
+				GetPlacePostService.class);
 		methodMap.put(ServiceConstant.METHOD_GETNEARBYPLACE,
-				new GetNearbyPlaceService());
+				GetNearbyPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_USERFOLLOWPLACE,
-				new UserFollowPlaceService());
+				UserFollowPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_GETUSERFOLLOWPOSTS,
-				new GetUserTimelineService());
+				GetUserTimelineService.class);
 		methodMap.put(ServiceConstant.METHOD_GETNEARBYPOSTS,
-				new GetNearbyPostService());
+				GetNearbyPostService.class);
 		methodMap.put(ServiceConstant.METHOD_USERUNFOLLOWPLACE,
-				new UserUnFollowPlaceService());
+				UserUnFollowPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_GETUSERFOLLOWPLACE,
-				new GetUserFollowPlaceService());
+				GetUserFollowPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_DEVICELOGIN,
-				new DeviceLoginService());
+				DeviceLoginService.class);
 	}
 
 	public CassandraClient getCassandraClient() {
@@ -61,9 +63,11 @@ public abstract class CommonService {
 	public static final Logger log = Logger.getLogger(PlaceAPIServer.class
 			.getName());
 
-	public static CommonService createServiceObjectByMethod(String method) {
+	@SuppressWarnings("unchecked")
+	public static CommonService createServiceObjectByMethod(String method) throws InstantiationException, IllegalAccessException {
 		initMethodMap();
-		CommonService obj = methodMap.get(method);
+		Class classObj = methodMap.get(method);
+		CommonService obj = (CommonService)classObj.newInstance();
 		if (obj == null) {
 			log.warning("Cannot find service object for METHOD = " + method);
 		}
