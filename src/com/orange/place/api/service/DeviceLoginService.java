@@ -65,6 +65,7 @@ public class DeviceLoginService extends CommonService {
 		}
 		
 		if (needReturnUser){
+			resultCode = ErrorCode.ERROR_SUCCESS;
 			resultData = CommonServiceUtils.userToJSON(user);
 		}
 	}

@@ -34,6 +34,11 @@ public class ServiceConstant {
 	public static final String PARA_DEVICEOS = "dos";
 	public static final String PARA_DEVICETOKEN = "dto";
 	public static final String PARA_NICKNAME = "nn";
+	
+	public static final String PARA_NEED_RETURN_USER	= "r";
+	public static final String PARA_ACCESS_TOKEN        = "at";
+	public static final String PARA_ACCESS_TOKEN_SECRET = "ats";
+	public static final String PARA_AVATAR				= "av";
 
 	public static final String PARA_COUNTRYCODE = "cc";
 	public static final String PARA_LANGUAGE = "lang";
@@ -70,21 +75,15 @@ public class ServiceConstant {
 	public static final String PARA_QQ_ACCESS_TOKEN = "qat";
 	public static final String PARA_QQ_ACCESS_TOKEN_SECRET = "qats";
 	
-	public static String PARA_PROVINCE				= "pro";
-	public static String PARA_CITY					= "ci";
-	public static String PARA_LOCATION				= "lo";
-	public static String PARA_GENDER				= "ge";
-	public static String PARA_BIRTHDAY				= "bi";
-	public static String PARA_SINA_NICKNAME			= "sn";
-	public static String PARA_SINA_DOMAIN			= "sd";
-	public static String PARA_QQ_NICKNAME			= "qn";
-	public static String PARA_QQ_DOMAIN				= "qd";
-	
-	public static final String PARA_NEED_RETURN_USER = "r";
-	public static final String PARA_ACCESS_TOKEN        = "at";
-	public static final String PARA_ACCESS_TOKEN_SECRET = "ats";
-
-
+	public static final String PARA_PROVINCE				= "pro";
+	public static final String PARA_CITY					= "ci";
+	public static final String PARA_LOCATION				= "lo";
+	public static final String PARA_GENDER				= "ge";
+	public static final String PARA_BIRTHDAY				= "bi";
+	public static final String PARA_SINA_NICKNAME			= "sn";
+	public static final String PARA_SINA_DOMAIN			= "sd";
+	public static final String PARA_QQ_NICKNAME			= "qn";
+	public static final String PARA_QQ_DOMAIN				= "qd";
 
 	public static final String PARA_CREATE_USERID = "cuid";
 

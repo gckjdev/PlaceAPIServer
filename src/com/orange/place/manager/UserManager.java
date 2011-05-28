@@ -2,23 +2,16 @@ package com.orange.place.manager;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
 
-import org.eclipse.jetty.util.log.Log;
-
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
-import com.orange.common.utils.StringUtil;
 import com.orange.place.constant.DBConstants;
-import com.orange.place.constant.ErrorCode;
-import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.IdGenerator;
-import com.orange.place.dao.Post;
 import com.orange.place.dao.User;
 
 public class UserManager extends CommonManager {
@@ -51,7 +44,7 @@ public class UserManager extends CommonManager {
 	public static User createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
 			String deviceModel, String deviceId, String deviceOS,
 			String deviceToken, String language, String countryCode,
-			String password, String nickName,
+			String password, String nickName, String avatar,
 			String accessToken, String accessTokenSecret,
 			String province, String city, String location,
 			String gender, String birthday,
@@ -73,7 +66,8 @@ public class UserManager extends CommonManager {
 		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
 		map.put(DBConstants.F_CREATE_SOURCE_ID, appId);
 		map.put(DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
-		map.put(DBConstants.F_NICKNAME, nickName);		
+		map.put(DBConstants.F_NICKNAME, nickName);
+		map.put(DBConstants.F_AVATAR, avatar);
 		map.put(DBConstants.F_PROVINCE, province);
 		map.put(DBConstants.F_CITY, city);
 		map.put(DBConstants.F_LOCATION, location);
