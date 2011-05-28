@@ -100,19 +100,31 @@ public class PostManager extends CommonManager {
 			if (columnSlice != null){
 				List<HColumn<String, String>> columns = columnSlice.getColumns();
 				if (columns != null) {
-					Post post = new Post(columns);
-					
-					userIds[i] = post.getUserId();
-					
+					Post post = new Post(columns);					
+					userIds[i] = post.getUserId();					
 					postList.add(post);
 				}			
 			}
 		}
 		
-//		cassandraClient.getMultiRow(DBConstants.USER, userIds, DBConstants.F_USERID, DBConstants.F_NICKNAME);
+		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
+				DBConstants.USER, userIds, 
+				DBConstants.F_USERID, DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
 		
-		
-
+		for (Post post : postList){
+			String userId = post.getUserId();
+			if (userId != null){
+				Row<String, String, String> userRow = userRows.getByKey(userId);
+				ColumnSlice<String, String> columnSlice = userRow.getColumnSlice();
+				if (columnSlice != null){
+					List<HColumn<String, String>> columns = columnSlice.getColumns();
+					if (columns != null) {
+						post.addValues(columns);
+					}			
+				}
+			}
+		}
+				
 		return postList;
 	}
 

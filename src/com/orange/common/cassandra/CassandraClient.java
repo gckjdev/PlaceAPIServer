@@ -176,6 +176,33 @@ public class CassandraClient {
         return result;		
 	}
 	
+	public Rows<String, String, String> getMultiRow(String columnFamilyName, String[] keys,
+			String... columnNames){	
+		MultigetSliceQuery<String, String, String> multigetSliceQuery =
+		    HFactory.createMultigetSliceQuery(keyspace, ss, ss, ss);
+		multigetSliceQuery.setColumnFamily(columnFamilyName);
+		multigetSliceQuery.setKeys(keys);
+		multigetSliceQuery.setColumnNames(columnNames);
+		QueryResult<Rows<String, String, String>> result = multigetSliceQuery.execute();
+		Rows<String, String, String> rows = result.get();
+		if (rows == null){
+			return null;
+		}
+		
+		// for test, TODO rem the code
+		for (Row<String, String, String> row : rows){
+			System.out.println("row key : "+row.getKey());
+			ColumnSlice<String, String> columns = row.getColumnSlice();
+			List<HColumn<String, String>> list = columns.getColumns();
+			for (HColumn<String, String> data : list){
+				System.out.println("column["+data.getName()+"]="+data.getValue());
+			}
+		}
+		
+		return rows;
+	}
+
+	
 	public Rows<String, String, String> getMultiRow(String columnFamilyName, String...keys){	
 		MultigetSliceQuery<String, String, String> multigetSliceQuery =
 		    HFactory.createMultigetSliceQuery(keyspace, ss, ss, ss);
