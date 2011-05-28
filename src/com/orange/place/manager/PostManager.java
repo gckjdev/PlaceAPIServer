@@ -73,7 +73,9 @@ public class PostManager extends CommonManager {
 	public static List<Post> getPostList(CassandraClient cassandraClient,
 			List<HColumn<UUID, String>> postIdIndexList) {
 
-		String[] postIds = new String[postIdIndexList.size()];
+		int size = postIdIndexList.size();
+		
+		String[] postIds = new String[size];
 		int i = 0;
 		for (HColumn<UUID, String> result : postIdIndexList) {
 			String postId = result.getName().toString();
@@ -86,8 +88,9 @@ public class PostManager extends CommonManager {
 			return null;
 		}
 
-		// convert rows to List<Post>
+		String[] userIds = new String[size];
 		
+		// convert rows to List<Post>		
 		// change the implementation to sort the return result in right order
 		List<Post> postList = new ArrayList<Post>();
 		int count = postIds.length;
@@ -98,20 +101,17 @@ public class PostManager extends CommonManager {
 				List<HColumn<String, String>> columns = columnSlice.getColumns();
 				if (columns != null) {
 					Post post = new Post(columns);
+					
+					userIds[i] = post.getUserId();
+					
 					postList.add(post);
 				}			
 			}
 		}
 		
+//		cassandraClient.getMultiRow(DBConstants.USER, userIds, DBConstants.F_USERID, DBConstants.F_NICKNAME);
 		
-//		for (Row<String, String, String> row : rows) {
-//			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
-//			List<HColumn<String, String>> columns = columnSlice.getColumns();
-//			if (columns != null) {
-//				Post post = new Post(columns);
-//				postList.add(post);
-//			}
-//		}
+		
 
 		return postList;
 	}
