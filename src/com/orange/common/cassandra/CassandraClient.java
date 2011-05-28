@@ -158,7 +158,7 @@ public class CassandraClient {
 			return null;
 		}
 		
-		q.setColumnFamily(columnFamilyName).setKey(key).setRange(start, null, false, size);
+		q.setColumnFamily(columnFamilyName).setKey(key).setRange(start, null, true, size);
 		
 		QueryResult<ColumnSlice<UUID, String>> r = q.execute();
 		if (r == null){
@@ -181,13 +181,13 @@ public class CassandraClient {
 		    HFactory.createMultigetSliceQuery(keyspace, ss, ss, ss);
 		multigetSliceQuery.setColumnFamily(columnFamilyName);
 		multigetSliceQuery.setKeys(keys);	
-		multigetSliceQuery.setRange("", "", false, MAX_COUNT_FOR_MULTI_ROW);
+		multigetSliceQuery.setRange("", "", true, MAX_COUNT_FOR_MULTI_ROW);
 		QueryResult<Rows<String, String, String>> result = multigetSliceQuery.execute();
 		Rows<String, String, String> rows = result.get();
 		if (rows == null){
 			return null;
 		}
-
+		
 		// for test, TODO rem the code
 		for (Row<String, String, String> row : rows){
 			System.out.println("row key : "+row.getKey());
@@ -209,13 +209,13 @@ public class CassandraClient {
 
 		q.setColumnFamily(columnFamilyName);
 		q.setKeys("", "");
-		q.setRange("", "", false, maxCount);
+		q.setRange("", "", true, maxCount);
 		QueryResult<OrderedRows<String, String, String>> result = q.execute();
 		OrderedRows<String, String, String> rows = result.get();
 		if (rows == null){
 			return null;
 		}
-
+		
 		// for test, TODO rem the code
 		for (Row<String, String, String> row : rows){
 			System.out.println("row key : "+row.getKey());
@@ -225,6 +225,9 @@ public class CassandraClient {
 				System.out.println("column["+data.getName()+"]="+data.getValue());
 			}
 		}		
+		
+		
+		
 		return rows;
 	}
 

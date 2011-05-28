@@ -19,7 +19,7 @@ public class DBConstants {
 	public static final String INDEX_USER_POST = "idx_user_posts";
 	public static final String INDEX_PLACE_FOLLOWED_USERS = "idx_place_followed_users";
 	public static final String INDEX_USER_VIEW_POSTS = "idx_user_timeline";
-	public static final String INDEX_POST_RELATED_POST = "idex_post_related_posts";
+	public static final String INDEX_POST_RELATED_POST = "idx_post_related_posts";
 
 	
 	public static final String KEY_LOGINID = "loginId";

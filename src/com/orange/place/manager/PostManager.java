@@ -87,15 +87,31 @@ public class PostManager extends CommonManager {
 		}
 
 		// convert rows to List<Post>
+		
+		// change the implementation to sort the return result in right order
 		List<Post> postList = new ArrayList<Post>();
-		for (Row<String, String, String> row : rows) {
+		int count = postIds.length;
+		for (i=0; i<count; i++){
+			Row<String, String, String> row = rows.getByKey(postIds[i]);
 			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
-			List<HColumn<String, String>> columns = columnSlice.getColumns();
-			if (columns != null) {
-				Post post = new Post(columns);
-				postList.add(post);
+			if (columnSlice != null){
+				List<HColumn<String, String>> columns = columnSlice.getColumns();
+				if (columns != null) {
+					Post post = new Post(columns);
+					postList.add(post);
+				}			
 			}
 		}
+		
+		
+//		for (Row<String, String, String> row : rows) {
+//			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
+//			List<HColumn<String, String>> columns = columnSlice.getColumns();
+//			if (columns != null) {
+//				Post post = new Post(columns);
+//				postList.add(post);
+//			}
+//		}
 
 		return postList;
 	}
@@ -197,5 +213,23 @@ public class PostManager extends CommonManager {
 			}
 		}
 		return postList;
+	}
+
+	public static List<Post> getRelatedPostByPost(
+			CassandraClient cassandraClient, String postId,
+			String beforeTimeStamp, String maxCount) {
+		
+		UUID startUUID = getStartUUID(beforeTimeStamp);
+		int max = getMaxCount(maxCount);
+
+		List<HColumn<UUID, String>> resultList = cassandraClient
+				.getColumnKeyByRange(DBConstants.INDEX_POST_RELATED_POST, postId,
+						startUUID, max);
+		if (resultList == null) {
+			return null;
+		}
+
+		List<Post> postList = getPostList(cassandraClient, resultList);
+		return postList;		
 	}
 }

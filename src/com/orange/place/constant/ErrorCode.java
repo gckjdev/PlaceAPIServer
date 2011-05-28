@@ -53,6 +53,9 @@ public class ErrorCode {
 	public static final int ERROR_PARAMETER_CONTENTTYPE_NULL 	= 10045;
 	public static final int ERROR_PARAMETER_PLACEID_NULL 		= 10046;
 	public static final int ERROR_PARAMETER_PLACEID_EMPTY 		= 10047;
+	public static final int ERROR_PARAMETER_POSTID_EMPTY 		= 10048;
+	public static final int ERROR_PARAMETER_POSTID_NULL 		= 10049;
+
 
 	
 	// User Errors
@@ -78,6 +81,7 @@ public class ErrorCode {
 	public static final int ERROR_GET_POST_BY_PLACE 		= 40003;
 	public static final int ERROR_GET_USER_TIMELINE 		= 40004;
 	public static final int ERROR_GET_USER_FOLLOW_PLACE		= 40005;
+	public static final int ERROR_GET_RELATED_POST_BY_POST 	= 40006;
 
 	// DB Error
 	static public final int ERROR_CASSANDRA                 = 80001;
@@ -89,6 +93,7 @@ public class ErrorCode {
 	static public final int ERROR_INVALID_SECURITY			= 90003;
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
 	public static final int ERROR_JSON 						= 90005;
+
 
 
 

@@ -33,20 +33,30 @@ public class ServiceHandler {
 		printRequest(request);			
 		
 		String method = request.getParameter(ServiceConstant.METHOD);		
-		CommonService obj = CommonService.createServiceObjectByMethod(method);		
-		if (obj == null){
-			sendResponseByErrorCode(response, ErrorCode.ERROR_PARA_METHOD_NOT_FOUND);
-			return;			
-		}
-		
-		obj.setCassandraClient(cassandraClient);
-		
-		if (!obj.validateSecurity(request)){
-			sendResponseByErrorCode(response, ErrorCode.ERROR_INVALID_SECURITY);
-			return;
-		}
+		CommonService obj = null;
+		try {
+			obj = CommonService.createServiceObjectByMethod(method);
+		} catch (InstantiationException e1) {
+			log.severe("<handlRequest> but exception while create service object for method("+method+"), exception="+e1.toString());
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			log.severe("<handlRequest> but exception while create service object for method("+method+"), exception="+e1.toString());
+			e1.printStackTrace();
+		}				
 		
 		try{
+			
+			if (obj == null){
+				sendResponseByErrorCode(response, ErrorCode.ERROR_PARA_METHOD_NOT_FOUND);
+				return;			
+			}
+			
+			obj.setCassandraClient(cassandraClient);
+			
+			if (!obj.validateSecurity(request)){
+				sendResponseByErrorCode(response, ErrorCode.ERROR_INVALID_SECURITY);
+				return;
+			}
 			
 			// parse request parameters
 			if (!obj.setDataFromRequest(request)){	
