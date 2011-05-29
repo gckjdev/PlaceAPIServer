@@ -84,24 +84,25 @@ public class PlaceManager extends CommonManager {
 	}
 
 	public static void createUserFollowPlaceIndex(
-			CassandraClient cassandraClient, String userId, String placeId) {
+			CassandraClient cassandraClient, String userId, String placeId, String dateUuid) {
 		UUID uuid = UUID.fromString(placeId);
 		cassandraClient.insert(DBConstants.INDEX_USER_FOLLOW_PLACE, userId,
-				uuid, "");
+				uuid, dateUuid);
 	}
 
 	public static void createPlaceFollowedUserIndex(
-			CassandraClient cassandraClient, String userId, String placeId) {
-
+			CassandraClient cassandraClient, String userId, String placeId, String dateUuid) {
 		UUID uuid = UUID.fromString(userId);
 		cassandraClient.insert(DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId,
-				uuid, "");
+				uuid, dateUuid);
 	}
 
 	public static void userFollowPlace(CassandraClient cassandraClient,
 			String userId, String placeId) {
-		createUserFollowPlaceIndex(cassandraClient, userId, placeId);
-		createPlaceFollowedUserIndex(cassandraClient, userId, placeId);
+		String uuid = IdGenerator.generateId();
+		//String createDate = DateUtil.currentDate();
+		createUserFollowPlaceIndex(cassandraClient, userId, placeId, uuid);
+		createPlaceFollowedUserIndex(cassandraClient, userId, placeId, uuid);
 	}
 
 	public static void deleteUserFollowPlaceIndex(
