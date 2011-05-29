@@ -154,9 +154,8 @@ public class PostManager extends CommonManager {
 
 	public static void createUserPostIndex(CassandraClient cassandraClient,
 			String userId, String postId) {
-
 		UUID uuid = UUID.fromString(postId);
-		cassandraClient.insert(DBConstants.INDEX_USER_POST, postId, uuid, "");
+		cassandraClient.insert(DBConstants.INDEX_USER_POST, userId, uuid, "");
 	}
 
 	public static void createPostRelatedPostIndex(CassandraClient cassandraClient,
