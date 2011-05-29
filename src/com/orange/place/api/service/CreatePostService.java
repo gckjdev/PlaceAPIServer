@@ -54,8 +54,9 @@ public class CreatePostService extends CommonService {
 		// add post into index
 		PostManager.createPlacePostIndex(cassandraClient, placeId, postId);
 		PostManager.createUserPostIndex(cassandraClient, userId, postId);
-		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId);
-
+		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId,
+				createDate);
+		
 		// create post related post index
 		if (srcPostId == null || srcPostId.length() == 0) {
 			srcPostId = postId;

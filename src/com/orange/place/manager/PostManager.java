@@ -170,7 +170,7 @@ public class PostManager extends CommonManager {
 	}
 
 	public static void createUserViewPostIndex(CassandraClient cassandraClient,
-			String placeId, String postId) {
+			String placeId, String postId, String createDate) {
 
 		// TODO this method could take a long time, so maybe it shall be run in
 		// another thread or process
@@ -187,9 +187,6 @@ public class PostManager extends CommonManager {
 		UUID postUUID = UUID.fromString(postId);
 		for (HColumn<UUID, String> columnValue : columnValues) {
 			String userId = columnValue.getName().toString();
-			String createDate = cassandraClient.getColumnValue(
-					DBConstants.POST, postUUID.toString(),
-					DBConstants.F_CREATE_DATE);
 			cassandraClient.insert(DBConstants.INDEX_USER_VIEW_POSTS, userId,
 					postUUID, createDate);
 		}

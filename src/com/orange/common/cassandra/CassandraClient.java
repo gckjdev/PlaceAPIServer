@@ -271,4 +271,22 @@ public class CassandraClient {
 		mutator.execute();
 		return true;
 	}
+	
+	public boolean deleteMultipleColumns(String columnFamilyName,String key, String []columnNames){
+		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
+		for(String queryString:columnNames){
+			mutator.addDeletion(key, columnFamilyName, queryString, ss);
+		}
+		mutator.execute();
+		return true;
+	}
+	public boolean deleteMultipleRows(String columnFamilyName, String []rowNames){
+		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
+		for(String row:rowNames){
+			mutator.addDeletion(row, columnFamilyName, null, ss);
+		}
+		mutator.execute();
+		return true;
+	}
+	
 }
