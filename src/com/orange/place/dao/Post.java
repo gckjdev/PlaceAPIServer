@@ -95,5 +95,15 @@ public class Post extends CommonData {
 		// TODO Auto-generated method stub
 		return getKey(DBConstants.F_SRC_POSTID);
 	}
+
+	public String getUserNickName() {
+		// TODO Auto-generated method stub
+		return getKey(DBConstants.F_NICKNAME);
+	}
+
+	public String getUserAvatar() {
+		// TODO Auto-generated method stub
+		return getKey(DBConstants.F_AVATAR);
+	}
 	
 }

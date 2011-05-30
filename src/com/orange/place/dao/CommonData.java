@@ -30,4 +30,11 @@ public class CommonData {
 		String value = keyValueList.get(key);
 		return (value == null) ? "" : value;
 	}
+	
+	public void addValues(List<HColumn<String, String>> columnValues) {
+		for (HColumn<String, String> data : columnValues){
+			keyValueList.put(data.getName(), data.getValue());
+		}
+	}
+
 }

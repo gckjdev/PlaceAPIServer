@@ -14,6 +14,7 @@ import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
+import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 
 public class PostManager extends CommonManager {
@@ -35,12 +36,11 @@ public class PostManager extends CommonManager {
 		map.put(DBConstants.F_USER_LATITUDE, userLatitude);
 		map.put(DBConstants.F_TEXT_CONTENT, textContent);
 		map.put(DBConstants.F_CONTENT_TYPE, contentType);
-		
-		if (srcPostId != null && srcPostId.length() > 0){
+
+		if (srcPostId != null && srcPostId.length() > 0) {
 			map.put(DBConstants.F_SRC_POSTID, srcPostId);
-		}
-		else{
-			map.put(DBConstants.F_SRC_POSTID, postId);			
+		} else {
+			map.put(DBConstants.F_SRC_POSTID, postId);
 		}
 
 		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
@@ -73,7 +73,9 @@ public class PostManager extends CommonManager {
 	public static List<Post> getPostList(CassandraClient cassandraClient,
 			List<HColumn<UUID, String>> postIdIndexList) {
 
-		String[] postIds = new String[postIdIndexList.size()];
+		int size = postIdIndexList.size();
+
+		String[] postIds = new String[size];
 		int i = 0;
 		for (HColumn<UUID, String> result : postIdIndexList) {
 			String postId = result.getName().toString();
@@ -86,32 +88,45 @@ public class PostManager extends CommonManager {
 			return null;
 		}
 
+		String[] userIds = new String[size];
+
 		// convert rows to List<Post>
-		
 		// change the implementation to sort the return result in right order
 		List<Post> postList = new ArrayList<Post>();
 		int count = postIds.length;
-		for (i=0; i<count; i++){
+		for (i = 0; i < count; i++) {
 			Row<String, String, String> row = rows.getByKey(postIds[i]);
 			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
-			if (columnSlice != null){
-				List<HColumn<String, String>> columns = columnSlice.getColumns();
+			if (columnSlice != null) {
+				List<HColumn<String, String>> columns = columnSlice
+						.getColumns();
 				if (columns != null) {
 					Post post = new Post(columns);
+					userIds[i] = post.getUserId();
 					postList.add(post);
-				}			
+				}
 			}
 		}
-		
-		
-//		for (Row<String, String, String> row : rows) {
-//			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
-//			List<HColumn<String, String>> columns = columnSlice.getColumns();
-//			if (columns != null) {
-//				Post post = new Post(columns);
-//				postList.add(post);
-//			}
-//		}
+
+		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
+				DBConstants.USER, userIds, DBConstants.F_USERID,
+				DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
+
+		for (Post post : postList) {
+			String userId = post.getUserId();
+			if (userId != null) {
+				Row<String, String, String> userRow = userRows.getByKey(userId);
+				ColumnSlice<String, String> columnSlice = userRow
+						.getColumnSlice();
+				if (columnSlice != null) {
+					List<HColumn<String, String>> columns = columnSlice
+							.getColumns();
+					if (columns != null) {
+						post.addValues(columns);
+					}
+				}
+			}
+		}
 
 		return postList;
 	}
@@ -142,20 +157,20 @@ public class PostManager extends CommonManager {
 
 	public static void createUserPostIndex(CassandraClient cassandraClient,
 			String userId, String postId) {
-
 		UUID uuid = UUID.fromString(postId);
-		cassandraClient.insert(DBConstants.INDEX_USER_POST, postId, uuid, "");
+		cassandraClient.insert(DBConstants.INDEX_USER_POST, userId, uuid, "");
 	}
 
-	public static void createPostRelatedPostIndex(CassandraClient cassandraClient,
-			String postId, String srcPostId) {
+	public static void createPostRelatedPostIndex(
+			CassandraClient cassandraClient, String postId, String srcPostId) {
 
 		UUID uuid = UUID.fromString(postId);
-		cassandraClient.insert(DBConstants.INDEX_POST_RELATED_POST, srcPostId, uuid, "");
-	}	
-	
+		cassandraClient.insert(DBConstants.INDEX_POST_RELATED_POST, srcPostId,
+				uuid, "");
+	}
+
 	public static void createUserViewPostIndex(CassandraClient cassandraClient,
-			String placeId, String postId) {
+			String placeId, String postId, String createDate) {
 
 		// TODO this method could take a long time, so maybe it shall be run in
 		// another thread or process
@@ -173,7 +188,7 @@ public class PostManager extends CommonManager {
 		for (HColumn<UUID, String> columnValue : columnValues) {
 			String userId = columnValue.getName().toString();
 			cassandraClient.insert(DBConstants.INDEX_USER_VIEW_POSTS, userId,
-					postUUID, "");
+					postUUID, createDate);
 		}
 	}
 
@@ -218,18 +233,18 @@ public class PostManager extends CommonManager {
 	public static List<Post> getRelatedPostByPost(
 			CassandraClient cassandraClient, String postId,
 			String beforeTimeStamp, String maxCount) {
-		
+
 		UUID startUUID = getStartUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 
 		List<HColumn<UUID, String>> resultList = cassandraClient
-				.getColumnKeyByRange(DBConstants.INDEX_POST_RELATED_POST, postId,
-						startUUID, max);
+				.getColumnKeyByRange(DBConstants.INDEX_POST_RELATED_POST,
+						postId, startUUID, max);
 		if (resultList == null) {
 			return null;
 		}
 
 		List<Post> postList = getPostList(cassandraClient, resultList);
-		return postList;		
+		return postList;
 	}
 }

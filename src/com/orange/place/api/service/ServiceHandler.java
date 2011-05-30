@@ -18,109 +18,108 @@ import com.orange.place.constant.ServiceConstant;
 
 public class ServiceHandler {
 
-	public static final CassandraClient cassandraClient = 
-		new CassandraClient(DBConstants.SERVER, DBConstants.CLUSTERNAME, DBConstants.KEYSPACE);
-	
-	private static final Logger log = Logger.getLogger(PlaceAPIServer.class.getName());
-	
-	public static ServiceHandler getServiceHandler(){
+	public static final CassandraClient cassandraClient = new CassandraClient(
+			DBConstants.SERVER, DBConstants.CLUSTERNAME, DBConstants.KEYSPACE);
+
+	private static final Logger log = Logger.getLogger(PlaceAPIServer.class
+			.getName());
+
+	public static ServiceHandler getServiceHandler() {
 		ServiceHandler handler = new ServiceHandler();
 		return handler;
 	}
-		
-	public void handlRequest(HttpServletRequest request, HttpServletResponse response){
-		
-		printRequest(request);			
-		
-		String method = request.getParameter(ServiceConstant.METHOD);		
+
+	public void handlRequest(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		printRequest(request);
+
+		String method = request.getParameter(ServiceConstant.METHOD);
 		CommonService obj = null;
 		try {
 			obj = CommonService.createServiceObjectByMethod(method);
 		} catch (InstantiationException e1) {
-			log.severe("<handlRequest> but exception while create service object for method("+method+"), exception="+e1.toString());
+			log
+					.severe("<handlRequest> but exception while create service object for method("
+							+ method + "), exception=" + e1.toString());
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			log.severe("<handlRequest> but exception while create service object for method("+method+"), exception="+e1.toString());
+			log
+					.severe("<handlRequest> but exception while create service object for method("
+							+ method + "), exception=" + e1.toString());
 			e1.printStackTrace();
-		}				
-		
-		try{
-			
-			if (obj == null){
-				sendResponseByErrorCode(response, ErrorCode.ERROR_PARA_METHOD_NOT_FOUND);
-				return;			
-			}
-			
-			obj.setCassandraClient(cassandraClient);
-			
-			if (!obj.validateSecurity(request)){
-				sendResponseByErrorCode(response, ErrorCode.ERROR_INVALID_SECURITY);
+		}
+
+		try {
+
+			if (obj == null) {
+				sendResponseByErrorCode(response,
+						ErrorCode.ERROR_PARA_METHOD_NOT_FOUND);
 				return;
 			}
-			
+
+			obj.setCassandraClient(cassandraClient);
+
+			if (!obj.validateSecurity(request)) {
+				sendResponseByErrorCode(response,
+						ErrorCode.ERROR_INVALID_SECURITY);
+				return;
+			}
+
 			// parse request parameters
-			if (!obj.setDataFromRequest(request)){	
+			if (!obj.setDataFromRequest(request)) {
 				sendResponseByErrorCode(response, obj.resultCode);
 				return;
-			}		
-			
+			}
+
 			// print parameters
 			obj.printData();
-			
+
 			// handle request
 			obj.handleData();
-		}
-		catch (HectorException e){
+		} catch (HectorException e) {
 			obj.resultCode = ErrorCode.ERROR_CASSANDRA;
-			log.severe("catch DB exception="+e.toString());
+			log.severe("catch DB exception=" + e.toString());
 			e.printStackTrace();
-		}
-		catch (JSONException e){
+		} catch (JSONException e) {
 			obj.resultCode = ErrorCode.ERROR_JSON;
-			log.severe("catch JSON exception="+e.toString());
+			log.severe("catch JSON exception=" + e.toString());
 			e.printStackTrace();
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			obj.resultCode = ErrorCode.ERROR_SYSTEM;
-			log.severe("catch general exception="+e.toString());
+			log.severe("catch general exception=" + e.toString());
 			e.printStackTrace();
+		} finally {
 		}
-		finally{
-		}
-		
+
 		String responseData = obj.getResponseString();
-		
+
 		// send back response
 		sendResponse(response, responseData);
-		
-		
+
 	}
-	
-	
-	
-	void printRequest(HttpServletRequest request){
+
+	void printRequest(HttpServletRequest request) {
 		log.info("[RECV] request = " + request.getQueryString());
 	}
-	
-	void printResponse(HttpServletResponse reponse, String responseData){
+
+	void printResponse(HttpServletResponse reponse, String responseData) {
 		log.info("[SEND] response data = " + responseData);
 	}
-	
-	void sendResponse(HttpServletResponse response, String responseData){			
+
+	void sendResponse(HttpServletResponse response, String responseData) {
 		printResponse(response, responseData);
 		response.setContentType("application/json; charset=utf-8");
 		try {
 			response.getWriter().write(responseData);
-			response.getWriter().flush();		
+			response.getWriter().flush();
 		} catch (IOException e) {
-			log.severe("sendResponse, catch exception="+e.toString());
+			log.severe("sendResponse, catch exception=" + e.toString());
 		}
-	}	
-	
-	void sendResponseByErrorCode(HttpServletResponse response, int errorCode){
+	}
+
+	void sendResponseByErrorCode(HttpServletResponse response, int errorCode) {
 		String resultString = ErrorCode.getJSONByErrorCode(errorCode);
 		sendResponse(response, resultString);
 	}
 }
-
-
