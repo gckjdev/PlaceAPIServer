@@ -2,12 +2,14 @@ package com.orange.place.api.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.User;
 import com.orange.place.manager.UserManager;
 
-public class RegisterUserService extends CommonService {
+public class BindUserService extends CommonService {
 
 	String userId;
 	String loginId;
@@ -41,34 +43,34 @@ public class RegisterUserService extends CommonService {
 		// TODO Auto-generated method stub
 		
 		boolean isLoginIdExist = UserManager.isLoginIdExist(cassandraClient, loginId, loginIdType);
-		boolean isDeviceIdExist = UserManager.isDeviceIdExist(cassandraClient, deviceId);
-		if (isLoginIdExist && isDeviceIdExist){
-			log.info("<registerUser> user loginId("+loginId+") and deviceId("+deviceId+") exist");
-			resultCode = ErrorCode.ERROR_LOGINID_DEVICE_BOTH_EXIST;
-			return;
-		}
-		else if (isLoginIdExist){
+		
+		if (isLoginIdExist){
 			resultCode = ErrorCode.ERROR_LOGINID_EXIST;
 			log.info("<registerUser> user loginId exist, loginId="+loginId);
 			return;
 		}
-		else if (isDeviceIdExist){
-			resultCode = ErrorCode.ERROR_DEVICEID_BIND;
-			log.info("<registerUser> user deviceId exist, deviceId="+deviceId);
-			return;
-		}		
+				
 		
-		User user = UserManager.bindUser(cassandraClient, userId, loginId, loginIdType,  
-				deviceId,
-				nickName, avatar,
+		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
+				deviceModel, deviceId, deviceOS, deviceToken, 
+				language, countryCode, password, nickName, avatar,
 				accessToken, accessTokenSecret,
 				province, city, location, gender, birthday,
 				sinaNickName, sinaDomain, qqNickName, qqDomain);
 		if (user == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
-			log.info("<bindUser> fail to bind user, userId=" + userId);
+			log.info("<registerUser> fail to create user, loginId="+loginId);
 			return;
 		}
+		
+		String userId = user.getUserId();
+		UserManager.createUserDeviceIdIndex(cassandraClient, userId, deviceId);
+		UserManager.createUserLoginIdIndex(cassandraClient, userId, loginId, loginIdType);
+		
+		// set result data, return userId
+		JSONObject obj = new JSONObject();
+		obj.put(ServiceConstant.PARA_USERID, userId);
+		resultData = obj;
 		
 		// TODO if there is any exception, shall clean all inconsistent data and index
 	}
