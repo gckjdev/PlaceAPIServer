@@ -4,7 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
+import com.orange.place.dao.IdGenerator;
+import com.orange.place.manager.CommonManager;
 import com.orange.place.manager.PlaceManager;
+import com.orange.place.manager.PostManager;
+import java.util.UUID;
 
 public class UserFollowPlaceService extends CommonService {
 
@@ -15,6 +19,11 @@ public class UserFollowPlaceService extends CommonService {
 	@Override
 	public void handleData() {
 		PlaceManager.userFollowPlace(cassandraClient, userId, placeId);
+		long time = System.currentTimeMillis()
+				- CommonManager.MAX_FOLLOWPLACE_POSTS_TIMEOFFSET;
+		UUID end = IdGenerator.getUUIDFromTime(time);
+		PostManager.addFollowPlacePosts(cassandraClient, userId, placeId, end,
+				CommonManager.MAX_ADD_FOLLOWPLACE_COUNT);
 	}
 
 	@Override

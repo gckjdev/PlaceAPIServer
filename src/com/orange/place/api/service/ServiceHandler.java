@@ -36,6 +36,7 @@ public class ServiceHandler {
 
 		String method = request.getParameter(ServiceConstant.METHOD);
 		CommonService obj = null;
+		
 		try {
 			obj = CommonService.createServiceObjectByMethod(method);
 		} catch (InstantiationException e1) {
@@ -59,7 +60,8 @@ public class ServiceHandler {
 			}
 
 			obj.setCassandraClient(cassandraClient);
-
+			obj.setRequest(request);
+			
 			if (!obj.validateSecurity(request)) {
 				sendResponseByErrorCode(response,
 						ErrorCode.ERROR_INVALID_SECURITY);
@@ -67,8 +69,8 @@ public class ServiceHandler {
 			}
 
 			// parse request parameters
+			sendResponseByErrorCode(response, obj.resultCode);
 			if (!obj.setDataFromRequest(request)) {
-				sendResponseByErrorCode(response, obj.resultCode);
 				return;
 			}
 

@@ -111,6 +111,10 @@ public class DBConstants {
 	public static final int LOGINID_FACEBOOK 	= 5;
 	public static final int LOGINID_TWITTER 	= 6;
 	
+	
+	public static final int CONTENT_TYPE_TEXT		= 1;
+	public static final int CONTENT_TYPE_TEXT_PHOTO = 2;
+	
 	public static final String AUTH_FLAG_NONE = "0";
 	
 	public static final String PLACE_TYPE_UNKNOWN = "0";

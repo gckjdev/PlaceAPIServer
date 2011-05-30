@@ -14,7 +14,6 @@ import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
-import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 
 public class PostManager extends CommonManager {
@@ -254,11 +253,25 @@ public class PostManager extends CommonManager {
 		List<HColumn<UUID, String>> list = cassandraClient.getColumnKeyByRange(
 				DBConstants.INDEX_PLACE_POST, placeId, IdGenerator
 						.generateUUId(), size);
-		String []keys = new String[list.size()];
+		String[] keys = new String[list.size()];
 		int i = 0;
-		for(HColumn<UUID, String>name : list){
+		for (HColumn<UUID, String> name : list) {
 			keys[i++] = name.getName().toString();
 		}
-		cassandraClient.deleteMultipleColumns(DBConstants.INDEX_USER_VIEW_POSTS, userId, keys);
+		cassandraClient.deleteMultipleColumns(
+				DBConstants.INDEX_USER_VIEW_POSTS, userId, keys);
+	}
+
+	public static void addFollowPlacePosts(CassandraClient cassandraClient,
+			String userId, String placeId, UUID end, int size) {
+		List<HColumn<UUID, String>> list = cassandraClient.getColumnKeyByRange(
+				DBConstants.INDEX_PLACE_POST, placeId, null, end, size);
+		String[] keys = new String[list.size()];
+		int i = 0;
+		for (HColumn<UUID, String> name : list) {
+			keys[i++] = name.getName().toString();
+		}
+		cassandraClient.insert(DBConstants.INDEX_USER_VIEW_POSTS, userId, keys,
+				null);
 	}
 }
