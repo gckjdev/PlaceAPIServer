@@ -69,9 +69,14 @@ public abstract class CommonService {
 	public static CommonService createServiceObjectByMethod(String method) throws InstantiationException, IllegalAccessException {
 		initMethodMap();
 		Class classObj = methodMap.get(method);
+		if (classObj == null){
+			log.warning("Cannot find service object for METHOD = " + method);
+			return null;
+		}
+		
 		CommonService obj = (CommonService)classObj.newInstance();
 		if (obj == null) {
-			log.warning("Cannot find service object for METHOD = " + method);
+			log.warning("Cannot create service object by given class for method = " + method);
 		}
 		return obj;
 	}
