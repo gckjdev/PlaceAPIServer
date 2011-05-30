@@ -18,7 +18,7 @@ public class ImageUtil {
 	public static String getSmallImageName(File imageFile) {
 		if (imageFile == null)
 			return null;
-		String imageName = imageFile.getName();
+		String imageName = imageFile.getAbsolutePath();
 		int index = imageName.lastIndexOf(".");
 		if (index < 0)
 			return null;
