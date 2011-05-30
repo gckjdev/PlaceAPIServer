@@ -247,4 +247,18 @@ public class PostManager extends CommonManager {
 		List<Post> postList = getPostList(cassandraClient, resultList);
 		return postList;
 	}
+
+	public static void deleteUnFollowPlacePosts(
+			CassandraClient cassandraClient, String userId, String placeId,
+			int size) {
+		List<HColumn<UUID, String>> list = cassandraClient.getColumnKeyByRange(
+				DBConstants.INDEX_PLACE_POST, placeId, IdGenerator
+						.generateUUId(), size);
+		String []keys = new String[list.size()];
+		int i = 0;
+		for(HColumn<UUID, String>name : list){
+			keys[i++] = name.getName().toString();
+		}
+		cassandraClient.deleteMultipleColumns(DBConstants.INDEX_USER_VIEW_POSTS, userId, keys);
+	}
 }

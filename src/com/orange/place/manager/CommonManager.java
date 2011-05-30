@@ -10,4 +10,5 @@ public class CommonManager {
 	
 	public static int MAX_COUNT = 30;
 	public static int UNLIMITED_COUNT = 9999999;
+	public static int MAX_DELETE_UNFOLLOWPLACE_COUNT = 3;
 }

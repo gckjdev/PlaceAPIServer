@@ -10,5 +10,10 @@ public class IdGenerator {
 		
 		UUID uuid = TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 		return uuid.toString();
-	}		
+	}	
+	public static UUID generateUUId(){
+		
+		UUID uuid = TimeUUIDUtils.getUniqueTimeUUIDinMillis();
+		return uuid;
+	}	
 }
