@@ -19,6 +19,15 @@ public abstract class CommonService {
 	int resultCode = ErrorCode.ERROR_SUCCESS;
 	Object resultData = null;
 	CassandraClient cassandraClient = null;
+	HttpServletRequest request = null;
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
 
 	@SuppressWarnings("unchecked")
 	static private Map<String, Class> methodMap = null;
@@ -159,5 +168,6 @@ public abstract class CommonService {
 			return false;
 		}
 	}
+
 
 }

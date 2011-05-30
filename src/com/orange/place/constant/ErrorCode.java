@@ -92,9 +92,8 @@ public class ErrorCode {
 	static public final int ERROR_NOT_GET_METHOD            = 90002;
 	static public final int ERROR_INVALID_SECURITY			= 90003;
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
-	public static final int ERROR_JSON 						= 90005;
-
-
+	static public final int ERROR_JSON 						= 90005;
+	static public final int ERROR_UPLOAD_FILE 				= 90006;
 
 
 

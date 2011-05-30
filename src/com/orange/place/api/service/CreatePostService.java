@@ -4,11 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 
+import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Post;
 import com.orange.place.manager.PostManager;
 import com.orange.place.manager.UserManager;
+import com.orange.place.upload.AbstractUploadManager;
+import com.orange.place.upload.ImageUploadManager;
 
 public class CreatePostService extends CommonService {
 
@@ -45,7 +48,21 @@ public class CreatePostService extends CommonService {
 			resultCode = ErrorCode.ERROR_CREATE_POST;
 			return;
 		}
-
+		
+		int contenTypeInt = Integer.parseInt(contentType);
+		if(contenTypeInt != DBConstants.CONTENT_TYPE_TEXT){
+			AbstractUploadManager uploadManager = null;
+			switch(contenTypeInt){
+			case DBConstants.CONTENT_TYPE_TEXT_PHOTO:
+				uploadManager = new ImageUploadManager();
+				uploadManager.fileHandle(request, null);
+				resultCode = uploadManager.getResultCode();
+				break;
+			default:
+				break;	
+			}
+		}
+			
 		// TODO return image URL if it's a image
 
 		String postId = post.getPostId();

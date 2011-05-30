@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import javax.swing.RowSorter;
-
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
@@ -17,7 +15,6 @@ import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
 import com.orange.place.dao.Place;
-import com.orange.place.dao.Post;
 
 public class PlaceManager extends CommonManager {
 
@@ -84,14 +81,16 @@ public class PlaceManager extends CommonManager {
 	}
 
 	public static void createUserFollowPlaceIndex(
-			CassandraClient cassandraClient, String userId, String placeId, String dateUuid) {
+			CassandraClient cassandraClient, String userId, String placeId,
+			String dateUuid) {
 		UUID uuid = UUID.fromString(placeId);
 		cassandraClient.insert(DBConstants.INDEX_USER_FOLLOW_PLACE, userId,
 				uuid, dateUuid);
 	}
 
 	public static void createPlaceFollowedUserIndex(
-			CassandraClient cassandraClient, String userId, String placeId, String dateUuid) {
+			CassandraClient cassandraClient, String userId, String placeId,
+			String dateUuid) {
 		UUID uuid = UUID.fromString(userId);
 		cassandraClient.insert(DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId,
 				uuid, dateUuid);
@@ -100,7 +99,7 @@ public class PlaceManager extends CommonManager {
 	public static void userFollowPlace(CassandraClient cassandraClient,
 			String userId, String placeId) {
 		String uuid = IdGenerator.generateId();
-		//String createDate = DateUtil.currentDate();
+		// String createDate = DateUtil.currentDate();
 		createUserFollowPlaceIndex(cassandraClient, userId, placeId, uuid);
 		createPlaceFollowedUserIndex(cassandraClient, userId, placeId, uuid);
 	}
@@ -128,7 +127,7 @@ public class PlaceManager extends CommonManager {
 	public static List<Place> getPostList(CassandraClient cassandraClient,
 			List<HColumn<UUID, String>> placeIdIndexList) {
 		int size = placeIdIndexList.size();
-		
+
 		String[] PlaceIds = new String[size];
 		int i = 0;
 		for (HColumn<UUID, String> result : placeIdIndexList) {
@@ -144,29 +143,31 @@ public class PlaceManager extends CommonManager {
 
 		List<Place> placeList = new ArrayList<Place>();
 		int count = PlaceIds.length;
-		for (i=0; i<count; i++){
+		for (i = 0; i < count; i++) {
 			Row<String, String, String> row = rows.getByKey(PlaceIds[i]);
 			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
-			if (columnSlice != null){
-				List<HColumn<String, String>> columns = columnSlice.getColumns();
+			if (columnSlice != null) {
+				List<HColumn<String, String>> columns = columnSlice
+						.getColumns();
 				if (columns != null) {
 					placeList.add(new Place(columns));
-				}			
+				}
 			}
 		}
-		return placeList;			
+		return placeList;
 	}
-	
+
 	public static List<Place> getUserFollowPlace(
 			CassandraClient cassandraClient, String userId) {
 		// TODO Auto-generated method stub
 
 		List<HColumn<UUID, String>> resultList = cassandraClient
-		.getColumnKeyByRange(DBConstants.INDEX_USER_FOLLOW_PLACE, userId,
-				null, CommonManager.UNLIMITED_COUNT);
+				.getColumnKeyByRange(DBConstants.INDEX_USER_FOLLOW_PLACE,
+						userId, null, CommonManager.UNLIMITED_COUNT);
 		if (resultList == null) {
-			log.info("<getUserFollowPlace> cannot find any places followed by user("
-					+ userId + ")");
+			log
+					.info("<getUserFollowPlace> cannot find any places followed by user("
+							+ userId + ")");
 			return null;
 		}
 		return getPostList(cassandraClient, resultList);
