@@ -69,8 +69,8 @@ public class ServiceHandler {
 			}
 
 			// parse request parameters
-			sendResponseByErrorCode(response, obj.resultCode);
 			if (!obj.setDataFromRequest(request)) {
+				sendResponseByErrorCode(response, obj.resultCode);
 				return;
 			}
 
