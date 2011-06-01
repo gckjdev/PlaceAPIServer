@@ -61,6 +61,8 @@ public abstract class CommonService {
 				DeviceLoginService.class);
 		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST, 
 				GetPostRelatedPostService.class);
+		methodMap.put(ServiceConstant.METHOD_BINDUSER, 
+				BindUserService.class);
 	}
 
 	public CassandraClient getCassandraClient() {

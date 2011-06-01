@@ -111,6 +111,64 @@ public class UserManager extends CommonManager {
 		return new User(map);
 	}
 
+	public static User bindUser(CassandraClient cc, String userId, String loginId, String loginIdType,
+			String deviceId,
+			String nickName, String avatar,
+			String accessToken, String accessTokenSecret,
+			String province, String city, String location,
+			String gender, String birthday,
+			String sinaNickName, String sinaDomain,
+			String qqNickName, String qqDomain){
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(DBConstants.F_DEVICEID, deviceId);	
+		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
+		map.put(DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
+		map.put(DBConstants.F_NICKNAME, nickName);
+		map.put(DBConstants.F_AVATAR, avatar);
+		map.put(DBConstants.F_PROVINCE, province);
+		map.put(DBConstants.F_CITY, city);
+		map.put(DBConstants.F_LOCATION, location);
+		map.put(DBConstants.F_GENDER, gender);
+		map.put(DBConstants.F_BIRTHDAY, birthday);
+		map.put(DBConstants.F_SINA_NICKNAME, sinaNickName);
+		map.put(DBConstants.F_SINA_DOMAIN, sinaDomain);
+		map.put(DBConstants.F_QQ_NICKNAME, qqNickName);
+		map.put(DBConstants.F_QQ_DOMAIN, qqDomain);
+				
+		// set loginID, sina ID, qqID by loginIdType...
+		switch (Integer.parseInt(loginIdType)){
+			case DBConstants.LOGINID_OWN:
+				map.put(DBConstants.F_LOGINID, loginId);
+				break;
+			case DBConstants.LOGINID_SINA:
+				map.put(DBConstants.F_SINAID, loginId);
+				map.put(DBConstants.F_SINA_ACCESS_TOKEN, accessToken);
+				map.put(DBConstants.F_SINA_ACCESS_TOKEN_SECRET, accessTokenSecret);
+				
+				break;
+			case DBConstants.LOGINID_QQ:
+				map.put(DBConstants.F_QQID, loginId);
+				map.put(DBConstants.F_QQ_ACCESS_TOKEN, accessToken);
+				map.put(DBConstants.F_QQ_ACCESS_TOKEN_SECRET, accessTokenSecret);
+				break;
+			case DBConstants.LOGINID_RENREN:
+				map.put(DBConstants.F_RENRENID, loginId);
+				break;
+			case DBConstants.LOGINID_TWITTER:
+				map.put(DBConstants.F_TWITTERID, loginId);
+				break;
+			case DBConstants.LOGINID_FACEBOOK:
+				map.put(DBConstants.F_FACEBOOKID, loginId);
+				break;
+		}
+		
+		log.info("<bindUser> userId=" + userId + ", loginId=" + loginId);
+		cc.insert(DBConstants.USER, userId, map);
+		
+		return new User(map);
+	}
+	
 	public static String getUserNickName(CassandraClient cc, String userId) {
 		return cc.getColumnValue(DBConstants.USER, userId, DBConstants.F_NICKNAME);
 	}

@@ -66,11 +66,12 @@ public class CommonServiceUtils {
 	public static JSONObject userToJSON(User user) {
 		JSONObject obj = new JSONObject();
 		obj.put(ServiceConstant.PARA_USERID, user.getUserId());
+		obj.put(ServiceConstant.PARA_NICKNAME, user.getNickName());
+		obj.put(ServiceConstant.PARA_LOGINID, user.getLoginId());
 		obj.put(ServiceConstant.PARA_SINA_ACCESS_TOKEN, user.getSinaAccessToken());
 		obj.put(ServiceConstant.PARA_SINA_ACCESS_TOKEN_SECRET, user.getSinaAccessTokenSecret());
 		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN, user.getQQAccessToken());
 		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN_SECRET, user.getQQAccessTokenSecret());
-		obj.put(ServiceConstant.PARA_NICKNAME, user.getNickName());
 		return obj;
 	}
 

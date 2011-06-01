@@ -19,6 +19,7 @@ public class ServiceConstant {
 	public static final String METHOD_GETNEARBYPOSTS = "gne";
 	public static final String METHOD_DEVICELOGIN = "dl";
 	public static final String METHOD_GETPOSTRELATEDPOST = "gpr";
+	public static final String METHOD_BINDUSER = "bu";
 
 	// request parameters
 
