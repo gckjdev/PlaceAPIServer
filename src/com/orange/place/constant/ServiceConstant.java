@@ -68,6 +68,7 @@ public class ServiceConstant {
 	public static final String PARA_USER_LONGITUDE = "ulo";
 	public static final String PARA_SYNC_SNS = "ss";
 	public static final String PARA_SRC_POSTID = "spi";
+	public static final String PARA_EXCLUDE_POSTID = "epi";
 	
 	public static final String PARA_PLACEID = "pid" ;
 

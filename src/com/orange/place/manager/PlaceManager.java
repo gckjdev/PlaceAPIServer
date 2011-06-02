@@ -95,6 +95,13 @@ public class PlaceManager extends CommonManager {
 		cassandraClient.insert(DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId,
 				uuid, dateUuid);
 	}
+	
+	public static void getUserFollowStatusByPlace(CassandraClient cassandraClient, 
+			String userId, String[] placeId,
+			boolean[] followStatusResult){
+		
+		
+	}
 
 	public static void userFollowPlace(CassandraClient cassandraClient,
 			String userId, String placeId) {

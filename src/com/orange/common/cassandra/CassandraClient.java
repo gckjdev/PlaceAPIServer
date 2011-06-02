@@ -71,14 +71,31 @@ public class CassandraClient {
 		int len = columnNames.length;
 		for (int i = 0; i < len; i++) {
 			String columnName = columnNames[i];
-			String columnValue = columnValues[i];
-			if (columnValue == null) {
-				mutator.addInsertion(key, columnFamilyName, HFactory
-						.createStringColumn(columnName, ""));
-			} else {
-				mutator.addInsertion(key, columnFamilyName, HFactory
-						.createStringColumn(columnName, columnValue));
-			}
+			String columnValue = "";
+			if (columnValues != null && columnValues[i] != null)
+				columnValue = columnValues[i];
+			mutator.addInsertion(key, columnFamilyName, HFactory
+					.createStringColumn(columnName, columnValue));
+		}
+		mutator.execute();
+		return true;
+	}
+	
+	public boolean insert(String columnFamilyName, String key,
+			UUID[] columnNames, String[] columnValues) {
+		Mutator<String> mutator = HFactory.createMutator(keyspace,
+				StringSerializer.get());
+		int len = columnNames.length;
+		for (int i = 0; i < len; i++) {
+			
+			UUID columnName = columnNames[i];
+			String columnValue = "";
+			if (columnValues != null && columnValues[i] != null)
+				columnValue = columnValues[i];
+			
+			HColumn<UUID, String> column = HFactory.createColumn(columnName,
+					columnValue, us, ss);			
+			mutator.addInsertion(key, columnFamilyName, column);
 		}
 		mutator.execute();
 		return true;
@@ -307,6 +324,16 @@ public class CassandraClient {
 		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
 		for (String queryString : columnNames) {
 			mutator.addDeletion(key, columnFamilyName, queryString, ss);
+		}
+		mutator.execute();
+		return true;
+	}
+	
+	public boolean deleteMultipleColumns(String columnFamilyName, String key,
+			UUID[] columnNames) {
+		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
+		for (UUID queryString : columnNames) {
+			mutator.addDeletion(key, columnFamilyName, queryString, us);
 		}
 		mutator.execute();
 		return true;

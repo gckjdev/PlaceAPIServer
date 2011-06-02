@@ -253,23 +253,23 @@ public class PostManager extends CommonManager {
 		List<HColumn<UUID, String>> list = cassandraClient.getColumnKeyByRange(
 				DBConstants.INDEX_PLACE_POST, placeId, IdGenerator
 						.generateUUId(), size);
-		String[] keys = new String[list.size()];
+		UUID[] columnNames = new UUID[list.size()];
 		int i = 0;
 		for (HColumn<UUID, String> name : list) {
-			keys[i++] = name.getName().toString();
+			columnNames[i++] = name.getName();
 		}
 		cassandraClient.deleteMultipleColumns(
-				DBConstants.INDEX_USER_VIEW_POSTS, userId, keys);
+				DBConstants.INDEX_USER_VIEW_POSTS, userId, columnNames);
 	}
 
 	public static void addFollowPlacePosts(CassandraClient cassandraClient,
 			String userId, String placeId, UUID end, int size) {
 		List<HColumn<UUID, String>> list = cassandraClient.getColumnKeyByRange(
 				DBConstants.INDEX_PLACE_POST, placeId, null, end, size);
-		String[] keys = new String[list.size()];
+		UUID[] keys = new UUID[list.size()];
 		int i = 0;
 		for (HColumn<UUID, String> name : list) {
-			keys[i++] = name.getName().toString();
+			keys[i++] = name.getName();
 		}
 		cassandraClient.insert(DBConstants.INDEX_USER_VIEW_POSTS, userId, keys,
 				null);
