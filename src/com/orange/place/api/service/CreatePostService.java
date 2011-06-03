@@ -38,6 +38,20 @@ public class CreatePostService extends CommonService {
 			return;
 		}
 
+		int contenTypeInt = Integer.parseInt(contentType);
+		if(contenTypeInt != DBConstants.CONTENT_TYPE_TEXT){
+			AbstractUploadManager uploadManager = null;
+			switch(contenTypeInt){
+			case DBConstants.CONTENT_TYPE_TEXT_PHOTO:
+				uploadManager = new ImageUploadManager();
+				String filepath = uploadManager.uploadFile(request, null);				
+				resultCode = uploadManager.getResultCode();
+				break;
+			default:
+				break;	
+			}
+		}		
+		
 		// create post
 		Post post = PostManager.createPost(cassandraClient, userId, appId,
 				placeId, longitude, latitude, userLongitude, userLatitude,
@@ -47,21 +61,7 @@ public class CreatePostService extends CommonService {
 					+ userId);
 			resultCode = ErrorCode.ERROR_CREATE_POST;
 			return;
-		}
-		
-		int contenTypeInt = Integer.parseInt(contentType);
-		if(contenTypeInt != DBConstants.CONTENT_TYPE_TEXT){
-			AbstractUploadManager uploadManager = null;
-			switch(contenTypeInt){
-			case DBConstants.CONTENT_TYPE_TEXT_PHOTO:
-				uploadManager = new ImageUploadManager();
-				uploadManager.fileHandle(request, null);
-				resultCode = uploadManager.getResultCode();
-				break;
-			default:
-				break;	
-			}
-		}
+		}		
 			
 		// TODO return image URL if it's a image
 

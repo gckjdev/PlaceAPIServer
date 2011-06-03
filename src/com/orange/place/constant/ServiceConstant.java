@@ -2,6 +2,8 @@ package com.orange.place.constant;
 
 public class ServiceConstant {
 
+	public static final String FILE_IMAGE_PATH = "/temp/";			// TODO move to configuration
+	
 	// method name
 	public static final String METHOD = "m";
 	public static final String METHOD_TEST = "test";
