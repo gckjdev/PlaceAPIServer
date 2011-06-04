@@ -63,6 +63,8 @@ public abstract class CommonService {
 				GetPostRelatedPostService.class);
 		methodMap.put(ServiceConstant.METHOD_BINDUSER, 
 				BindUserService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMYPOSTS, 
+				GetUserPostService.class);
 	}
 
 	public CassandraClient getCassandraClient() {

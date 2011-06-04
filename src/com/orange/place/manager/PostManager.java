@@ -215,6 +215,26 @@ public class PostManager extends CommonManager {
 		return postList;
 	}
 
+	public static List<Post> getUserPosts(CassandraClient cassandraClient,
+			String userId, String afterTimeStamp, String beforeTimeStamp,
+			String maxCount) {
+		UUID startUUID = null;
+		UUID endUUID = null;
+		if (beforeTimeStamp.length() > 0)
+			startUUID = getStartUUID(beforeTimeStamp);
+		if (afterTimeStamp.length() > 0)
+			endUUID = getStartUUID(afterTimeStamp);
+		int max = getMaxCount(maxCount);
+		List<HColumn<UUID, String>> resultList = cassandraClient
+				.getColumnKeyByRange(DBConstants.INDEX_USER_POST, userId,
+						startUUID, endUUID, max);
+		if (resultList == null) {
+			return null;
+		}
+		List<Post> postList = getPostList(cassandraClient, resultList);
+		return postList;
+	}
+
 	public static List<Post> getAllPosts(CassandraClient cassandraClient) {
 
 		Rows<String, String, String> rows = cassandraClient.getMultiRow(
@@ -285,7 +305,6 @@ public class PostManager extends CommonManager {
 	public static void createUserMePostIndex(CassandraClient cassandraClient,
 			String userId, String replyPostId) {
 		UUID uuid = UUID.fromString(replyPostId);
-		cassandraClient.insert(DBConstants.INDEX_ME_POST, userId,
-				uuid, "");		
+		cassandraClient.insert(DBConstants.INDEX_ME_POST, userId, uuid, "");
 	}
 }
