@@ -15,7 +15,7 @@ public class ImageUtil {
 
 	private static String SmallImageSuffix = "_s.jpg";
 
-	public static String getSmallImageName(File imageFile) {
+	private static String getSmallImageName(File imageFile) {
 		if (imageFile == null)
 			return null;
 		String imageName = imageFile.getAbsolutePath();
