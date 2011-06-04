@@ -3,11 +3,11 @@ package com.orange.place.constant;
 public class ServiceConstant {
 
 	// server name
-	public static final String FILE_SERVER_NAME = "http://192.168.1.150:80";
+	public static final String FILE_SERVER_NAME = "http://192.168.1.150:80/upload/";
 	public static final String FILE_LOCAL_PATH = "F:/dipan/upload/";
 	public static final String FILE_LOCAL_IMAGE_PATH = FILE_LOCAL_PATH
 			+ "image/";
-	public static final String FILE_IMAGE_PATH = FILE_SERVER_NAME + "/image/";
+	public static final String FILE_IMAGE_PATH = FILE_SERVER_NAME + "image/";
 
 	// method name
 	public static final String METHOD = "m";
@@ -77,7 +77,11 @@ public class ServiceConstant {
 	public static final String PARA_SRC_POSTID = "spi";
 	public static final String PARA_EXCLUDE_POSTID = "epi";
 
+
 	public static final String PARA_PLACEID = "pid";
+
+	public static final String PARA_REPLY_POSTID = "rpi";
+
 
 	public static final String PARA_SINA_ACCESS_TOKEN = "sat";
 	public static final String PARA_SINA_ACCESS_TOKEN_SECRET = "sats";
@@ -114,5 +118,6 @@ public class ServiceConstant {
 	public static final String RET_MESSAGE = "msg";
 	public static final String RET_CODE = "ret";
 	public static final String RET_DATA = "dat";
+
 
 }

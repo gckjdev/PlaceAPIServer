@@ -21,7 +21,7 @@ public class DBConstants {
 	public static final String INDEX_PLACE_FOLLOWED_USERS = "idx_place_followed_users";
 	public static final String INDEX_USER_VIEW_POSTS = "idx_user_timeline";
 	public static final String INDEX_POST_RELATED_POST = "idx_post_related_posts";
-
+	public static final String INDEX_ME_POST = "idx_user_me_posts";	
 	
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
@@ -97,8 +97,8 @@ public class DBConstants {
 	public static final String F_TOTAL_QUOTE = "totalQuote";
 	public static final String F_TOTAL_REPLY = "totalReply";	
 	public static final String F_SRC_POSTID = "srcPostId";
+	public static final String F_REPLY_POSTID = "replyPostId";
 
-	
 	
 	// Value
 	public static final String STATUS_NORMAL = "1";
