@@ -71,6 +71,7 @@ public class ServiceConstant {
 	public static final String PARA_SYNC_SNS = "ss";
 	public static final String PARA_SRC_POSTID = "spi";
 	public static final String PARA_EXCLUDE_POSTID = "epi";
+	public static final String PARA_REPLY_POSTID = "rpi";
 	
 	public static final String PARA_PLACEID = "pid" ;
 
@@ -109,5 +110,6 @@ public class ServiceConstant {
 	public static final String RET_MESSAGE = "msg";
 	public static final String RET_CODE = "ret";
 	public static final String RET_DATA = "dat";
+
 
 }

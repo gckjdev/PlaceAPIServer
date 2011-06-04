@@ -26,6 +26,7 @@ public class CreatePostService extends CommonService {
 	String contentType;
 	String syncSNS;
 	String srcPostId;
+	String replyPostId;
 
 	@Override
 	public void handleData() {
@@ -55,7 +56,7 @@ public class CreatePostService extends CommonService {
 		// create post
 		Post post = PostManager.createPost(cassandraClient, userId, appId,
 				placeId, longitude, latitude, userLongitude, userLatitude,
-				textContent, contentType, srcPostId);
+				textContent, contentType, srcPostId, replyPostId);
 		if (post == null) {
 			log.info("fail to create post, placeId=" + placeId + ", userId="
 					+ userId);
@@ -80,6 +81,11 @@ public class CreatePostService extends CommonService {
 		}
 		PostManager.createPostRelatedPostIndex(cassandraClient, postId,
 				srcPostId);
+		
+		// if there is a reply post, add into user ME post index
+		if (replyPostId != null && replyPostId.length() > 0){
+			PostManager.createUserMePostIndex(cassandraClient, userId, replyPostId);
+		}
 
 		// set result data, return postId, nick name, and create date
 		JSONObject obj = new JSONObject();
@@ -123,6 +129,7 @@ public class CreatePostService extends CommonService {
 		contentType = request.getParameter(ServiceConstant.PARA_CONTENT_TYPE);
 		syncSNS = request.getParameter(ServiceConstant.PARA_SYNC_SNS);
 		srcPostId = request.getParameter(ServiceConstant.PARA_SRC_POSTID);
+		replyPostId = request.getParameter(ServiceConstant.PARA_REPLY_POSTID);
 
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_APPID_NULL))

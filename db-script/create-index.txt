@@ -30,6 +30,13 @@ create column family idx_user_posts
 create column family idx_user_timeline
     with comparator = TimeUUIDType;
 
+create column family idx_user_me_posts
+    with comparator = TimeUUIDType;
+
 create column family idx_post_related_posts
     with comparator = TimeUUIDType;
+
+create column family idx_my_messages
+    with comparator = TimeUUIDType;
+
     
