@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.orange.place.constant.DBConstants;
+import com.orange.place.constant.ServiceConstant;
+import com.orange.place.manager.CommonManager;
+
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -18,6 +22,7 @@ import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
+import me.prettyprint.hector.api.query.CountQuery;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
@@ -80,21 +85,21 @@ public class CassandraClient {
 		mutator.execute();
 		return true;
 	}
-	
+
 	public boolean insert(String columnFamilyName, String key,
 			UUID[] columnNames, String[] columnValues) {
 		Mutator<String> mutator = HFactory.createMutator(keyspace,
 				StringSerializer.get());
 		int len = columnNames.length;
 		for (int i = 0; i < len; i++) {
-			
+
 			UUID columnName = columnNames[i];
 			String columnValue = "";
 			if (columnValues != null && columnValues[i] != null)
 				columnValue = columnValues[i];
-			
+
 			HColumn<UUID, String> column = HFactory.createColumn(columnName,
-					columnValue, us, ss);			
+					columnValue, us, ss);
 			mutator.addInsertion(key, columnFamilyName, column);
 		}
 		mutator.execute();
@@ -303,6 +308,25 @@ public class CassandraClient {
 		return rows;
 	}
 
+	public int getColumnCount(String columnFamilyName, String key) {
+		CountQuery<String, String> cq = HFactory.createCountQuery(keyspace, ss,
+				ss);
+		cq.setColumnFamily(columnFamilyName);
+		cq.setKey(key);
+		cq.setRange(null, null, CommonManager.UNLIMITED_COUNT);
+		QueryResult<Integer> r = cq.execute();
+		return r.get().intValue();
+	}
+
+	public int[] getMultiRowColumnCount(String columnFamilyName, String[] keys) {
+		int i = 0;
+		int count[] = new int[keys.length];
+		for (String key : keys) {
+			count[i++] = getColumnCount(columnFamilyName, key);
+		}
+		return count;
+	}
+
 	public boolean deleteStringColumn(String columnFamilyName, String key,
 			String columnName) {
 		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
@@ -328,7 +352,7 @@ public class CassandraClient {
 		mutator.execute();
 		return true;
 	}
-	
+
 	public boolean deleteMultipleColumns(String columnFamilyName, String key,
 			UUID[] columnNames) {
 		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
