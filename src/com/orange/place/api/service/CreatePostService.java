@@ -10,7 +10,6 @@ import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Post;
 import com.orange.place.manager.PostManager;
 import com.orange.place.manager.UserManager;
-import com.orange.place.upload.AbstractUploadManager;
 import com.orange.place.upload.ImageUploadManager;
 
 public class CreatePostService extends CommonService {
@@ -40,11 +39,11 @@ public class CreatePostService extends CommonService {
 
 		int contenTypeInt = Integer.parseInt(contentType);
 		if(contenTypeInt != DBConstants.CONTENT_TYPE_TEXT){
-			AbstractUploadManager uploadManager = null;
+//			AbstractUploadManager uploadManager = null;
 			switch(contenTypeInt){
 			case DBConstants.CONTENT_TYPE_TEXT_PHOTO:
-				uploadManager = new ImageUploadManager();
-				String filepath = uploadManager.uploadFile(request, null);				
+				ImageUploadManager uploadManager = new ImageUploadManager();
+				uploadManager.uploadImageWithCompression(request);			
 				resultCode = uploadManager.getResultCode();
 				break;
 			default:
