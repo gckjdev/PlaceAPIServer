@@ -59,23 +59,6 @@ public class PostManager extends CommonManager {
 		return new Post(map);
 	}
 
-	public static int getMaxCount(String maxCount) {
-		int max = MAX_COUNT;
-		if (maxCount != null) {
-			max = Integer.parseInt(maxCount);
-		}
-
-		return max;
-	}
-
-	public static UUID getStartUUID(String beforeTimeStamp) {
-		UUID startUUID = null;
-		if (beforeTimeStamp != null && beforeTimeStamp.length() > 0) {
-			startUUID = UUID.fromString(beforeTimeStamp);
-		}
-		return startUUID;
-	}
-
 	public static List<Post> getPostList(CassandraClient cassandraClient,
 			List<HColumn<UUID, String>> postIdIndexList) {
 

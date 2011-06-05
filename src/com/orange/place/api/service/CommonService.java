@@ -59,12 +59,18 @@ public abstract class CommonService {
 				GetUserFollowPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_DEVICELOGIN,
 				DeviceLoginService.class);
-		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST, 
+		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST,
 				GetPostRelatedPostService.class);
 		methodMap.put(ServiceConstant.METHOD_BINDUSER, 
 				BindUserService.class);
-		methodMap.put(ServiceConstant.METHOD_GETMYPOSTS, 
+		methodMap.put(ServiceConstant.METHOD_GETMYPOSTS,
 				GetUserPostService.class);
+		methodMap.put(ServiceConstant.METHOD_SENDMESSAGE,
+				SendMessageService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMYMESSAGE,
+				GetMyMessageService.class);
+		methodMap.put(ServiceConstant.METHOD_DELETEMESSAGE,
+				DeleteMeMessageService.class);
 	}
 
 	public CassandraClient getCassandraClient() {
@@ -79,17 +85,19 @@ public abstract class CommonService {
 			.getName());
 
 	@SuppressWarnings("unchecked")
-	public static CommonService createServiceObjectByMethod(String method) throws InstantiationException, IllegalAccessException {
+	public static CommonService createServiceObjectByMethod(String method)
+			throws InstantiationException, IllegalAccessException {
 		initMethodMap();
 		Class classObj = methodMap.get(method);
-		if (classObj == null){
+		if (classObj == null) {
 			log.warning("Cannot find service object for METHOD = " + method);
 			return null;
 		}
-		
-		CommonService obj = (CommonService)classObj.newInstance();
+
+		CommonService obj = (CommonService) classObj.newInstance();
 		if (obj == null) {
-			log.warning("Cannot create service object by given class for method = " + method);
+			log.warning("Cannot create service object by given class for method = "
+							+ method);
 		}
 		return obj;
 	}
@@ -172,6 +180,5 @@ public abstract class CommonService {
 			return false;
 		}
 	}
-
 
 }

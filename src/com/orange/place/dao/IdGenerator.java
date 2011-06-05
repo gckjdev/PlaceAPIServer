@@ -25,4 +25,12 @@ public class IdGenerator {
 	public static String getIdFromTime(long time){
 		return getUUIDFromTime(time).toString();
 	}
+	
+	public static UUID getStartUUID(String beforeTimeStamp) {
+		UUID startUUID = null;
+		if (beforeTimeStamp != null && beforeTimeStamp.length() > 0) {
+			startUUID = UUID.fromString(beforeTimeStamp);
+		}
+		return startUUID;
+	}
 }

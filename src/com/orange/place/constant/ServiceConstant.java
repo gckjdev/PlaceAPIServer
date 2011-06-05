@@ -3,8 +3,8 @@ package com.orange.place.constant;
 public class ServiceConstant {
 
 	// server name
-	public static final String FILE_SERVER_NAME = "http://192.168.1.150:80/upload/";
-	public static final String FILE_LOCAL_PATH = "F:/dipan/upload/";
+	public static final String FILE_SERVER_NAME = "http://192.168.1.151:80/upload/";
+	public static final String FILE_LOCAL_PATH = "C:/xampp/htdocs/upload/";
 	public static final String FILE_LOCAL_IMAGE_PATH = FILE_LOCAL_PATH
 			+ "image/";
 	public static final String FILE_IMAGE_PATH = FILE_SERVER_NAME + "image/";
@@ -28,7 +28,9 @@ public class ServiceConstant {
 	public static final String METHOD_DEVICELOGIN = "dl";
 	public static final String METHOD_GETPOSTRELATEDPOST = "gpr";
 	public static final String METHOD_BINDUSER = "bu";
-	
+	public static final String METHOD_SENDMESSAGE = "sm";
+	public static final String METHOD_GETMYMESSAGE = "gmm";
+	public static final String METHOD_DELETEMESSAGE = "dmm";
 
 	// request parameters
 
@@ -79,11 +81,9 @@ public class ServiceConstant {
 	public static final String PARA_SRC_POSTID = "spi";
 	public static final String PARA_EXCLUDE_POSTID = "epi";
 
-
 	public static final String PARA_PLACEID = "pid";
 
 	public static final String PARA_REPLY_POSTID = "rpi";
-
 
 	public static final String PARA_SINA_ACCESS_TOKEN = "sat";
 	public static final String PARA_SINA_ACCESS_TOKEN_SECRET = "sats";
@@ -115,11 +115,13 @@ public class ServiceConstant {
 
 	public static final String PARA_VERSION = "v";
 
+	public static final String PARA_TO_USERID = "tuid";
+	public static final String PARA_MESSAGE_ID = "mid";
+
 	// response parameters
 
 	public static final String RET_MESSAGE = "msg";
 	public static final String RET_CODE = "ret";
 	public static final String RET_DATA = "dat";
-
 
 }
