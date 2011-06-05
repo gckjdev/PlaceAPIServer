@@ -15,13 +15,6 @@ public class BindUserService extends CommonService {
 	String loginId;
 	String loginIdType;
 	String appId;
-	String deviceModel;
-	String deviceId;
-	String deviceOS;
-	String deviceToken;	
-
-	String language;
-	String countryCode;
 	String nickName;
 	String avatar;
 	String accessToken;
@@ -31,10 +24,7 @@ public class BindUserService extends CommonService {
 	String location;
 	String gender;
 	String birthday;
-	String sinaNickName;
-	String sinaDomain;
-	String qqNickName;
-	String qqDomain;
+	String domain;
 	
 	String password;
 	
@@ -49,14 +39,10 @@ public class BindUserService extends CommonService {
 			log.info("<registerUser> user loginId exist, loginId="+loginId);
 			return;
 		}
-				
-		
-		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
-				deviceModel, deviceId, deviceOS, deviceToken, 
-				language, countryCode, password, nickName, avatar,
-				accessToken, accessTokenSecret,
-				province, city, location, gender, birthday,
-				sinaNickName, sinaDomain, qqNickName, qqDomain);
+						
+		User user = UserManager.bindUser(cassandraClient, userId, loginId, loginIdType, appId, 
+				nickName, avatar, accessToken, accessTokenSecret, domain,
+				province, city, location, gender, birthday);
 		if (user == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
 			log.info("<registerUser> fail to create user, loginId="+loginId);
@@ -64,7 +50,6 @@ public class BindUserService extends CommonService {
 		}
 		
 		String userId = user.getUserId();
-		UserManager.createUserDeviceIdIndex(cassandraClient, userId, deviceId);
 		UserManager.createUserLoginIdIndex(cassandraClient, userId, loginId, loginIdType);
 		
 		// set result data, return userId
@@ -84,11 +69,8 @@ public class BindUserService extends CommonService {
 	@Override
 	public void printData() {
 		// TODO Auto-generated method stub
-		log.info(String.format("userId=%s, loginId=%s, loginIdType=%s, appId=%s, deviceModel=%s, " +
-				"deviceId=%s, deviceOS=%s, deviceToken=%s, " +
-				"language=%s, countryCode=%s, nickName=%s", userId, loginId, loginIdType,
-				appId, deviceModel, deviceId, deviceOS, deviceToken,
-				language, countryCode, nickName));
+		log.info(String.format("userId=%s, loginId=%s, loginIdType=%s, appId=%s, nickName=%s", 
+				userId, loginId, loginIdType, appId, nickName));
 	}
 
 	@Override
@@ -97,16 +79,10 @@ public class BindUserService extends CommonService {
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
 		loginId = request.getParameter(ServiceConstant.PARA_LOGINID);
 		loginIdType = request.getParameter(ServiceConstant.PARA_LOGINIDTYPE);
-		deviceId = request.getParameter(ServiceConstant.PARA_DEVICEID);
-		deviceModel = request.getParameter(ServiceConstant.PARA_DEVICEMODEL);
-		deviceOS = request.getParameter(ServiceConstant.PARA_DEVICEOS);
 		password = request.getParameter(ServiceConstant.PARA_PASSWORD);
-		countryCode = request.getParameter(ServiceConstant.PARA_COUNTRYCODE);
-		language = request.getParameter(ServiceConstant.PARA_LANGUAGE);
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		nickName = request.getParameter(ServiceConstant.PARA_NICKNAME);
 		avatar = request.getParameter(ServiceConstant.PARA_AVATAR);
-		deviceToken = request.getParameter(ServiceConstant.PARA_DEVICETOKEN);
 		accessToken = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN);
 		accessTokenSecret = request.getParameter(ServiceConstant.PARA_ACCESS_TOKEN_SECRET);
 		province = request.getParameter(ServiceConstant.PARA_PROVINCE);
@@ -114,10 +90,7 @@ public class BindUserService extends CommonService {
 		location = request.getParameter(ServiceConstant.PARA_LOCATION);
 		gender = request.getParameter(ServiceConstant.PARA_GENDER);
 		birthday = request.getParameter(ServiceConstant.PARA_BIRTHDAY);
-		sinaNickName = request.getParameter(ServiceConstant.PARA_SINA_NICKNAME);
-		sinaDomain = request.getParameter(ServiceConstant.PARA_SINA_DOMAIN);
-		qqNickName = request.getParameter(ServiceConstant.PARA_QQ_NICKNAME);
-		qqDomain = request.getParameter(ServiceConstant.PARA_QQ_DOMAIN);
+		domain = request.getParameter(ServiceConstant.PARA_DOMAIN);
 		
 		if (!check(loginId, ErrorCode.ERROR_PARAMETER_USERID_EMPTY, ErrorCode.ERROR_PARAMETER_USERID_NULL))
 			return false;
@@ -125,21 +98,6 @@ public class BindUserService extends CommonService {
 		if (!check(loginIdType, ErrorCode.ERROR_PARAMETER_USERTYPE_EMPTY, ErrorCode.ERROR_PARAMETER_USERTYPE_NULL))
 			return false;
 		
-		if (!check(deviceId, ErrorCode.ERROR_PARAMETER_DEVICEID_EMPTY, ErrorCode.ERROR_PARAMETER_DEVICEID_NULL))
-			return false;
-
-		if (!check(deviceModel, ErrorCode.ERROR_PARAMETER_DEVICEMODEL_EMPTY, ErrorCode.ERROR_PARAMETER_DEVICEMODEL_NULL))
-			return false;
-
-		if (!check(deviceOS, ErrorCode.ERROR_PARAMETER_DEVICEOS_EMPTY, ErrorCode.ERROR_PARAMETER_DEVICEOS_NULL))
-			return false;
-
-//		if (!check(countryCode, ErrorCode.ERROR_PARAMETER_COUNTRYCODE_EMPTY, ErrorCode.ERROR_PARAMETER_COUNTRYCODE_NULL))
-//			return false;
-//
-//		if (!check(language, ErrorCode.ERROR_PARAMETER_LANGUAGE_EMPTY, ErrorCode.ERROR_PARAMETER_LANGUAGE_NULL))
-//			return false;
-
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY, ErrorCode.ERROR_PARAMETER_APPID_NULL))
 			return false;
 

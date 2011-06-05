@@ -22,7 +22,7 @@ public class PostManager extends CommonManager {
 			String userId, String appId, String placeId, String longitude,
 			String latitude, String userLongitude, String userLatitude,
 			String textContent, String contentType, String srcPostId,
-			String replyPostId) {
+			String replyPostId, String imageURL) {
 
 		String postId = IdGenerator.generateId();
 
@@ -36,6 +36,10 @@ public class PostManager extends CommonManager {
 		map.put(DBConstants.F_USER_LATITUDE, userLatitude);
 		map.put(DBConstants.F_TEXT_CONTENT, textContent);
 		map.put(DBConstants.F_CONTENT_TYPE, contentType);
+		
+		if (imageURL != null){
+			map.put(DBConstants.F_IMAGE_URL, imageURL);
+		}
 
 		if (srcPostId != null && srcPostId.length() > 0) {
 			map.put(DBConstants.F_SRC_POSTID, srcPostId);

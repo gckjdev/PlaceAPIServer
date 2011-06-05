@@ -102,7 +102,8 @@ public class ErrorCode {
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
 	static public final int ERROR_JSON 						= 90005;
 	static public final int ERROR_UPLOAD_FILE 				= 90006;
-
+	public static final int ERROR_CREATE_THUNMB_FILEPATH 	= 90007;
+	public static final int ERROR_CREATE_THUNMB_FILE 		= 90008;
 
 
 

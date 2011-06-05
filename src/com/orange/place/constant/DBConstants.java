@@ -1,5 +1,9 @@
 package com.orange.place.constant;
 
+import java.util.List;
+
+import me.prettyprint.hector.api.beans.HColumn;
+
 public class DBConstants {
 
 //	public static final String SERVER = "localhost:9160";
@@ -102,17 +106,15 @@ public class DBConstants {
 	public static final String F_SRC_POSTID = "srcPostId";
 	public static final String F_REPLY_POSTID = "replyPostId";
 
-	//DB Message Fields
+	// computed fields, not stored in DB
+	public static final String C_TOTAL_RELATED = "totalRelatedPost";
 	
 	public static final String F_MESSAGEID = "messageId";
 	public static final String F_MESSAGE_CONTENT = "text";
 	public static final String F_FROM_USERID = "fromUserId";
 	public static final String F_TO_USERID = "toUserId";
 	public static final String F_SRC_MESSAGEID = "srcMessageId";
-	
-	
-	public static final String C_TOTAL_RELATED = "totalRelatedPost";
-	
+			
 	// Value
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";
