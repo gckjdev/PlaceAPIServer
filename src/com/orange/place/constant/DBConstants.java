@@ -16,6 +16,7 @@ public class DBConstants {
 	public static final String USER = "place_user";
 	public static final String PLACE = "place_place";
 	public static final String POST = "place_post";
+	public static final String MESSAGE = "place_message";
 	
 	// column family for index
 	public static final String INDEX_USER = "idx_user";
@@ -26,6 +27,8 @@ public class DBConstants {
 	public static final String INDEX_USER_VIEW_POSTS = "idx_user_timeline";
 	public static final String INDEX_POST_RELATED_POST = "idx_post_related_posts";
 	public static final String INDEX_ME_POST = "idx_user_me_posts";	
+	public static final String INDEX_MY_MESSAGE = "idx_my_messages";	
+	
 	
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
@@ -106,7 +109,12 @@ public class DBConstants {
 	// computed fields, not stored in DB
 	public static final String C_TOTAL_RELATED = "totalRelatedPost";
 	
-	
+	public static final String F_MESSAGEID = "messageId";
+	public static final String F_MESSAGE_CONTENT = "text";
+	public static final String F_FROM_USERID = "fromUserId";
+	public static final String F_TO_USERID = "toUserId";
+	public static final String F_SRC_MESSAGEID = "srcMessageId";
+			
 	// Value
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";
@@ -126,5 +134,6 @@ public class DBConstants {
 	public static final String AUTH_FLAG_NONE = "0";
 	
 	public static final String PLACE_TYPE_UNKNOWN = "0";
+
 
 }

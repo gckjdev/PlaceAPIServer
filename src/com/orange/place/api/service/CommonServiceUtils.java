@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.orange.place.constant.ServiceConstant;
+import com.orange.place.dao.Message;
 import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 import com.orange.place.dao.User;
@@ -110,6 +111,22 @@ public class CommonServiceUtils {
 		obj.put(ServiceConstant.PARA_SINA_ACCESS_TOKEN_SECRET, user.getSinaAccessTokenSecret());
 		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN, user.getQQAccessToken());
 		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN_SECRET, user.getQQAccessTokenSecret());
+		return obj;
+	}
+
+	public static Object messageListToJSON(List<Message> messageList) {
+		// TODO Auto-generated method stub
+		JSONArray obj = new JSONArray();
+		for (Message message : messageList){
+			JSONObject json = new JSONObject();
+			json.put(ServiceConstant.PARA_MESSAGE_ID, message.getMessageId());
+			json.put(ServiceConstant.PARA_USERID, message.getFromUserId());
+			json.put(ServiceConstant.PARA_TO_USERID, message.getToUserId());
+			json.put(ServiceConstant.PARA_MESSAGETEXT, message.getMessageContent());
+			json.put(ServiceConstant.PARA_CREATE_DATE, message.getCreateDate());				
+			obj.add(json);
+		}
+		
 		return obj;
 	}
 

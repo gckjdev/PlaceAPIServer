@@ -55,9 +55,12 @@ public class ErrorCode {
 	public static final int ERROR_PARAMETER_PLACEID_EMPTY 		= 10047;
 	public static final int ERROR_PARAMETER_POSTID_EMPTY 		= 10048;
 	public static final int ERROR_PARAMETER_POSTID_NULL 		= 10049;
-
-
-	
+	public static final int ERROR_PARAMETER_TOUSERID_NULL 		= 10050;
+	public static final int ERROR_PARAMETER_TOUSERID_EMPTY 		= 10051;
+	public static final int ERROR_PARAMETER_MESSAGECONTENT_EMPTY = 10052;
+	public static final int ERROR_PARAMETER_MESSAGECONTENT_NULL = 10053;
+	public static final int ERROR_PARAMETER_MESSAGEID_EMPTY 	= 10054;
+	public static final int ERROR_PARAMETER_MESSAGEID_NULL 		= 10055;
 	// User Errors
 	static public final int ERROR_LOGINID_EXIST             = 20001;
 	static public final int ERROR_DEVICEID_BIND            	= 20002;
@@ -82,7 +85,11 @@ public class ErrorCode {
 	public static final int ERROR_GET_USER_TIMELINE 		= 40004;
 	public static final int ERROR_GET_USER_FOLLOW_PLACE		= 40005;
 	public static final int ERROR_GET_RELATED_POST_BY_POST 	= 40006;
-
+	public static final int ERROR_GET_ME_MESSAGE 			= 40007;
+	//Message Error
+	
+	public static final int ERROR_GET_MY_MESSAGE 			= 50001;
+	
 	// DB Error
 	static public final int ERROR_CASSANDRA                 = 80001;
 	static public final int ERROR_CASSANDRA_UNAVAILABLE     = 80002;
@@ -96,6 +103,16 @@ public class ErrorCode {
 	static public final int ERROR_UPLOAD_FILE 				= 90006;
 	public static final int ERROR_CREATE_THUNMB_FILEPATH 	= 90007;
 	public static final int ERROR_CREATE_THUNMB_FILE 		= 90008;
+
+
+
+
+
+
+
+
+
+
 
 
 

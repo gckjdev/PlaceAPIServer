@@ -9,7 +9,7 @@ import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Post;
 import com.orange.place.manager.PostManager;
 
-public class GetUserPostService extends CommonService {
+public class GetMePostService extends CommonService {
 
 	String userId;
 	String appId;
@@ -19,11 +19,11 @@ public class GetUserPostService extends CommonService {
 	@Override
 	public void handleData() {
 		// TODO Auto-generated method stub
-		List<Post> postList = PostManager.getUserPosts(cassandraClient, userId,
+		List<Post> postList = PostManager.getMePosts(cassandraClient, userId,
 				beforeTimeStamp, maxCount);
 		if (postList == null) {
-			log.info("fail to get user post timeline, userId=" + userId);
-			resultCode = ErrorCode.ERROR_GET_USER_TIMELINE;
+			log.info("fail to get at me post, userId=" + userId);
+			resultCode = ErrorCode.ERROR_GET_ME_MESSAGE;
 			return;
 		}
 		resultData = CommonServiceUtils.postListToJSON(postList);
@@ -62,5 +62,4 @@ public class GetUserPostService extends CommonService {
 
 		return true;
 	}
-
 }

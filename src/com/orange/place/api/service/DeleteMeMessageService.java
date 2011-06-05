@@ -1,32 +1,20 @@
 package com.orange.place.api.service;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
-import com.orange.place.dao.Post;
-import com.orange.place.manager.PostManager;
+import com.orange.place.manager.MessageManager;
 
-public class GetUserPostService extends CommonService {
-
+public class DeleteMeMessageService extends CommonService {
 	String userId;
 	String appId;
-	String beforeTimeStamp;
-	String maxCount;
+	String messageId;
 
 	@Override
 	public void handleData() {
 		// TODO Auto-generated method stub
-		List<Post> postList = PostManager.getUserPosts(cassandraClient, userId,
-				beforeTimeStamp, maxCount);
-		if (postList == null) {
-			log.info("fail to get user post timeline, userId=" + userId);
-			resultCode = ErrorCode.ERROR_GET_USER_TIMELINE;
-			return;
-		}
-		resultData = CommonServiceUtils.postListToJSON(postList);
+		MessageManager.deleteMessage(cassandraClient, userId, messageId);
 	}
 
 	@Override
@@ -46,9 +34,7 @@ public class GetUserPostService extends CommonService {
 		// TODO Auto-generated method stub
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
-		beforeTimeStamp = request
-				.getParameter(ServiceConstant.PARA_BEFORE_TIMESTAMP);
-		maxCount = request.getParameter(ServiceConstant.PARA_MAX_COUNT);
+		messageId = request.getParameter(ServiceConstant.PARA_MESSAGE_ID);
 
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_APPID_NULL))
@@ -58,7 +44,9 @@ public class GetUserPostService extends CommonService {
 				ErrorCode.ERROR_PARAMETER_USERID_NULL))
 			return false;
 
-		// TODO need to check maxCount is valid decimal/number
+		if (!check(messageId, ErrorCode.ERROR_PARAMETER_MESSAGEID_EMPTY,
+				ErrorCode.ERROR_PARAMETER_MESSAGEID_NULL))
+			return false;
 
 		return true;
 	}

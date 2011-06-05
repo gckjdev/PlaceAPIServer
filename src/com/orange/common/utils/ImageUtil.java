@@ -27,6 +27,15 @@ public class ImageUtil {
 		return smallImageName;
 	}
 
+	public static String getSmallImagePath(String httpPath){
+		int index = httpPath.lastIndexOf(".");
+		if (index < 0)
+			return null;
+		String smallImageName = httpPath.substring(0, index)
+				+ SmallImageSuffix;
+		return smallImageName;
+	}
+	
 	public static File setImageSize(File imageFile, int height){
 		Image src = null;
 		File outFile = null;
