@@ -48,7 +48,7 @@ public class DBConstants {
 	public static final String F_MODIFY_DATE = "modifyDate";
 	public static final String F_MODIFY_SOURCE_ID = "modifySourceId";
 	
-	public static final String F_EMAIL = "email";	
+	public static final String F_EMAIL = "user_email";	
 	public static final String F_MOBILE = "mobile";
 	public static final String F_PASSWORD = "password";
 	public static final String F_STATUS = "status";	

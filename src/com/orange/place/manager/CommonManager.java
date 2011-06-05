@@ -1,5 +1,6 @@
 package com.orange.place.manager;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ public class CommonManager {
 	public static final int UNLIMITED_COUNT = Integer.MAX_VALUE;
 	public static final int MAX_DELETE_UNFOLLOWPLACE_COUNT = 3;
 	public static final int MAX_ADD_FOLLOWPLACE_COUNT = 30;
-	
+
 	public static int getMaxCount(String maxCount) {
 		int max = MAX_COUNT;
 		if (maxCount != null) {
@@ -32,5 +33,11 @@ public class CommonManager {
 		}
 		return startUUID;
 	}
-	
+
+	public static void putIntoMap(HashMap<String, String> map, String key,
+			String value) {
+		if (value != null && value.length() > 0) {
+			map.put(key, value);
+		}
+	}
 }

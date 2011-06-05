@@ -77,7 +77,8 @@ public class ErrorCode {
 	public static final int ERROR_CREATE_PLACE 				= 30003;
 	public static final int ERROR_GET_NEARBY_PLACES 		= 30004;
 	public static final int ERROR_GET_NEARBY_POSTS	 		= 30005;
-
+	public static final int ERROR_UPDATE_PLACE 				= 30006;
+	
 	// Post Error
 	static public final int ERROR_POST_NOT_FOUND            = 40001;
 	public static final int ERROR_CREATE_POST 				= 40002;
@@ -101,6 +102,10 @@ public class ErrorCode {
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
 	static public final int ERROR_JSON 						= 90005;
 	static public final int ERROR_UPLOAD_FILE 				= 90006;
+
+
+
+
 
 
 

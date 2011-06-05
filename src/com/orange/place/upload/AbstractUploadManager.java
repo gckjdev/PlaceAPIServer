@@ -32,7 +32,7 @@ public abstract class AbstractUploadManager {
 	private String filePath = null;
 	private long fileSize = 0;
 	private String localFilePath = null;
-	
+
 	public abstract int getResultCode();
 
 	protected String uploadFile(HttpServletRequest request) {
@@ -41,7 +41,16 @@ public abstract class AbstractUploadManager {
 			request.setCharacterEncoding("UTF-8");
 			ServletFileUpload upload = new ServletFileUpload();
 			upload.setProgressListener(progressListener);
+			if (!ServletFileUpload.isMultipartContent(request)) {
+				log.info("<uploadFile> the request doesn't contain a multipart/form-data "
+								+ "or multipart/mixed stream, content type header is null .");
+				return null;
+			}
 			FileItemIterator iter = upload.getItemIterator(request);
+			if (iter == null) {
+				log.info("<uploadFile> the iterator is null.");
+				return null;
+			}
 			while (iter.hasNext()) {
 				FileItemStream item = iter.next();
 				String name = item.getFieldName();
@@ -90,7 +99,7 @@ public abstract class AbstractUploadManager {
 					fw.close();
 					String httpPath = ServiceConstant.FILE_IMAGE_PATH
 							+ commonName;
-					
+
 					setLocalFilePath(filepath);
 					setFilePath(httpPath);
 					setFileSize(size);

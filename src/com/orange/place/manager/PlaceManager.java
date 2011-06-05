@@ -45,6 +45,21 @@ public class PlaceManager extends CommonManager {
 		return new Place(map);
 	}
 
+	public static boolean isPlaceExist(CassandraClient cassandraClient,
+			String placeId) {
+		int count = cassandraClient.getColumnCount(DBConstants.PLACE, placeId);
+		if (count > 0)
+			return true;
+		return false;
+	}
+
+	public static String getCreator(CassandraClient cassandraClient,
+			String placeId) {
+		String creator = cassandraClient.getColumnValue(DBConstants.PLACE,
+				placeId, DBConstants.F_USERID);
+		return creator;
+	}
+
 	private static List<Place> getPlaceListFromRows(
 			Rows<String, String, String> rows) {
 		if (rows == null) {
@@ -95,12 +110,11 @@ public class PlaceManager extends CommonManager {
 		cassandraClient.insert(DBConstants.INDEX_PLACE_FOLLOWED_USERS, placeId,
 				uuid, dateUuid);
 	}
-	
-	public static void getUserFollowStatusByPlace(CassandraClient cassandraClient, 
-			String userId, String[] placeId,
-			boolean[] followStatusResult){
-		
-		
+
+	public static void getUserFollowStatusByPlace(
+			CassandraClient cassandraClient, String userId, String[] placeId,
+			boolean[] followStatusResult) {
+
 	}
 
 	public static void userFollowPlace(CassandraClient cassandraClient,
@@ -178,5 +192,18 @@ public class PlaceManager extends CommonManager {
 			return null;
 		}
 		return getPostList(cassandraClient, resultList);
+	}
+
+	public static void updatePlace(CassandraClient cassandraClient,
+			String placeId, String longitude, String latitude, String name,
+			String radius, String postType, String desc) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		putIntoMap(map, DBConstants.F_LONGITUDE, longitude);
+		putIntoMap(map, DBConstants.F_LATITUDE, latitude);
+		putIntoMap(map, DBConstants.F_NAME, name);
+		putIntoMap(map, DBConstants.F_RADIUS, radius);
+		putIntoMap(map, DBConstants.F_POST_TYPE, postType);
+		putIntoMap(map, DBConstants.F_DESC, desc);
+		cassandraClient.insert(DBConstants.PLACE, placeId, map);
 	}
 }

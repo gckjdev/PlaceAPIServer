@@ -73,6 +73,10 @@ public abstract class CommonService {
 				DeleteMeMessageService.class);
 		methodMap.put(ServiceConstant.METHOD_GETMEPOST,
 				GetMePostService.class);
+		methodMap.put(ServiceConstant.METHOD_UPDATEUSER,
+				UpdateUserService.class);
+		methodMap.put(ServiceConstant.METHOD_UPDATEPLACE,
+				UpdatePlaceService.class);
 	}
 
 	public CassandraClient getCassandraClient() {

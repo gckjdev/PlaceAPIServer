@@ -32,7 +32,8 @@ public class ServiceConstant {
 	public static final String METHOD_GETMYMESSAGE = "gmm";
 	public static final String METHOD_DELETEMESSAGE = "dmm";
 	public static final String METHOD_GETMEPOST = "gmep";
-
+	public static final String METHOD_UPDATEUSER = "uu";
+	public static final String METHOD_UPDATEPLACE = "up";
 	// request parameters
 
 	public static final String PARA_USERID = "uid";
@@ -41,6 +42,9 @@ public class ServiceConstant {
 	public static final String PARA_USERTYPE = "uty";
 	public static final String PARA_PASSWORD = "pwd";
 
+	public static final String PARA_MOBILE = "mb";
+	public static final String PARA_EMAIL = "em";
+	
 	public static final String PARA_DEVICEID = "did";
 	public static final String PARA_DEVICETYPE = "dty";
 	public static final String PARA_DEVICEMODEL = "dm";
@@ -125,6 +129,7 @@ public class ServiceConstant {
 	public static final String RET_MESSAGE = "msg";
 	public static final String RET_CODE = "ret";
 	public static final String RET_DATA = "dat";
+
 
 
 }
