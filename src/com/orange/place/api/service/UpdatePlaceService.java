@@ -51,7 +51,13 @@ public class UpdatePlaceService extends CommonService {
 	public boolean setDataFromRequest(HttpServletRequest request) {
 		placeId = request.getParameter(ServiceConstant.PARA_PLACEID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
-
+		
+		longitude = request.getParameter(ServiceConstant.PARA_LONGTITUDE);
+		latitude = request.getParameter(ServiceConstant.PARA_LATITUDE);
+		name = request.getParameter(ServiceConstant.PARA_NAME);
+		radius = request.getParameter(ServiceConstant.PARA_RADIUS);
+		postType = request.getParameter(ServiceConstant.PARA_POSTTYPE);
+		desc = request.getParameter(ServiceConstant.PARA_DESC);	
 		if (!check(placeId, ErrorCode.ERROR_PARAMETER_PLACEID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_PLACEID_NULL))
 			return false;
