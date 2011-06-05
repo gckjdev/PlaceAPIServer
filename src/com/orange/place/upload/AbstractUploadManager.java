@@ -90,14 +90,14 @@ public abstract class AbstractUploadManager {
 							+ "/"
 							+ TimeUUIDUtils.getUniqueTimeUUIDinMillis()
 									.toString() + "_" + filename;
-					filepath = ServiceConstant.FILE_LOCAL_IMAGE_PATH
+					filepath = ServiceConstant.FILE_LOCAL_PATH
 							+ commonName;
 
 					log.info("<uploadFile> write to file=" + filepath);
 					FileOutputStream fw = new FileOutputStream(filepath);
 					fw.write(bytes);
 					fw.close();
-					String httpPath = ServiceConstant.FILE_IMAGE_PATH
+					String httpPath = ServiceConstant.FILE_SERVER_NAME
 							+ commonName;
 
 					setLocalFilePath(filepath);
@@ -127,7 +127,7 @@ public abstract class AbstractUploadManager {
 		Date now = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		String datePath = formatter.format(now);
-		String pathString = ServiceConstant.FILE_LOCAL_IMAGE_PATH + datePath;
+		String pathString = ServiceConstant.FILE_LOCAL_PATH + datePath;
 		File path = new File(pathString);
 		if (!path.exists()) {
 			path.mkdirs();
