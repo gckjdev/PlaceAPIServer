@@ -71,6 +71,8 @@ public abstract class CommonService {
 				GetMyMessageService.class);
 		methodMap.put(ServiceConstant.METHOD_DELETEMESSAGE,
 				DeleteMeMessageService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMEPOST,
+				GetMePostService.class);
 	}
 
 	public CassandraClient getCassandraClient() {

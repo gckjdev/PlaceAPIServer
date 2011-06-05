@@ -20,7 +20,7 @@ public class GetUserPostService extends CommonService {
 	public void handleData() {
 		// TODO Auto-generated method stub
 		List<Post> postList = PostManager.getUserPosts(cassandraClient, userId,
-				null, beforeTimeStamp, maxCount);
+				beforeTimeStamp, maxCount);
 		if (postList == null) {
 			log.info("fail to get user post timeline, userId=" + userId);
 			resultCode = ErrorCode.ERROR_GET_USER_TIMELINE;

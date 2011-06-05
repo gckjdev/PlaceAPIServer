@@ -110,6 +110,9 @@ public class DBConstants {
 	public static final String F_TO_USERID = "toUserId";
 	public static final String F_SRC_MESSAGEID = "srcMessageId";
 	
+	
+	public static final String C_TOTAL_RELATED = "totalRelatedPost";
+	
 	// Value
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";
@@ -129,5 +132,6 @@ public class DBConstants {
 	public static final String AUTH_FLAG_NONE = "0";
 	
 	public static final String PLACE_TYPE_UNKNOWN = "0";
+
 
 }

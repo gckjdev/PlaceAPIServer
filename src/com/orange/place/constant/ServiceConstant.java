@@ -31,7 +31,7 @@ public class ServiceConstant {
 	public static final String METHOD_SENDMESSAGE = "sm";
 	public static final String METHOD_GETMYMESSAGE = "gmm";
 	public static final String METHOD_DELETEMESSAGE = "dmm";
-
+	public static final String METHOD_GETMEPOST = "gmep";
 
 	// request parameters
 
@@ -125,5 +125,6 @@ public class ServiceConstant {
 	public static final String RET_MESSAGE = "msg";
 	public static final String RET_CODE = "ret";
 	public static final String RET_DATA = "dat";
+
 
 }

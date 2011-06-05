@@ -85,7 +85,7 @@ public class ErrorCode {
 	public static final int ERROR_GET_USER_TIMELINE 		= 40004;
 	public static final int ERROR_GET_USER_FOLLOW_PLACE		= 40005;
 	public static final int ERROR_GET_RELATED_POST_BY_POST 	= 40006;
-
+	public static final int ERROR_GET_ME_MESSAGE 			= 40007;
 	//Message Error
 	
 	public static final int ERROR_GET_MY_MESSAGE 			= 50001;
@@ -101,6 +101,8 @@ public class ErrorCode {
 	static public final int ERROR_NAME_VALUE_NOTMATCH		= 90004;
 	static public final int ERROR_JSON 						= 90005;
 	static public final int ERROR_UPLOAD_FILE 				= 90006;
+
+
 
 
 

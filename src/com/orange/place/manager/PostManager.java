@@ -97,7 +97,6 @@ public class PostManager extends CommonManager {
 			}
 		}
 
-		
 		// get user nickname and avatar
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
@@ -118,10 +117,11 @@ public class PostManager extends CommonManager {
 					}
 				}
 			}
-			
+
 			// set related post number to post
 			// could be low performance, TODO wait for a better API or solution
-			int relatedPostCount = cassandraClient.getColumnCount(DBConstants.INDEX_POST_RELATED_POST, post.getSrcPostId());
+			int relatedPostCount = cassandraClient.getColumnCount(
+					DBConstants.INDEX_POST_RELATED_POST, post.getSrcPostId());
 			post.addValues(DBConstants.C_TOTAL_RELATED, relatedPostCount);
 		}
 
@@ -207,18 +207,13 @@ public class PostManager extends CommonManager {
 	}
 
 	public static List<Post> getUserPosts(CassandraClient cassandraClient,
-			String userId, String afterTimeStamp, String beforeTimeStamp,
+			String userId, String beforeTimeStamp,
 			String maxCount) {
-		UUID startUUID = null;
-		UUID endUUID = null;
-		if (beforeTimeStamp.length() > 0)
-			startUUID = getStartUUID(beforeTimeStamp);
-		if (afterTimeStamp.length() > 0)
-			endUUID = getStartUUID(afterTimeStamp);
+		UUID startUUID = getStartUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 		List<HColumn<UUID, String>> resultList = cassandraClient
 				.getColumnKeyByRange(DBConstants.INDEX_USER_POST, userId,
-						startUUID, endUUID, max);
+						startUUID, max);
 		if (resultList == null) {
 			return null;
 		}
@@ -297,5 +292,19 @@ public class PostManager extends CommonManager {
 			String userId, String replyPostId) {
 		UUID uuid = UUID.fromString(replyPostId);
 		cassandraClient.insert(DBConstants.INDEX_ME_POST, userId, uuid, "");
+	}
+
+	public static List<Post> getMePosts(CassandraClient cassandraClient,
+			String userId, String beforeTimeStamp, String maxCount) {
+		UUID startUUID = getStartUUID(beforeTimeStamp);
+		int max = getMaxCount(maxCount);
+		List<HColumn<UUID, String>> resultList = cassandraClient
+				.getColumnKeyByRange(DBConstants.INDEX_ME_POST, userId,
+						startUUID, max);
+		if (resultList == null) {
+			return null;
+		}
+		List<Post> postList = getPostList(cassandraClient, resultList);
+		return postList;
 	}
 }
