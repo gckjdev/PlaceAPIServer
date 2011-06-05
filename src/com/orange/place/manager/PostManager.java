@@ -97,11 +97,14 @@ public class PostManager extends CommonManager {
 			}
 		}
 
+		
+		// get user nickname and avatar
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
 				DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
 
 		for (Post post : postList) {
+			// set user nickname and avatar to post
 			String userId = post.getUserId();
 			if (userId != null) {
 				Row<String, String, String> userRow = userRows.getByKey(userId);
@@ -115,6 +118,11 @@ public class PostManager extends CommonManager {
 					}
 				}
 			}
+			
+			// set related post number to post
+			// could be low performance, TODO wait for a better API or solution
+			int relatedPostCount = cassandraClient.getColumnCount(DBConstants.INDEX_POST_RELATED_POST, post.getSrcPostId());
+			post.addValues(DBConstants.C_TOTAL_RELATED, relatedPostCount);
 		}
 
 		return postList;

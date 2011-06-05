@@ -32,6 +32,7 @@ public class ServiceConstant {
 	public static final String METHOD_GETMYMESSAGE = "gmm";
 	public static final String METHOD_DELETEMESSAGE = "dmm";
 
+
 	// request parameters
 
 	public static final String PARA_USERID = "uid";
@@ -68,6 +69,7 @@ public class ServiceConstant {
 	public static final String PARA_TOTAL_FORWARD = "tf";
 	public static final String PARA_TOTAL_QUOTE = "tq";
 	public static final String PARA_TOTAL_REPLY = "tr";
+	public static final String PARA_TOTAL_RELATED = "trl";	
 	public static final String PARA_CREATE_DATE = "cd";
 	public static final String PARA_SEQ = "sq";
 
