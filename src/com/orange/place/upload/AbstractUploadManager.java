@@ -36,7 +36,8 @@ public abstract class AbstractUploadManager {
 	public abstract int getResultCode();
 
 	protected String uploadFile(HttpServletRequest request) {
-		String filepath = null;
+		String localPath = null;
+		String httpPath = null;
 		try {
 			request.setCharacterEncoding("UTF-8");
 			ServletFileUpload upload = new ServletFileUpload();
@@ -67,7 +68,6 @@ public abstract class AbstractUploadManager {
 						filename = item.getName();
 					}
 					// Process the input stream
-					// TODO the code below could be better
 					ArrayList<Integer> byteArray = new ArrayList<Integer>();
 					int tempByte;
 					do {
@@ -90,17 +90,17 @@ public abstract class AbstractUploadManager {
 							+ "/"
 							+ TimeUUIDUtils.getUniqueTimeUUIDinMillis()
 									.toString() + "_" + filename;
-					filepath = ServiceConstant.FILE_LOCAL_PATH
+					localPath = ServiceConstant.FILE_LOCAL_PATH
 							+ commonName;
 
-					log.info("<uploadFile> write to file=" + filepath);
-					FileOutputStream fw = new FileOutputStream(filepath);
+					log.info("<uploadFile> write to file=" + localPath);
+					FileOutputStream fw = new FileOutputStream(localPath);
 					fw.write(bytes);
 					fw.close();
-					String httpPath = ServiceConstant.FILE_SERVER_NAME
+					httpPath = ServiceConstant.FILE_SERVER_NAME
 							+ commonName;
 
-					setLocalFilePath(filepath);
+					setLocalFilePath(localPath);
 					setFilePath(httpPath);
 					setFileSize(size);
 					setFileType(item.getContentType());
@@ -108,11 +108,11 @@ public abstract class AbstractUploadManager {
 			}
 		} catch (Exception e) {
 			resultCode = ErrorCode.ERROR_UPLOAD_FILE;
-			log.info("<uploadFile> filepaht=" + filepath
+			log.info("<uploadFile> filepaht=" + localPath
 					+ ", but catch exception=" + e.toString());
 			return null;
 		}
-		return filepath;
+		return httpPath;
 	}
 
 	public String getLocalFilePath() {
