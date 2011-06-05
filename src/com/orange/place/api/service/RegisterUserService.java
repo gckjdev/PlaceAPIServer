@@ -58,15 +58,18 @@ public class RegisterUserService extends CommonService {
 			return;
 		}		
 		
-		User user = UserManager.bindUser(cassandraClient, userId, loginId, loginIdType,  
-				deviceId,
+		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId,
+				deviceModel, deviceId, deviceOS,
+				deviceToken, language, countryCode,
+				password, 
 				nickName, avatar,
 				accessToken, accessTokenSecret,
 				province, city, location, gender, birthday,
 				sinaNickName, sinaDomain, qqNickName, qqDomain);
+
 		if (user == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
-			log.info("<bindUser> fail to bind user, userId=" + userId);
+			log.info("<registerUser> fail to create user");
 			return;
 		}
 		

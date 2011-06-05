@@ -40,7 +40,7 @@ public class UserManager extends CommonManager {
 		log.info("<createUserDeviceIdIndex> deviceId="+deviceId+", userId="+userId);
 		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_DEVICEID, deviceId, userId);				
 	}
-	
+		
 	public static User createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
 			String deviceModel, String deviceId, String deviceOS,
 			String deviceToken, String language, String countryCode,
@@ -114,11 +114,14 @@ public class UserManager extends CommonManager {
 	public static User bindUser(CassandraClient cc, String userId, String loginId, String loginIdType,
 			String deviceId,
 			String nickName, String avatar,
-			String accessToken, String accessTokenSecret,
+			String accessToken, String accessTokenSecret, String domain,
 			String province, String city, String location,
-			String gender, String birthday,
-			String sinaNickName, String sinaDomain,
-			String qqNickName, String qqDomain){
+			String gender, String birthday){
+		
+		if (userId == null){
+			log.info("<bindUser> but userId is null");
+			return null;
+		}
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(DBConstants.F_DEVICEID, deviceId);	
@@ -131,10 +134,6 @@ public class UserManager extends CommonManager {
 		map.put(DBConstants.F_LOCATION, location);
 		map.put(DBConstants.F_GENDER, gender);
 		map.put(DBConstants.F_BIRTHDAY, birthday);
-		map.put(DBConstants.F_SINA_NICKNAME, sinaNickName);
-		map.put(DBConstants.F_SINA_DOMAIN, sinaDomain);
-		map.put(DBConstants.F_QQ_NICKNAME, qqNickName);
-		map.put(DBConstants.F_QQ_DOMAIN, qqDomain);
 				
 		// set loginID, sina ID, qqID by loginIdType...
 		switch (Integer.parseInt(loginIdType)){
@@ -145,12 +144,17 @@ public class UserManager extends CommonManager {
 				map.put(DBConstants.F_SINAID, loginId);
 				map.put(DBConstants.F_SINA_ACCESS_TOKEN, accessToken);
 				map.put(DBConstants.F_SINA_ACCESS_TOKEN_SECRET, accessTokenSecret);
+				map.put(DBConstants.F_SINA_NICKNAME, nickName);
+				map.put(DBConstants.F_SINA_DOMAIN, domain);
 				
 				break;
 			case DBConstants.LOGINID_QQ:
 				map.put(DBConstants.F_QQID, loginId);
 				map.put(DBConstants.F_QQ_ACCESS_TOKEN, accessToken);
 				map.put(DBConstants.F_QQ_ACCESS_TOKEN_SECRET, accessTokenSecret);
+				map.put(DBConstants.F_QQ_NICKNAME, nickName);
+				map.put(DBConstants.F_QQ_DOMAIN, domain);
+
 				break;
 			case DBConstants.LOGINID_RENREN:
 				map.put(DBConstants.F_RENRENID, loginId);

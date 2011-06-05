@@ -13,7 +13,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ImageUtil {
 
-	private static String SmallImageSuffix = "_s.jpg";
+	private static String SmallImageSuffix = "_s.png";
 
 	private static String getSmallImageName(File imageFile) {
 		if (imageFile == null)

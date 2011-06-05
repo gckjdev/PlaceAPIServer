@@ -39,30 +39,39 @@ public class CreatePostService extends CommonService {
 		}
 
 		int contenTypeInt = Integer.parseInt(contentType);
-		if(contenTypeInt != DBConstants.CONTENT_TYPE_TEXT){
-//			AbstractUploadManager uploadManager = null;
-			switch(contenTypeInt){
+		String imageURL = null;
+		if (contenTypeInt != DBConstants.CONTENT_TYPE_TEXT) {
+			// AbstractUploadManager uploadManager = null;
+			switch (contenTypeInt) {
 			case DBConstants.CONTENT_TYPE_TEXT_PHOTO:
+			{
 				ImageUploadManager uploadManager = new ImageUploadManager();
-				uploadManager.uploadImageWithCompression(request);			
+				imageURL = uploadManager.uploadImageWithCompression(request);
 				resultCode = uploadManager.getResultCode();
+				log.info("<createPost> save image URL="+imageURL);
+			}
 				break;
 			default:
-				break;	
+				break;
 			}
-		}		
+		}
 		
+		if (resultCode != ErrorCode.ERROR_SUCCESS){
+			log.info("<createPost> fail to upload/save image, result code="+resultCode);
+			return;
+		}
+
 		// create post
 		Post post = PostManager.createPost(cassandraClient, userId, appId,
 				placeId, longitude, latitude, userLongitude, userLatitude,
-				textContent, contentType, srcPostId, replyPostId);
+				textContent, contentType, srcPostId, replyPostId, imageURL);
 		if (post == null) {
 			log.info("fail to create post, placeId=" + placeId + ", userId="
 					+ userId);
 			resultCode = ErrorCode.ERROR_CREATE_POST;
 			return;
-		}		
-			
+		}
+
 		// TODO return image URL if it's a image
 
 		String postId = post.getPostId();
@@ -73,17 +82,18 @@ public class CreatePostService extends CommonService {
 		PostManager.createUserPostIndex(cassandraClient, userId, postId);
 		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId,
 				createDate);
-		
+
 		// create post related post index
 		if (srcPostId == null || srcPostId.length() == 0) {
 			srcPostId = postId;
 		}
 		PostManager.createPostRelatedPostIndex(cassandraClient, postId,
 				srcPostId);
-		
+
 		// if there is a reply post, add into user ME post index
-		if (replyPostId != null && replyPostId.length() > 0){
-			PostManager.createUserMePostIndex(cassandraClient, userId, replyPostId);
+		if (replyPostId != null && replyPostId.length() > 0) {
+			PostManager.createUserMePostIndex(cassandraClient, userId,
+					replyPostId);
 		}
 
 		// set result data, return postId, nick name, and create date
@@ -159,9 +169,10 @@ public class CreatePostService extends CommonService {
 				ErrorCode.ERROR_PARAMETER_USER_LATITUDE_NULL))
 			return false;
 
-		if (!check(textContent, ErrorCode.ERROR_PARAMETER_TEXTCONTENT_EMPTY,
-				ErrorCode.ERROR_PARAMETER_TEXTCONTENT_NULL))
-			return false;
+		// no content check due to may only contain image
+//		if (!check(textContent, ErrorCode.ERROR_PARAMETER_TEXTCONTENT_EMPTY,
+//				ErrorCode.ERROR_PARAMETER_TEXTCONTENT_NULL))
+//			return false;
 
 		if (!check(contentType, ErrorCode.ERROR_PARAMETER_CONTENTTYPE_EMPTY,
 				ErrorCode.ERROR_PARAMETER_CONTENTTYPE_NULL))

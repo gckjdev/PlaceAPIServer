@@ -73,6 +73,7 @@ public class CommonServiceUtils {
 			json.put(ServiceConstant.PARA_SRC_POSTID, post.getSrcPostId());
 			json.put(ServiceConstant.PARA_NICKNAME, post.getUserNickName());
 			json.put(ServiceConstant.PARA_AVATAR, post.getUserAvatar());
+			json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
 			
 			obj.add(json);
 		}
