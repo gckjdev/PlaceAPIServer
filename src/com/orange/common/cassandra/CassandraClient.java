@@ -318,7 +318,7 @@ public class CassandraClient {
 		return r.get().intValue();
 	}
 
-	public int[] getMultiRowColumnCount(String columnFamilyName, String[] keys) {
+	public int[] getMultiRowColumnCount(String columnFamilyName, String... keys) {
 		int i = 0;
 		int count[] = new int[keys.length];
 		for (String key : keys) {

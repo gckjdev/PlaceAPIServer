@@ -27,8 +27,7 @@ public class ServiceConstant {
 	public static final String METHOD_GETMYPOSTS = "gmyp";
 	public static final String METHOD_DEVICELOGIN = "dl";
 	public static final String METHOD_GETPOSTRELATEDPOST = "gpr";
-	public static final String METHOD_BINDUSER = "bu";
-	
+	public static final String METHOD_BINDUSER = "bu";	
 
 	// request parameters
 
@@ -66,6 +65,7 @@ public class ServiceConstant {
 	public static final String PARA_TOTAL_FORWARD = "tf";
 	public static final String PARA_TOTAL_QUOTE = "tq";
 	public static final String PARA_TOTAL_REPLY = "tr";
+	public static final String PARA_TOTAL_RELATED = "trl";	
 	public static final String PARA_CREATE_DATE = "cd";
 	public static final String PARA_SEQ = "sq";
 

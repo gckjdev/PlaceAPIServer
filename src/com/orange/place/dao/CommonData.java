@@ -36,5 +36,10 @@ public class CommonData {
 			keyValueList.put(data.getName(), data.getValue());
 		}
 	}
+	
+	public void addValues(String key, int value) {
+		keyValueList.put(key, String.valueOf(value));
+	}
+
 
 }

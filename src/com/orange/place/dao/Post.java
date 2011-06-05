@@ -105,5 +105,11 @@ public class Post extends CommonData {
 		// TODO Auto-generated method stub
 		return getKey(DBConstants.F_AVATAR);
 	}
+
+	public Object getTotalRelatedPost() {
+		// TODO Auto-generated method stub
+		return getKey(DBConstants.C_TOTAL_RELATED);
+	}
+
 	
 }
