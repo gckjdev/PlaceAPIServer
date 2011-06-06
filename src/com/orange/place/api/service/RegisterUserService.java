@@ -2,6 +2,8 @@ package com.orange.place.api.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.User;
@@ -73,6 +75,15 @@ public class RegisterUserService extends CommonService {
 			return;
 		}
 		
+		String userId = user.getUserId();
+		UserManager.createUserLoginIdIndex(cassandraClient, userId, loginId, loginIdType);
+		UserManager.createUserDeviceIdIndex(cassandraClient, userId, deviceId);
+		
+		// set result data, return userId
+		JSONObject obj = new JSONObject();
+		obj.put(ServiceConstant.PARA_USERID, userId);
+		resultData = obj;
+
 		// TODO if there is any exception, shall clean all inconsistent data and index
 	}
 
