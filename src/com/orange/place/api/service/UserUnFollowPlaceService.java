@@ -4,17 +4,21 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
+import com.orange.place.manager.CommonManager;
 import com.orange.place.manager.PlaceManager;
+import com.orange.place.manager.PostManager;
 
 public class UserUnFollowPlaceService extends CommonService {
 	String userId;
 	String placeId;
 	String appId;
-	
+
 	@Override
 	public void handleData() {
 		// TODO Auto-generated method stub
 		PlaceManager.userUnFollowPlace(cassandraClient, userId, placeId);
+		PostManager.deleteUnFollowPlacePosts(cassandraClient, userId, placeId,
+				CommonManager.MAX_DELETE_UNFOLLOWPLACE_COUNT);
 	}
 
 	@Override

@@ -4,26 +4,17 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
-import com.orange.place.dao.IdGenerator;
-import com.orange.place.manager.CommonManager;
-import com.orange.place.manager.PlaceManager;
-import com.orange.place.manager.PostManager;
-import java.util.UUID;
+import com.orange.place.manager.MessageManager;
 
-public class UserFollowPlaceService extends CommonService {
-
+public class DeleteMeMessageService extends CommonService {
 	String userId;
-	String placeId;
 	String appId;
+	String messageId;
 
 	@Override
 	public void handleData() {
-		PlaceManager.userFollowPlace(cassandraClient, userId, placeId);
-		long time = System.currentTimeMillis()
-				- CommonManager.MAX_FOLLOWPLACE_POSTS_TIMEOFFSET;
-		UUID end = IdGenerator.getUUIDFromTime(time);
-		PostManager.addFollowPlacePosts(cassandraClient, userId, placeId, end,
-				CommonManager.MAX_ADD_FOLLOWPLACE_COUNT);
+		// TODO Auto-generated method stub
+		MessageManager.deleteMessage(cassandraClient, userId, messageId);
 	}
 
 	@Override
@@ -35,17 +26,15 @@ public class UserFollowPlaceService extends CommonService {
 	@Override
 	public void printData() {
 		// TODO Auto-generated method stub
-		log.info(String.format("userId=%s, appId=%s, placeId=%s,", userId,
-				appId, placeId));
 
 	}
 
 	@Override
 	public boolean setDataFromRequest(HttpServletRequest request) {
-
+		// TODO Auto-generated method stub
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
-		placeId = request.getParameter(ServiceConstant.PARA_PLACEID);
+		messageId = request.getParameter(ServiceConstant.PARA_MESSAGE_ID);
 
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_APPID_NULL))
@@ -55,8 +44,8 @@ public class UserFollowPlaceService extends CommonService {
 				ErrorCode.ERROR_PARAMETER_USERID_NULL))
 			return false;
 
-		if (!check(placeId, ErrorCode.ERROR_PARAMETER_PLACEID_EMPTY,
-				ErrorCode.ERROR_PARAMETER_PLACEID_NULL))
+		if (!check(messageId, ErrorCode.ERROR_PARAMETER_MESSAGEID_EMPTY,
+				ErrorCode.ERROR_PARAMETER_MESSAGEID_NULL))
 			return false;
 
 		return true;

@@ -16,6 +16,7 @@ public class GetPostRelatedPostService extends CommonService {
 	String postId;
 	String beforeTimeStamp;
 	String maxCount;
+	String excludePostId;
 	
 	@Override
 	public void handleData() {
@@ -27,7 +28,7 @@ public class GetPostRelatedPostService extends CommonService {
 			return;
 		}
 
-		resultData = CommonServiceUtils.postListToJSON(resultList);
+		resultData = CommonServiceUtils.postListToJSON(resultList, excludePostId);
 	}
 
 	@Override
@@ -48,6 +49,7 @@ public class GetPostRelatedPostService extends CommonService {
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
 		postId = request.getParameter(ServiceConstant.PARA_POSTID);
+		excludePostId = request.getParameter(ServiceConstant.PARA_EXCLUDE_POSTID);
 		beforeTimeStamp = request
 				.getParameter(ServiceConstant.PARA_BEFORE_TIMESTAMP);
 		maxCount = request.getParameter(ServiceConstant.PARA_MAX_COUNT);
@@ -63,7 +65,7 @@ public class GetPostRelatedPostService extends CommonService {
 		if (!check(postId, ErrorCode.ERROR_PARAMETER_POSTID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_POSTID_NULL))
 			return false;
-
+		
 		// TODO need to check maxCount is valid decimal/number
 
 		return true;

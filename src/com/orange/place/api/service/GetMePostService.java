@@ -1,5 +1,7 @@
 package com.orange.place.api.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
@@ -7,9 +9,7 @@ import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Post;
 import com.orange.place.manager.PostManager;
 
-import java.util.List;
-
-public class GetUserTimelineService extends CommonService {
+public class GetMePostService extends CommonService {
 
 	String userId;
 	String appId;
@@ -18,15 +18,14 @@ public class GetUserTimelineService extends CommonService {
 
 	@Override
 	public void handleData() {
-
-		List<Post> postList = PostManager.getUserTimeline(cassandraClient,
-				userId, beforeTimeStamp, maxCount);
+		// TODO Auto-generated method stub
+		List<Post> postList = PostManager.getMePosts(cassandraClient, userId,
+				beforeTimeStamp, maxCount);
 		if (postList == null) {
-			log.info("fail to get user post timeline, userId=" + userId);
-			resultCode = ErrorCode.ERROR_GET_USER_TIMELINE;
+			log.info("fail to get at me post, userId=" + userId);
+			resultCode = ErrorCode.ERROR_GET_ME_MESSAGE;
 			return;
 		}
-
 		resultData = CommonServiceUtils.postListToJSON(postList);
 	}
 
@@ -38,13 +37,13 @@ public class GetUserTimelineService extends CommonService {
 
 	@Override
 	public void printData() {
-		log.info(String.format("userId=%s, appId=%s, "
-				+ "beforeTimeStamp=%s, maxCount=%s", userId, appId,
-				beforeTimeStamp, maxCount));
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public boolean setDataFromRequest(HttpServletRequest request) {
+		// TODO Auto-generated method stub
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
 		beforeTimeStamp = request
@@ -63,5 +62,4 @@ public class GetUserTimelineService extends CommonService {
 
 		return true;
 	}
-
 }

@@ -2,8 +2,6 @@ package com.orange.place.api.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.json.JSONObject;
-
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.User;
@@ -11,6 +9,7 @@ import com.orange.place.manager.UserManager;
 
 public class RegisterUserService extends CommonService {
 
+	String userId;
 	String loginId;
 	String loginIdType;
 	String appId;
@@ -59,26 +58,20 @@ public class RegisterUserService extends CommonService {
 			return;
 		}		
 		
-		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId, 
-				deviceModel, deviceId, deviceOS, deviceToken, 
-				language, countryCode, password, nickName, avatar,
+		User user = UserManager.createUser(cassandraClient, loginId, loginIdType, appId,
+				deviceModel, deviceId, deviceOS,
+				deviceToken, language, countryCode,
+				password, 
+				nickName, avatar,
 				accessToken, accessTokenSecret,
 				province, city, location, gender, birthday,
 				sinaNickName, sinaDomain, qqNickName, qqDomain);
+
 		if (user == null){
 			resultCode = ErrorCode.ERROR_CREATE_USER;
-			log.info("<registerUser> fail to create user, loginId="+loginId);
+			log.info("<registerUser> fail to create user");
 			return;
 		}
-		
-		String userId = user.getUserId();
-		UserManager.createUserDeviceIdIndex(cassandraClient, userId, deviceId);
-		UserManager.createUserLoginIdIndex(cassandraClient, userId, loginId, loginIdType);
-		
-		// set result data, return userId
-		JSONObject obj = new JSONObject();
-		obj.put(ServiceConstant.PARA_USERID, userId);
-		resultData = obj;
 		
 		// TODO if there is any exception, shall clean all inconsistent data and index
 	}
@@ -92,9 +85,9 @@ public class RegisterUserService extends CommonService {
 	@Override
 	public void printData() {
 		// TODO Auto-generated method stub
-		log.info(String.format("loginId=%s, loginIdType=%s, appId=%s, deviceModel=%s, " +
+		log.info(String.format("userId=%s, loginId=%s, loginIdType=%s, appId=%s, deviceModel=%s, " +
 				"deviceId=%s, deviceOS=%s, deviceToken=%s, " +
-				"language=%s, countryCode=%s, nickName=%s", loginId, loginIdType,
+				"language=%s, countryCode=%s, nickName=%s", userId, loginId, loginIdType,
 				appId, deviceModel, deviceId, deviceOS, deviceToken,
 				language, countryCode, nickName));
 	}
@@ -102,6 +95,7 @@ public class RegisterUserService extends CommonService {
 	@Override
 	public boolean setDataFromRequest(HttpServletRequest request) {
 		// TODO Auto-generated method stub
+		userId = request.getParameter(ServiceConstant.PARA_USERID);
 		loginId = request.getParameter(ServiceConstant.PARA_LOGINID);
 		loginIdType = request.getParameter(ServiceConstant.PARA_LOGINIDTYPE);
 		deviceId = request.getParameter(ServiceConstant.PARA_DEVICEID);

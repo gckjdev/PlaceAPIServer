@@ -3,10 +3,7 @@ package com.orange.place.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
-import com.orange.place.constant.ServiceConstant;
-
 import me.prettyprint.hector.api.beans.HColumn;
 
 public class Place extends CommonData {

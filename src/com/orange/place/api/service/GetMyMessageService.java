@@ -1,33 +1,33 @@
 package com.orange.place.api.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
-import com.orange.place.dao.Post;
-import com.orange.place.manager.PostManager;
+import com.orange.place.dao.Message;
+import com.orange.place.manager.MessageManager;
 
-import java.util.List;
-
-public class GetUserTimelineService extends CommonService {
-
+public class GetMyMessageService extends CommonService {
+   
 	String userId;
 	String appId;
 	String beforeTimeStamp;
 	String maxCount;
-
+	
 	@Override
 	public void handleData() {
-
-		List<Post> postList = PostManager.getUserTimeline(cassandraClient,
+		List<Message> messageList = MessageManager.getMyMessage(cassandraClient,
 				userId, beforeTimeStamp, maxCount);
-		if (postList == null) {
-			log.info("fail to get user post timeline, userId=" + userId);
-			resultCode = ErrorCode.ERROR_GET_USER_TIMELINE;
+		if (messageList == null) {
+			log.info("fail to get user message, userId=" + userId);
+			resultCode = ErrorCode.ERROR_GET_MY_MESSAGE;
 			return;
 		}
+//need to add into json
+		resultData = CommonServiceUtils.messageListToJSON(messageList);
 
-		resultData = CommonServiceUtils.postListToJSON(postList);
 	}
 
 	@Override
@@ -38,9 +38,8 @@ public class GetUserTimelineService extends CommonService {
 
 	@Override
 	public void printData() {
-		log.info(String.format("userId=%s, appId=%s, "
-				+ "beforeTimeStamp=%s, maxCount=%s", userId, appId,
-				beforeTimeStamp, maxCount));
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

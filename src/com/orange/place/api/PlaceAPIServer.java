@@ -5,22 +5,12 @@ package com.orange.place.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
- 
-import java.io.BufferedReader;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
@@ -30,7 +20,6 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import com.orange.common.cassandra.CassandraClient;
 import com.orange.place.api.service.ServiceHandler;
 
 public class PlaceAPIServer extends AbstractHandler
@@ -39,7 +28,7 @@ public class PlaceAPIServer extends AbstractHandler
 	
 	public static AtomicInteger uniqueId = new AtomicInteger();
 	
-	private int port;
+//	private int port;
 	
 	public int getPort(){		
 		return 8000;

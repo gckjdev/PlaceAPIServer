@@ -19,6 +19,15 @@ public abstract class CommonService {
 	int resultCode = ErrorCode.ERROR_SUCCESS;
 	Object resultData = null;
 	CassandraClient cassandraClient = null;
+	HttpServletRequest request = null;
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
 
 	@SuppressWarnings("unchecked")
 	static private Map<String, Class> methodMap = null;
@@ -50,8 +59,24 @@ public abstract class CommonService {
 				GetUserFollowPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_DEVICELOGIN,
 				DeviceLoginService.class);
-		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST, 
+		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST,
 				GetPostRelatedPostService.class);
+		methodMap.put(ServiceConstant.METHOD_BINDUSER, 
+				BindUserService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMYPOSTS,
+				GetUserPostService.class);
+		methodMap.put(ServiceConstant.METHOD_SENDMESSAGE,
+				SendMessageService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMYMESSAGE,
+				GetMyMessageService.class);
+		methodMap.put(ServiceConstant.METHOD_DELETEMESSAGE,
+				DeleteMeMessageService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMEPOST,
+				GetMePostService.class);
+		methodMap.put(ServiceConstant.METHOD_UPDATEUSER,
+				UpdateUserService.class);
+		methodMap.put(ServiceConstant.METHOD_UPDATEPLACE,
+				UpdatePlaceService.class);
 	}
 
 	public CassandraClient getCassandraClient() {
@@ -66,12 +91,19 @@ public abstract class CommonService {
 			.getName());
 
 	@SuppressWarnings("unchecked")
-	public static CommonService createServiceObjectByMethod(String method) throws InstantiationException, IllegalAccessException {
+	public static CommonService createServiceObjectByMethod(String method)
+			throws InstantiationException, IllegalAccessException {
 		initMethodMap();
 		Class classObj = methodMap.get(method);
-		CommonService obj = (CommonService)classObj.newInstance();
-		if (obj == null) {
+		if (classObj == null) {
 			log.warning("Cannot find service object for METHOD = " + method);
+			return null;
+		}
+
+		CommonService obj = (CommonService) classObj.newInstance();
+		if (obj == null) {
+			log.warning("Cannot create service object by given class for method = "
+							+ method);
 		}
 		return obj;
 	}

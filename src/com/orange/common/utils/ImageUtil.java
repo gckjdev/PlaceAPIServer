@@ -13,12 +13,12 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ImageUtil {
 
-	private static String SmallImageSuffix = "_s.jpg";
+	private static String SmallImageSuffix = "_s.png";
 
-	public static String getSmallImageName(File imageFile) {
+	private static String getSmallImageName(File imageFile) {
 		if (imageFile == null)
 			return null;
-		String imageName = imageFile.getName();
+		String imageName = imageFile.getAbsolutePath();
 		int index = imageName.lastIndexOf(".");
 		if (index < 0)
 			return null;
@@ -27,6 +27,15 @@ public class ImageUtil {
 		return smallImageName;
 	}
 
+	public static String getSmallImagePath(String httpPath){
+		int index = httpPath.lastIndexOf(".");
+		if (index < 0)
+			return null;
+		String smallImageName = httpPath.substring(0, index)
+				+ SmallImageSuffix;
+		return smallImageName;
+	}
+	
 	public static File setImageSize(File imageFile, int height){
 		Image src = null;
 		File outFile = null;

@@ -9,7 +9,7 @@ create column family place_place
 create column family place_post
     with comparator = AsciiType;
 
-create column family place_photo
+create column family place_message
     with comparator = AsciiType;
 
 create column family place_user_similarity
