@@ -7,3 +7,7 @@ truncate place_place;
 truncate place_post;
 
 truncate place_photo;
+
+truncate place_user_similarity;
+
+truncate place_user_post_stat;
