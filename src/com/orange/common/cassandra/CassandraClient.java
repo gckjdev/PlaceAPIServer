@@ -4,10 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.orange.place.constant.DBConstants;
-import com.orange.place.constant.ServiceConstant;
-import com.orange.place.manager.CommonManager;
-
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -27,6 +23,8 @@ import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
+
+import com.orange.place.manager.CommonManager;
 
 public class CassandraClient {
 	Cluster cluster;
@@ -63,8 +61,8 @@ public class CassandraClient {
 			String columnName, String columnValue) {
 		Mutator<String> mutator = HFactory.createMutator(keyspace,
 				StringSerializer.get());
-		mutator.addInsertion(key, columnFamilyName, HFactory
-				.createStringColumn(columnName, columnValue));
+		mutator.addInsertion(key, columnFamilyName,
+				HFactory.createStringColumn(columnName, columnValue));
 		mutator.execute();
 		return true;
 	}
@@ -79,8 +77,8 @@ public class CassandraClient {
 			String columnValue = "";
 			if (columnValues != null && columnValues[i] != null)
 				columnValue = columnValues[i];
-			mutator.addInsertion(key, columnFamilyName, HFactory
-					.createStringColumn(columnName, columnValue));
+			mutator.addInsertion(key, columnFamilyName,
+					HFactory.createStringColumn(columnName, columnValue));
 		}
 		mutator.execute();
 		return true;
@@ -115,11 +113,11 @@ public class CassandraClient {
 			String columnName = entry.getKey();
 			String columnValue = entry.getValue();
 			if (columnValue == null) {
-				mutator.addInsertion(key, columnFamilyName, HFactory
-						.createStringColumn(columnName, ""));
+				mutator.addInsertion(key, columnFamilyName,
+						HFactory.createStringColumn(columnName, ""));
 			} else {
-				mutator.addInsertion(key, columnFamilyName, HFactory
-						.createStringColumn(columnName, columnValue));
+				mutator.addInsertion(key, columnFamilyName,
+						HFactory.createStringColumn(columnName, columnValue));
 			}
 		}
 
@@ -143,8 +141,8 @@ public class CassandraClient {
 		if (columnQuery == null)
 			return null;
 
-		columnQuery.setColumnFamily(columnFamilyName).setKey(key).setName(
-				columnName);
+		columnQuery.setColumnFamily(columnFamilyName).setKey(key)
+				.setName(columnName);
 		QueryResult<HColumn<String, String>> result = columnQuery.execute();
 		if (result == null) {
 			return null;
@@ -166,8 +164,8 @@ public class CassandraClient {
 			return null;
 		}
 
-		q.setColumnFamily(columnFamilyName).setKey(key).setColumnNames(
-				columnNames);
+		q.setColumnFamily(columnFamilyName).setKey(key)
+				.setColumnNames(columnNames);
 
 		QueryResult<ColumnSlice<String, String>> r = q.execute();
 		if (r == null) {
@@ -180,6 +178,34 @@ public class CassandraClient {
 		}
 
 		List<HColumn<String, String>> result = slices.getColumns();
+
+		// print for test TODO rem the code
+		System.out.println("get data result size=" + result.size());
+		for (HColumn<String, String> data : result) {
+			System.out.println("column[" + data.getName() + "]="
+					+ data.getValue());
+		}
+
+		return result;
+	}
+
+	public List<HColumn<String, String>> getColumnKey(String columnFamilyName,
+			String key, int size) {
+		SliceQuery<String, String, String> q = HFactory.createSliceQuery(
+				keyspace, ss, ss, ss);
+		if (q == null) {
+			return null;
+		}
+
+		q.setColumnFamily(columnFamilyName).setKey(key)
+				.setRange(null, null, true, size);
+
+		QueryResult<ColumnSlice<String, String>> r = q.execute();
+		if (r == null) {
+			return null;
+		}
+
+		List<HColumn<String, String>> result = r.get().getColumns();
 
 		// print for test TODO rem the code
 		System.out.println("get data result size=" + result.size());
@@ -204,8 +230,8 @@ public class CassandraClient {
 			return null;
 		}
 
-		q.setColumnFamily(columnFamilyName).setKey(key).setRange(start, end,
-				true, size);
+		q.setColumnFamily(columnFamilyName).setKey(key)
+				.setRange(start, end, true, size);
 
 		QueryResult<ColumnSlice<UUID, String>> r = q.execute();
 		if (r == null) {

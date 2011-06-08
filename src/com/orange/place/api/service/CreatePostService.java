@@ -24,7 +24,9 @@ public class CreatePostService extends CommonService {
 	String textContent;
 	String contentType;
 	String syncSNS;
+	// Source Post
 	String srcPostId;
+	// Empty -> New, Create
 	String replyPostId;
 
 	@Override
@@ -43,21 +45,21 @@ public class CreatePostService extends CommonService {
 		if (contenTypeInt != DBConstants.CONTENT_TYPE_TEXT) {
 			// AbstractUploadManager uploadManager = null;
 			switch (contenTypeInt) {
-			case DBConstants.CONTENT_TYPE_TEXT_PHOTO:
-			{
+			case DBConstants.CONTENT_TYPE_TEXT_PHOTO: {
 				ImageUploadManager uploadManager = new ImageUploadManager();
 				imageURL = uploadManager.uploadImageWithCompression(request);
 				resultCode = uploadManager.getResultCode();
-				log.info("<createPost> save image URL="+imageURL);
+				log.info("<createPost> save image URL=" + imageURL);
 			}
 				break;
 			default:
 				break;
 			}
 		}
-		
-		if (resultCode != ErrorCode.ERROR_SUCCESS){
-			log.info("<createPost> fail to upload/save image, result code="+resultCode);
+
+		if (resultCode != ErrorCode.ERROR_SUCCESS) {
+			log.info("<createPost> fail to upload/save image, result code="
+					+ resultCode);
 			return;
 		}
 
@@ -94,7 +96,10 @@ public class CreatePostService extends CommonService {
 		if (replyPostId != null && replyPostId.length() > 0) {
 			PostManager.createUserMePostIndex(cassandraClient, userId,
 					replyPostId);
+			// TODO: log reply here.
 		}
+
+		// TODO: log create post here.
 
 		// set result data, return postId, nick name, and create date
 		JSONObject obj = new JSONObject();
@@ -113,15 +118,12 @@ public class CreatePostService extends CommonService {
 	@Override
 	public void printData() {
 		// TODO Auto-generated method stub
-		log
-				.info(String
-						.format(
-								"userId=%s, appId=%s, placeId=%s,"
-										+ "longitude=%s, latitude=%s, userLongitude=%s, userLatitude=%s,"
-										+ "textContent=%s, contentType=%s, syncSNS=%s",
-								userId, appId, placeId, longitude, latitude,
-								userLongitude, userLatitude, textContent,
-								contentType, syncSNS));
+		log.info(String
+				.format("userId=%s, appId=%s, placeId=%s,"
+						+ "longitude=%s, latitude=%s, userLongitude=%s, userLatitude=%s,"
+						+ "textContent=%s, contentType=%s, syncSNS=%s", userId,
+						appId, placeId, longitude, latitude, userLongitude,
+						userLatitude, textContent, contentType, syncSNS));
 	}
 
 	@Override
@@ -170,9 +172,9 @@ public class CreatePostService extends CommonService {
 			return false;
 
 		// no content check due to may only contain image
-//		if (!check(textContent, ErrorCode.ERROR_PARAMETER_TEXTCONTENT_EMPTY,
-//				ErrorCode.ERROR_PARAMETER_TEXTCONTENT_NULL))
-//			return false;
+		// if (!check(textContent, ErrorCode.ERROR_PARAMETER_TEXTCONTENT_EMPTY,
+		// ErrorCode.ERROR_PARAMETER_TEXTCONTENT_NULL))
+		// return false;
 
 		if (!check(contentType, ErrorCode.ERROR_PARAMETER_CONTENTTYPE_EMPTY,
 				ErrorCode.ERROR_PARAMETER_CONTENTTYPE_NULL))

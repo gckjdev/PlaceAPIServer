@@ -1,6 +1,8 @@
 package com.orange.place.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import me.prettyprint.hector.api.beans.ColumnSlice;
@@ -48,17 +50,17 @@ public class UserManager extends CommonManager {
 		return cc.insert(DBConstants.INDEX_USER, DBConstants.KEY_DEVICEID,
 				deviceId, userId);
 	}
-		
-	public static User createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
-			String deviceModel, String deviceId, String deviceOS,
-			String deviceToken, String language, String countryCode,
-			String password, String nickName, String avatar,
-			String accessToken, String accessTokenSecret,
-			String province, String city, String location,
-			String gender, String birthday,
-			String sinaNickName, String sinaDomain,
-			String qqNickName, String qqDomain){
-		
+
+	public static User createUser(CassandraClient cc, String loginId,
+			String loginIdType, String appId, String deviceModel,
+			String deviceId, String deviceOS, String deviceToken,
+			String language, String countryCode, String password,
+			String nickName, String avatar, String accessToken,
+			String accessTokenSecret, String province, String city,
+			String location, String gender, String birthday,
+			String sinaNickName, String sinaDomain, String qqNickName,
+			String qqDomain) {
+
 		String userId = IdGenerator.generateId();
 
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -119,14 +121,13 @@ public class UserManager extends CommonManager {
 		return new User(map);
 	}
 
-	public static User bindUser(CassandraClient cc, String userId, String loginId, String loginIdType,
-			String deviceId,
-			String nickName, String avatar,
-			String accessToken, String accessTokenSecret, String domain,
-			String province, String city, String location,
-			String gender, String birthday){
-		
-		if (userId == null){
+	public static User bindUser(CassandraClient cc, String userId,
+			String loginId, String loginIdType, String deviceId,
+			String nickName, String avatar, String accessToken,
+			String accessTokenSecret, String domain, String province,
+			String city, String location, String gender, String birthday) {
+
+		if (userId == null) {
 			log.info("<bindUser> but userId is null");
 			return null;
 		}
@@ -142,37 +143,37 @@ public class UserManager extends CommonManager {
 		map.put(DBConstants.F_LOCATION, location);
 		map.put(DBConstants.F_GENDER, gender);
 		map.put(DBConstants.F_BIRTHDAY, birthday);
-				
-		// set loginID, sina ID, qqID by loginIdType...
-		switch (Integer.parseInt(loginIdType)){
-			case DBConstants.LOGINID_OWN:
-				map.put(DBConstants.F_LOGINID, loginId);
-				break;
-			case DBConstants.LOGINID_SINA:
-				map.put(DBConstants.F_SINAID, loginId);
-				map.put(DBConstants.F_SINA_ACCESS_TOKEN, accessToken);
-				map.put(DBConstants.F_SINA_ACCESS_TOKEN_SECRET, accessTokenSecret);
-				map.put(DBConstants.F_SINA_NICKNAME, nickName);
-				map.put(DBConstants.F_SINA_DOMAIN, domain);
-				
-				break;
-			case DBConstants.LOGINID_QQ:
-				map.put(DBConstants.F_QQID, loginId);
-				map.put(DBConstants.F_QQ_ACCESS_TOKEN, accessToken);
-				map.put(DBConstants.F_QQ_ACCESS_TOKEN_SECRET, accessTokenSecret);
-				map.put(DBConstants.F_QQ_NICKNAME, nickName);
-				map.put(DBConstants.F_QQ_DOMAIN, domain);
 
-				break;
-			case DBConstants.LOGINID_RENREN:
-				map.put(DBConstants.F_RENRENID, loginId);
-				break;
-			case DBConstants.LOGINID_TWITTER:
-				map.put(DBConstants.F_TWITTERID, loginId);
-				break;
-			case DBConstants.LOGINID_FACEBOOK:
-				map.put(DBConstants.F_FACEBOOKID, loginId);
-				break;
+		// set loginID, sina ID, qqID by loginIdType...
+		switch (Integer.parseInt(loginIdType)) {
+		case DBConstants.LOGINID_OWN:
+			map.put(DBConstants.F_LOGINID, loginId);
+			break;
+		case DBConstants.LOGINID_SINA:
+			map.put(DBConstants.F_SINAID, loginId);
+			map.put(DBConstants.F_SINA_ACCESS_TOKEN, accessToken);
+			map.put(DBConstants.F_SINA_ACCESS_TOKEN_SECRET, accessTokenSecret);
+			map.put(DBConstants.F_SINA_NICKNAME, nickName);
+			map.put(DBConstants.F_SINA_DOMAIN, domain);
+
+			break;
+		case DBConstants.LOGINID_QQ:
+			map.put(DBConstants.F_QQID, loginId);
+			map.put(DBConstants.F_QQ_ACCESS_TOKEN, accessToken);
+			map.put(DBConstants.F_QQ_ACCESS_TOKEN_SECRET, accessTokenSecret);
+			map.put(DBConstants.F_QQ_NICKNAME, nickName);
+			map.put(DBConstants.F_QQ_DOMAIN, domain);
+
+			break;
+		case DBConstants.LOGINID_RENREN:
+			map.put(DBConstants.F_RENRENID, loginId);
+			break;
+		case DBConstants.LOGINID_TWITTER:
+			map.put(DBConstants.F_TWITTERID, loginId);
+			break;
+		case DBConstants.LOGINID_FACEBOOK:
+			map.put(DBConstants.F_FACEBOOKID, loginId);
+			break;
 		}
 
 		log.info("<bindUser> userId=" + userId + ", loginId=" + loginId);
@@ -240,5 +241,24 @@ public class UserManager extends CommonManager {
 		if (count > 0)
 			return true;
 		return false;
+	}
+
+	// TODO: duplicate
+	public Iterator<String> findAllUserId(CassandraClient cassandraClient) {
+		int max = DBConstants.UNLIMITED_COUNT;
+		Rows<String, String, String> rows = cassandraClient.getMultiRow(
+				DBConstants.USER, max);
+
+		List<String> userList = getKeys(rows);
+		return userList.iterator();
+	}
+
+	private List<String> getKeys(Rows<String, String, String> rows) {
+		List<String> userList = new ArrayList<String>();
+		for (Row<String, String, String> row : rows) {
+			String userId = row.getKey();
+			userList.add(userId);
+		}
+		return userList;
 	}
 }
