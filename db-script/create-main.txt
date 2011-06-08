@@ -12,3 +12,8 @@ create column family place_post
 create column family place_message
     with comparator = AsciiType;
 
+create column family place_user_similarity
+    with comparator = AsciiType;
+        
+create column family place_user_post_stat
+    with comparator = AsciiType;

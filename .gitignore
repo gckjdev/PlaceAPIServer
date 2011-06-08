@@ -2,3 +2,5 @@
 /.project
 /bin/
 /*.classpath
+/target/
+/lib/
