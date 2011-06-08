@@ -131,6 +131,8 @@ public class UserManager extends CommonManager {
 			return null;
 		}
 
+		// TODO shall not update all user data, only update if the field exist
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(DBConstants.F_DEVICEID, deviceId);
 		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
