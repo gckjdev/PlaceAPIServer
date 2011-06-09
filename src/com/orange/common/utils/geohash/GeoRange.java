@@ -1,4 +1,4 @@
-package com.orange.place.analysis.domain;
+package com.orange.common.utils.geohash;
 
 public class GeoRange {
 
@@ -22,4 +22,8 @@ public class GeoRange {
 		this.min = min;
 	}
 
+	@Override
+	public String toString() {
+		return "min:" + min + " ;max:" + max;
+	}
 }

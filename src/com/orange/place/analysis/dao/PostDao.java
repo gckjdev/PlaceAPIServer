@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import me.prettyprint.hector.api.beans.HColumn;
 
-import com.orange.place.analysis.domain.GeoRange;
+import com.orange.common.utils.geohash.GeoRange;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.Post;
 

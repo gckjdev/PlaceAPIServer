@@ -4,20 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GeoHashUtil {
+
+	private static final int DEFAULT_PRECISION = 26;
+
 	// geohash's char map
-	// no a's i's l's o's
-	// old MacDonal wouldn't be happy
-	private static char[] _base32 = { '0', '1', '2', '3', '4', '5', '6', '7',
-			'8', '9', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n',
-			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-	private final static Map<Character, Integer> _decodemap = new HashMap<Character, Integer>();
+	public static final char[] _base32 = { '0', '1', '2', '3', '4', '5', '6',
+			'7', '8', '9', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm',
+			'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+	public final static Map<Character, Integer> _decodemap = new HashMap<Character, Integer>();
 	static {
 		int sz = _base32.length;
 		for (int i = 0; i < sz; i++) {
 			_decodemap.put(_base32[i], i);
 		}
 	}
-	private static int precision = 26;
+
+	private int precision = DEFAULT_PRECISION;
+
 	private static int[] bits = { 16, 8, 4, 2, 1 };
 
 	public String encode(double latitude, double longitude) {
@@ -111,5 +114,9 @@ public class GeoHashUtil {
 		double base = Math.pow(10, -precision);
 		double diff = x % base;
 		return x - diff;
+	}
+
+	public void setPrecision(int precision) {
+		this.precision = precision;
 	}
 }

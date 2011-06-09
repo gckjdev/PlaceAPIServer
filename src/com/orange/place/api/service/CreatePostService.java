@@ -84,6 +84,7 @@ public class CreatePostService extends CommonService {
 		PostManager.createUserPostIndex(cassandraClient, userId, postId);
 		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId,
 				createDate);
+		// TODO: create index for geohash , hash : postId, createDate
 
 		// create post related post index
 		if (srcPostId == null || srcPostId.length() == 0) {

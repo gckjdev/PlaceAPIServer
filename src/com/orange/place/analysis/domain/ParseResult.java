@@ -3,6 +3,8 @@ package com.orange.place.analysis.domain;
 import java.util.Date;
 import java.util.List;
 
+import com.orange.common.utils.geohash.GeoRange;
+
 public class ParseResult {
 
 	private Request request;
