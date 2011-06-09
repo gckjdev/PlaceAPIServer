@@ -42,6 +42,12 @@ public class ServiceConstant {
 	public static final String PARA_LOGINIDTYPE = "lty";
 	public static final String PARA_USERTYPE = "uty";
 	public static final String PARA_PASSWORD = "pwd";
+	
+	public static final String PARA_SINAID = "sid";
+	public static final String PARA_QQID = "qid";
+	public static final String PARA_FACEBOOKID = "fid";
+	public static final String PARA_RENRENID = "rid";
+	public static final String PARA_TWITTERID = "tid";
 
 	public static final String PARA_MOBILE = "mb";
 	public static final String PARA_EMAIL = "em";

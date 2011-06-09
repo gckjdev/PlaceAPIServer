@@ -34,10 +34,10 @@ public class CommonManager {
 		return startUUID;
 	}
 
-	public static void putIntoMap(HashMap<String, String> map, String key,
+	public static void safePutMap(HashMap<String, String> map, String key,
 			String value) {
 		if (value != null && value.length() > 0) {
 			map.put(key, value);
 		}
-	}
+	}		
 }
