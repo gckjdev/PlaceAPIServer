@@ -1,15 +1,16 @@
-package com.orange.place.analysis.domain;
+package com.orange.common.utils.geohash;
 
 import java.util.BitSet;
 import java.util.HashMap;
 
 /**
- * GeoHash utility
+ * @Deprecated leave it here for learning only, use GeoHashUtil instead
  * 
  * @author echnlee
- * 
+ * @see GeoHashUtil
  */
-public class Geohash {
+@Deprecated
+public class GeohashUtil_Bug {
 
 	private static int NORTH = 0;
 	private static int EAST = 1;
@@ -136,7 +137,7 @@ public class Geohash {
 		return buffer;
 	}
 
-	public static String base32(long i) {
+	public String base32(long i) {
 		char[] buf = new char[65];
 		int charPos = 64;
 		boolean negative = (i < 0);

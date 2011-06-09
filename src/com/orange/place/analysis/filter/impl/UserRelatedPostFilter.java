@@ -5,14 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.orange.place.analysis.dao.NativeDao;
+import com.orange.place.analysis.dao.PostDao;
 import com.orange.place.analysis.filter.PostFilter;
 import com.orange.place.dao.Post;
 import com.orange.place.dao.User;
 
 public class UserRelatedPostFilter implements PostFilter {
 
-	private NativeDao nativeDao;
+	private PostDao postDao;
 
 	@Override
 	public List<Post> filter(User user, List<Post> candidates) {
@@ -30,7 +30,7 @@ public class UserRelatedPostFilter implements PostFilter {
 	}
 
 	private Set<String> getRelatedPostId(User user) {
-		List<String> relatedPost = nativeDao.findRelatedPostByUserId(user
+		List<String> relatedPost = postDao.findRelatedPostByUserId(user
 				.getUserId());
 		// construct a map for better performance
 		Set<String> relatedSet = new HashSet<String>();
@@ -40,8 +40,8 @@ public class UserRelatedPostFilter implements PostFilter {
 		return relatedSet;
 	}
 
-	public void setNativeDao(NativeDao nativeDao) {
-		this.nativeDao = nativeDao;
+	public void setPostDao(PostDao postDao) {
+		this.postDao = postDao;
 	}
 
 }
