@@ -44,5 +44,24 @@ public class User extends CommonData {
 	public String getQQAccessTokenSecret() {
 		return getKey(DBConstants.F_QQ_ACCESS_TOKEN_SECRET);
 	}
+
+	public String getQQId() {
+		return getKey(DBConstants.F_QQID);
+	}
 	
+	public String getSinaId() {
+		return getKey(DBConstants.F_SINAID);
+	}
+
+	public String getRenrenId() {
+		return getKey(DBConstants.F_RENRENID);
+	}
+
+	public String getFacebookId() {
+		return getKey(DBConstants.F_FACEBOOKID);
+	}
+
+	public String getTwitterId() {
+		return getKey(DBConstants.F_TWITTERID);
+	}
 }

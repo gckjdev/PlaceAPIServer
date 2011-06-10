@@ -51,15 +51,15 @@ public class UserManager extends CommonManager {
 				deviceId, userId);
 	}
 
-	public static User createUser(CassandraClient cc, String loginId,
-			String loginIdType, String appId, String deviceModel,
-			String deviceId, String deviceOS, String deviceToken,
-			String language, String countryCode, String password,
-			String nickName, String avatar, String accessToken,
-			String accessTokenSecret, String province, String city,
-			String location, String gender, String birthday,
-			String sinaNickName, String sinaDomain, String qqNickName,
-			String qqDomain) {
+	public static User createUser(CassandraClient cc, String loginId, String loginIdType, String appId,
+			String deviceModel, String deviceId, String deviceOS,
+			String deviceToken, String language, String countryCode,
+			String password, String nickName, String avatar,
+			String accessToken, String accessTokenSecret,
+			String province, String city, String location,
+			String gender, String birthday,
+			String sinaNickName, String sinaDomain,
+			String qqNickName, String qqDomain){
 
 		String userId = IdGenerator.generateId();
 
@@ -127,52 +127,55 @@ public class UserManager extends CommonManager {
 			String accessTokenSecret, String domain, String province,
 			String city, String location, String gender, String birthday) {
 
-		if (userId == null) {
-			log.info("<bindUser> but userId is null");
+		if (userId == null || loginId == null) {
+			log.info("<bindUser> but userId or loginId is null");
 			return null;
 		}
 
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(DBConstants.F_DEVICEID, deviceId);
-		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
-		map.put(DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
-		map.put(DBConstants.F_NICKNAME, nickName);
-		map.put(DBConstants.F_AVATAR, avatar);
-		map.put(DBConstants.F_PROVINCE, province);
-		map.put(DBConstants.F_CITY, city);
-		map.put(DBConstants.F_LOCATION, location);
-		map.put(DBConstants.F_GENDER, gender);
-		map.put(DBConstants.F_BIRTHDAY, birthday);
+		safePutMap(map, DBConstants.F_USERID, userId);
+		safePutMap(map, DBConstants.F_DEVICEID, deviceId);
+		safePutMap(map, DBConstants.F_CREATE_DATE, DateUtil.currentDate());
+		safePutMap(map, DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
+		safePutMap(map, DBConstants.F_NICKNAME, nickName);
+		safePutMap(map, DBConstants.F_AVATAR, avatar);
+		safePutMap(map, DBConstants.F_PROVINCE, province);
+		safePutMap(map, DBConstants.F_CITY, city);
+		safePutMap(map, DBConstants.F_LOCATION, location);
+		safePutMap(map, DBConstants.F_GENDER, gender);
+		safePutMap(map, DBConstants.F_BIRTHDAY, birthday);
 
 		// set loginID, sina ID, qqID by loginIdType...
 		switch (Integer.parseInt(loginIdType)) {
 		case DBConstants.LOGINID_OWN:
-			map.put(DBConstants.F_LOGINID, loginId);
+			safePutMap(map, DBConstants.F_LOGINID, loginId);
 			break;
 		case DBConstants.LOGINID_SINA:
-			map.put(DBConstants.F_SINAID, loginId);
-			map.put(DBConstants.F_SINA_ACCESS_TOKEN, accessToken);
-			map.put(DBConstants.F_SINA_ACCESS_TOKEN_SECRET, accessTokenSecret);
-			map.put(DBConstants.F_SINA_NICKNAME, nickName);
-			map.put(DBConstants.F_SINA_DOMAIN, domain);
+			safePutMap(map, DBConstants.F_SINAID, loginId);
+			safePutMap(map, DBConstants.F_SINA_ACCESS_TOKEN, accessToken);
+			safePutMap(map, DBConstants.F_SINA_ACCESS_TOKEN_SECRET,
+					accessTokenSecret);
+			safePutMap(map, DBConstants.F_SINA_NICKNAME, nickName);
+			safePutMap(map, DBConstants.F_SINA_DOMAIN, domain);
 
 			break;
 		case DBConstants.LOGINID_QQ:
-			map.put(DBConstants.F_QQID, loginId);
-			map.put(DBConstants.F_QQ_ACCESS_TOKEN, accessToken);
-			map.put(DBConstants.F_QQ_ACCESS_TOKEN_SECRET, accessTokenSecret);
-			map.put(DBConstants.F_QQ_NICKNAME, nickName);
-			map.put(DBConstants.F_QQ_DOMAIN, domain);
+			safePutMap(map, DBConstants.F_QQID, loginId);
+			safePutMap(map, DBConstants.F_QQ_ACCESS_TOKEN, accessToken);
+			safePutMap(map, DBConstants.F_QQ_ACCESS_TOKEN_SECRET,
+					accessTokenSecret);
+			safePutMap(map, DBConstants.F_QQ_NICKNAME, nickName);
+			safePutMap(map, DBConstants.F_QQ_DOMAIN, domain);
 
 			break;
 		case DBConstants.LOGINID_RENREN:
-			map.put(DBConstants.F_RENRENID, loginId);
+			safePutMap(map, DBConstants.F_RENRENID, loginId);
 			break;
 		case DBConstants.LOGINID_TWITTER:
-			map.put(DBConstants.F_TWITTERID, loginId);
+			safePutMap(map, DBConstants.F_TWITTERID, loginId);
 			break;
 		case DBConstants.LOGINID_FACEBOOK:
-			map.put(DBConstants.F_FACEBOOKID, loginId);
+			safePutMap(map, DBConstants.F_FACEBOOKID, loginId);
 			break;
 		}
 
@@ -222,12 +225,12 @@ public class UserManager extends CommonManager {
 			String userId, String mobile, String eMail, String nickName,
 			String password, String avatarUrl) {
 		HashMap<String, String> map = new HashMap<String, String>();
-		putIntoMap(map, DBConstants.F_MOBILE, mobile);
-		putIntoMap(map, DBConstants.F_EMAIL, eMail);
+		safePutMap(map, DBConstants.F_MOBILE, mobile);
+		safePutMap(map, DBConstants.F_EMAIL, eMail);
 
-		putIntoMap(map, DBConstants.F_NICKNAME, nickName);
-		putIntoMap(map, DBConstants.F_PASSWORD, password);
-		putIntoMap(map, DBConstants.F_AVATAR, avatarUrl);
+		safePutMap(map, DBConstants.F_NICKNAME, nickName);
+		safePutMap(map, DBConstants.F_PASSWORD, password);
+		safePutMap(map, DBConstants.F_AVATAR, avatarUrl);
 		cassandraClient.insert(DBConstants.USER, userId, map);
 		log.info("map email:" + DBConstants.F_EMAIL + ":"
 				+ map.get(DBConstants.F_EMAIL));

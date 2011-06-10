@@ -198,12 +198,12 @@ public class PlaceManager extends CommonManager {
 			String placeId, String longitude, String latitude, String name,
 			String radius, String postType, String desc) {
 		HashMap<String, String> map = new HashMap<String, String>();
-		putIntoMap(map, DBConstants.F_LONGITUDE, longitude);
-		putIntoMap(map, DBConstants.F_LATITUDE, latitude);
-		putIntoMap(map, DBConstants.F_NAME, name);
-		putIntoMap(map, DBConstants.F_RADIUS, radius);
-		putIntoMap(map, DBConstants.F_POST_TYPE, postType);
-		putIntoMap(map, DBConstants.F_DESC, desc);
+		safePutMap(map, DBConstants.F_LONGITUDE, longitude);
+		safePutMap(map, DBConstants.F_LATITUDE, latitude);
+		safePutMap(map, DBConstants.F_NAME, name);
+		safePutMap(map, DBConstants.F_RADIUS, radius);
+		safePutMap(map, DBConstants.F_POST_TYPE, postType);
+		safePutMap(map, DBConstants.F_DESC, desc);
 		cassandraClient.insert(DBConstants.PLACE, placeId, map);
 	}
 }

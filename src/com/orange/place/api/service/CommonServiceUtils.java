@@ -111,6 +111,12 @@ public class CommonServiceUtils {
 		obj.put(ServiceConstant.PARA_SINA_ACCESS_TOKEN_SECRET, user.getSinaAccessTokenSecret());
 		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN, user.getQQAccessToken());
 		obj.put(ServiceConstant.PARA_QQ_ACCESS_TOKEN_SECRET, user.getQQAccessTokenSecret());
+		obj.put(ServiceConstant.PARA_QQID, user.getQQId());
+		obj.put(ServiceConstant.PARA_SINAID, user.getSinaId());
+		obj.put(ServiceConstant.PARA_RENRENID, user.getRenrenId());
+		obj.put(ServiceConstant.PARA_FACEBOOKID, user.getFacebookId());
+		obj.put(ServiceConstant.PARA_TWITTERID, user.getTwitterId());
+		
 		return obj;
 	}
 
