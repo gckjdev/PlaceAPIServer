@@ -77,6 +77,10 @@ public abstract class CommonService {
 				UpdateUserService.class);
 		methodMap.put(ServiceConstant.METHOD_UPDATEPLACE,
 				UpdatePlaceService.class);
+		methodMap.put(ServiceConstant.METHOD_GETAPPS,
+				GetAppsService.class);
+		methodMap.put(ServiceConstant.METHOD_GETUPDATES,
+				GetUpdates.class);
 	}
 
 	public CassandraClient getCassandraClient() {

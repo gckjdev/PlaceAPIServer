@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.orange.place.constant.ServiceConstant;
+import com.orange.place.dao.App;
 import com.orange.place.dao.Message;
 import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
@@ -120,7 +121,7 @@ public class CommonServiceUtils {
 		return obj;
 	}
 
-	public static Object messageListToJSON(List<Message> messageList) {
+	public static JSONArray messageListToJSON(List<Message> messageList) {
 		// TODO Auto-generated method stub
 		JSONArray obj = new JSONArray();
 		for (Message message : messageList){
@@ -130,6 +131,21 @@ public class CommonServiceUtils {
 			json.put(ServiceConstant.PARA_TO_USERID, message.getToUserId());
 			json.put(ServiceConstant.PARA_MESSAGETEXT, message.getMessageContent());
 			json.put(ServiceConstant.PARA_CREATE_DATE, message.getCreateDate());				
+			obj.add(json);
+		}
+		
+		return obj;
+	}
+
+	public static JSONArray appListToJSON(List<App> appList) {
+		JSONArray obj = new JSONArray();
+		for (App app : appList){
+			JSONObject json = new JSONObject();
+			json.put(ServiceConstant.PARA_APPID,app.getAppId());
+			json.put(ServiceConstant.PARA_APPURL,app.getAppUrl());
+			json.put(ServiceConstant.PARA_NAME,app.getAppName());
+			json.put(ServiceConstant.PARA_DESC,app.getAppDesc());
+			json.put(ServiceConstant.PARA_ICON,app.getAppIcon());				
 			obj.add(json);
 		}
 		

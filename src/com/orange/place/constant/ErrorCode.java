@@ -90,6 +90,10 @@ public class ErrorCode {
 	//Message Error
 	
 	public static final int ERROR_GET_MY_MESSAGE 			= 50001;
+
+	//App Error
+	public static final int ERROR_APP_UPDATE_NOT_FOUND 		= 60001;
+	
 	
 	// DB Error
 	static public final int ERROR_CASSANDRA                 = 80001;
@@ -104,6 +108,8 @@ public class ErrorCode {
 	static public final int ERROR_UPLOAD_FILE 				= 90006;
 	public static final int ERROR_CREATE_THUNMB_FILEPATH 	= 90007;
 	public static final int ERROR_CREATE_THUNMB_FILE 		= 90008;
+
+	
 
 
 
