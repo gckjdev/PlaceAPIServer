@@ -13,7 +13,9 @@ public class DBConstants {
 	public static final String PLACE = "place_place";
 	public static final String POST = "place_post";
 	public static final String MESSAGE = "place_message";
-
+	public static final String UPDATE = "place_update";
+	public static final String APP = "place_app";
+	public static final String LOCALIZEDICT = "place_localize_dict";
 	// column family for index
 	public static final String INDEX_USER = "idx_user";
 	public static final String INDEX_USER_OWN_PLACE = "idx_user_own_places";
@@ -100,6 +102,20 @@ public class DBConstants {
 	public static final String F_SRC_POSTID = "srcPostId";
 	public static final String F_REPLY_POSTID = "replyPostId";
 
+	//DB App fields
+//	public static final String F_APPID = "appid";
+//	public static final String F_NAME = "name";
+//	public static final String F_DESC = "desc";
+	public static final String F_APPURL = "appUrl";
+	public static final String F_VERSION = "version";
+	public static final String F_ICON = "icon";
+	
+	public static final String F_SINA_APPKEY = "sinaAppKey";
+	public static final String F_SINA_APPSECRET = "sinaAppSecret";
+	public static final String F_QQ_APPKEY = "qqAppKey";
+	public static final String F_QQ_APPSECRET = "qqAppSecret";
+	public static final String F_RENREN_APPKEY = "renrenAppKey";
+	public static final String F_RENREN_APPSECRET = "renrenAppSecret";
 	// computed fields, not stored in DB
 	public static final String C_TOTAL_RELATED = "totalRelatedPost";
 
@@ -136,4 +152,11 @@ public class DBConstants {
 	public static final String USER_POST_STATISTIC = "place_user_post_stat";
 
 	public static final String F_USER_POST_STATISTIC_TOTOAL = "totalPost";
+	
+	//DB UPDATE Row Key
+	public static final String R_UPDATE_DATA = "update_data";
+	public static final String R_RECOMMEND_APPS = "recommend_apps";
+	
+
+	
 }

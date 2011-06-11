@@ -35,6 +35,9 @@ public class ServiceConstant {
 	public static final String METHOD_GETMEPOST = "gmep";
 	public static final String METHOD_UPDATEUSER = "uu";
 	public static final String METHOD_UPDATEPLACE = "up";
+	public static final String METHOD_GETAPPS = "ga";
+	public static final String METHOD_GETUPDATES = "gu";
+	
 	// request parameters
 
 	public static final String PARA_USERID = "uid";
@@ -139,5 +142,15 @@ public class ServiceConstant {
 	public static final String RET_DATA = "dat";
 
 
+	//app service response parameters
+
+	public static final String PARA_APPURL = "au";
+	public static final String PARA_ICON = "ai";
+	public static final String PARA_SINA_APPKEY = "sak";
+	public static final String PARA_SINA_APPSECRET = "sas";
+	public static final String PARA_QQ_APPKEY = "qak";
+	public static final String PARA_QQ_APPSECRET = "qas";
+	public static final String PARA_RENREN_APPKEY = "rak";
+	public static final String PARA_RENREN_APPSECRET = "ras";
 
 }
