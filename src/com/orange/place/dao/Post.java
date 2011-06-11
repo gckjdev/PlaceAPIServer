@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.orange.place.constant.DBConstants;
-import com.orange.place.constant.ServiceConstant;
-
-import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 
 public class Post extends CommonData {
