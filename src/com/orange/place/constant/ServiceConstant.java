@@ -5,10 +5,10 @@ public class ServiceConstant {
 	// server name
 //	public static final String FILE_SERVER_NAME = "http://192.168.1.150:80/upload/";
 //	public static final String FILE_LOCAL_PATH = "F:/dipan/upload/";
-//	public static final String FILE_LOCAL_IMAGE_PATH = "/Library/WebServer/Documents/upload/image/";
-//	public static final String FILE_IMAGE_PATH = "http://192.168.1.188:80/upload/image/";
-	public static final String FILE_SERVER_NAME = "http://192.168.1.151:80/upload/";
-	public static final String FILE_LOCAL_PATH = "C:/xampp/htdocs/upload/";
+	public static final String FILE_LOCAL_PATH = "/Library/WebServer/Documents/upload/";
+	public static final String FILE_SERVER_NAME = "http://192.168.1.188:80/upload/";
+//	public static final String FILE_SERVER_NAME = "http://192.168.1.151:80/upload/";
+//	public static final String FILE_LOCAL_PATH = "C:/xampp/htdocs/upload/";
 
 	// method name
 	public static final String METHOD = "m";

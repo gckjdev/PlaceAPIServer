@@ -2,6 +2,8 @@ package com.orange.place.api.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.manager.UserManager;
@@ -18,8 +20,9 @@ public class UpdateUserService extends CommonService {
 	String nickName;
 	String password;
 
-	// post
-	String avatar;
+	// post & return
+	String avatar;	
+	boolean hasAvatar = false;
 
 	@Override
 	public void handleData() {
@@ -30,9 +33,23 @@ public class UpdateUserService extends CommonService {
 			resultCode = ErrorCode.ERROR_USERID_NOT_FOUND;
 			return;
 		}
+		
+		// POST
+		if (hasAvatar){
+			ImageUploadManager imageUploadManager = new ImageUploadManager();
+			imageUploadManager.uploadImage(request);
+			avatar = imageUploadManager.getFilePath();
+		}
 
 		UserManager.updateUser(cassandraClient, userId, mobile, eMail,
 				nickName, password, avatar);
+		
+		// return avatar
+		if (avatar != null){
+			JSONObject json = new JSONObject();
+			json.put(ServiceConstant.PARA_AVATAR, avatar);
+			resultData = json;
+		}
 	}
 
 	@Override
@@ -60,10 +77,10 @@ public class UpdateUserService extends CommonService {
 		mobile = request.getParameter(ServiceConstant.PARA_MOBILE);
 		eMail = request.getParameter(ServiceConstant.PARA_EMAIL);
 
-		// POST
-		ImageUploadManager imageUploadManager = new ImageUploadManager();
-		imageUploadManager.uploadImage(request);
-		avatar = imageUploadManager.getFilePath();
+		String hasAvatarPara = request.getParameter(ServiceConstant.PARA_AVATAR);		
+		if (hasAvatarPara != null && hasAvatarPara.length() > 0){
+			hasAvatar = true;					
+		}		
 
 		if (!check(userId, ErrorCode.ERROR_PARAMETER_USERID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_USERID_NULL))
