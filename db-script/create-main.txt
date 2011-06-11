@@ -17,3 +17,16 @@ create column family place_user_similarity
         
 create column family place_user_post_stat
     with comparator = AsciiType;
+
+create column family place_app
+    with comparator = AsciiType;
+    
+create column family place_update
+    with comparator = AsciiType;
+
+create column family place_localize_dict
+    with comparator = AsciiType;
+    
+ create column family place_recommend_apps
+    with comparator = AsciiType;  
+    
