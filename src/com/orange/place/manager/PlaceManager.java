@@ -78,6 +78,14 @@ public class PlaceManager extends CommonManager {
 		}
 		return placeList;
 	}
+	
+	public static Place getPlaceById(CassandraClient cassandraClient, String placeId){
+		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(DBConstants.PLACE, placeId);
+		if (columns == null)
+			return null;
+		
+		return new Place(columns); 
+	}
 
 	public static List<Place> getAllPlaces(CassandraClient cassandraClient) {
 

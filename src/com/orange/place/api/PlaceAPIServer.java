@@ -57,8 +57,7 @@ public class PlaceAPIServer extends AbstractHandler
 		log.info(String.format("%s [%010d] %s", date.toString(), requestId, logString));
 	}
 	
-    @SuppressWarnings("unchecked")
-	public void handle(String target,
+    public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response) 

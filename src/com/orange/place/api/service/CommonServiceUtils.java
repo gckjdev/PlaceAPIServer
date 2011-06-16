@@ -14,33 +14,39 @@ import com.orange.place.dao.User;
 
 public class CommonServiceUtils {
 
+	public static JSONObject postToJSON(Post post){
+
+		JSONObject json = new JSONObject();
+		json.put(ServiceConstant.PARA_POSTID, post.getPostId());
+		json.put(ServiceConstant.PARA_USERID, post.getUserId());
+		json.put(ServiceConstant.PARA_PLACEID, post.getPlaceId());
+		json.put(ServiceConstant.PARA_LONGTITUDE, post.getLongitude());
+		json.put(ServiceConstant.PARA_LATITUDE, post.getLatitude());
+		json.put(ServiceConstant.PARA_USER_LONGITUDE, post.getUserLongitude());
+		json.put(ServiceConstant.PARA_USER_LATITUDE, post.getUserLatitude());
+		json.put(ServiceConstant.PARA_TEXT_CONTENT, post.getTextContent());
+		json.put(ServiceConstant.PARA_CONTENT_TYPE, post.getContentType());
+		json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
+		json.put(ServiceConstant.PARA_TOTAL_VIEW, post.getTotalView());
+		json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
+		json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
+		json.put(ServiceConstant.PARA_TOTAL_REPLY, post.getTotalReply());
+		json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());	
+		json.put(ServiceConstant.PARA_SRC_POSTID, post.getSrcPostId());
+		json.put(ServiceConstant.PARA_NICKNAME, post.getUserNickName());
+		json.put(ServiceConstant.PARA_AVATAR, post.getUserAvatar());
+		json.put(ServiceConstant.PARA_TOTAL_RELATED, post.getTotalRelatedPost());
+		json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
+		json.put(ServiceConstant.PARA_NAME, post.getPlaceName());
+		return json;
+	}
+	
 	public static JSONArray postListToJSON(List<Post> postList){
 		// TODO if JSON value is null, don't put into the JSON object
 		// set result data, return postArray
 		JSONArray obj = new JSONArray();
 		for (Post post : postList){
-			JSONObject json = new JSONObject();
-			json.put(ServiceConstant.PARA_POSTID, post.getPostId());
-			json.put(ServiceConstant.PARA_USERID, post.getUserId());
-			json.put(ServiceConstant.PARA_PLACEID, post.getPlaceId());
-			json.put(ServiceConstant.PARA_LONGTITUDE, post.getLongitude());
-			json.put(ServiceConstant.PARA_LATITUDE, post.getLatitude());
-			json.put(ServiceConstant.PARA_USER_LONGITUDE, post.getUserLongitude());
-			json.put(ServiceConstant.PARA_USER_LATITUDE, post.getUserLatitude());
-			json.put(ServiceConstant.PARA_TEXT_CONTENT, post.getTextContent());
-			json.put(ServiceConstant.PARA_CONTENT_TYPE, post.getContentType());
-			json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
-			json.put(ServiceConstant.PARA_TOTAL_VIEW, post.getTotalView());
-			json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
-			json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
-			json.put(ServiceConstant.PARA_TOTAL_REPLY, post.getTotalReply());
-			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());	
-			json.put(ServiceConstant.PARA_SRC_POSTID, post.getSrcPostId());
-			json.put(ServiceConstant.PARA_NICKNAME, post.getUserNickName());
-			json.put(ServiceConstant.PARA_AVATAR, post.getUserAvatar());
-			json.put(ServiceConstant.PARA_TOTAL_RELATED, post.getTotalRelatedPost());
-			
-			obj.add(json);
+			obj.add(postToJSON(post));
 		}
 		
 		return obj;
@@ -56,49 +62,32 @@ public class CommonServiceUtils {
 			if (excludePostId != null && excludePostId.equalsIgnoreCase(postId))
 				continue;
 			
-			JSONObject json = new JSONObject();
-			json.put(ServiceConstant.PARA_POSTID, postId);
-			json.put(ServiceConstant.PARA_USERID, post.getUserId());
-			json.put(ServiceConstant.PARA_PLACEID, post.getPlaceId());
-			json.put(ServiceConstant.PARA_LONGTITUDE, post.getLongitude());
-			json.put(ServiceConstant.PARA_LATITUDE, post.getLatitude());
-			json.put(ServiceConstant.PARA_USER_LONGITUDE, post.getUserLongitude());
-			json.put(ServiceConstant.PARA_USER_LATITUDE, post.getUserLatitude());
-			json.put(ServiceConstant.PARA_TEXT_CONTENT, post.getTextContent());
-			json.put(ServiceConstant.PARA_CONTENT_TYPE, post.getContentType());
-			json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
-			json.put(ServiceConstant.PARA_TOTAL_VIEW, post.getTotalView());
-			json.put(ServiceConstant.PARA_TOTAL_FORWARD, post.getTotalForward());
-			json.put(ServiceConstant.PARA_TOTAL_QUOTE, post.getTotalQuote());
-			json.put(ServiceConstant.PARA_TOTAL_REPLY, post.getTotalReply());
-			json.put(ServiceConstant.PARA_CREATE_DATE, post.getCreateDate());	
-			json.put(ServiceConstant.PARA_SRC_POSTID, post.getSrcPostId());
-			json.put(ServiceConstant.PARA_NICKNAME, post.getUserNickName());
-			json.put(ServiceConstant.PARA_AVATAR, post.getUserAvatar());
-			json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
-			
-			obj.add(json);
+			obj.add(postToJSON(post));
 		}
 		
 		return obj;
 	}
+	
+	public static JSONObject placeToJSON(Place place){
+		JSONObject json = new JSONObject();
+		json.put(ServiceConstant.PARA_CREATE_USERID, place.getCreateUserId());
+		json.put(ServiceConstant.PARA_PLACEID, place.getPlaceId());
+		json.put(ServiceConstant.PARA_LONGTITUDE, place.getLongitude());
+		json.put(ServiceConstant.PARA_LATITUDE, place.getLatitude());
+		json.put(ServiceConstant.PARA_NAME, place.getName());
+		json.put(ServiceConstant.PARA_DESC, place.getDesc());
+		json.put(ServiceConstant.PARA_RADIUS, place.getRadius());
+		json.put(ServiceConstant.PARA_POSTTYPE, place.getPostType());
+		json.put(ServiceConstant.PARA_CREATE_DATE, place.getCreateDate());			
+		return json;
+	}	
 	
 	public static JSONArray placeListToJSON(List<Place> placeList){
 		// TODO if JSON value is null, don't put into the JSON object
 		// set result data, return postArray
 		JSONArray obj = new JSONArray();
 		for (Place place : placeList){
-			JSONObject json = new JSONObject();
-			json.put(ServiceConstant.PARA_CREATE_USERID, place.getCreateUserId());
-			json.put(ServiceConstant.PARA_PLACEID, place.getPlaceId());
-			json.put(ServiceConstant.PARA_LONGTITUDE, place.getLongitude());
-			json.put(ServiceConstant.PARA_LATITUDE, place.getLatitude());
-			json.put(ServiceConstant.PARA_NAME, place.getName());
-			json.put(ServiceConstant.PARA_DESC, place.getDesc());
-			json.put(ServiceConstant.PARA_RADIUS, place.getRadius());
-			json.put(ServiceConstant.PARA_POSTTYPE, place.getPostType());
-			json.put(ServiceConstant.PARA_CREATE_DATE, place.getCreateDate());			
-			obj.add(json);
+			obj.add(placeToJSON(place));
 		}		
 		return obj;
 	}

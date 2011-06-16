@@ -82,6 +82,7 @@ public class PostManager extends CommonManager {
 		}
 
 		String[] userIds = new String[size];
+		String[] placeIds = new String[size];
 
 		// convert rows to List<Post>
 		// change the implementation to sort the return result in right order
@@ -96,23 +97,29 @@ public class PostManager extends CommonManager {
 				if (columns != null) {
 					Post post = new Post(columns);
 					userIds[i] = post.getUserId();
+					placeIds[i] = post.getPlaceId();
 					postList.add(post);
 				}
 			}
 		}
-
+		
 		// get user nickname and avatar
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
 				DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
 
+		// get place Id & name
+		Rows<String, String, String> placeRows = cassandraClient.getMultiRow(
+				DBConstants.PLACE, placeIds,
+				DBConstants.F_NAME);
+
+		
 		for (Post post : postList) {
 			// set user nickname and avatar to post
 			String userId = post.getUserId();
 			if (userId != null) {
 				Row<String, String, String> userRow = userRows.getByKey(userId);
-				ColumnSlice<String, String> columnSlice = userRow
-						.getColumnSlice();
+				ColumnSlice<String, String> columnSlice = userRow.getColumnSlice();
 				if (columnSlice != null) {
 					List<HColumn<String, String>> columns = columnSlice
 							.getColumns();
@@ -120,6 +127,20 @@ public class PostManager extends CommonManager {
 						post.addValues(columns);
 					}
 				}
+			}
+			
+			// set place name to post
+			String placeId = post.getPlaceId();
+			if (placeId != null){
+				Row<String, String, String> placeRow = placeRows.getByKey(placeId);
+				ColumnSlice<String, String> columnSlice = placeRow.getColumnSlice();
+				if (columnSlice != null) {
+					List<HColumn<String, String>> columns = columnSlice
+							.getColumns();
+					if (columns != null) {
+						post.addValues(columns);
+					}
+				}				
 			}
 
 			// set related post number to post

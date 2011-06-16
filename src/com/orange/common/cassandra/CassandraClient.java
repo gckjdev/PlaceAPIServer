@@ -155,6 +155,38 @@ public class CassandraClient {
 		return columnNameValue.getValue();
 	}
 
+	@SuppressWarnings("unused")
+	private void printStringColumnList(List<HColumn<String, String>> columns){
+		System.out.println("get data result size=" + columns.size());
+		for (HColumn<String, String> data : columns) {
+			System.out.println("column[" + data.getName() + "]="
+					+ data.getValue());
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private void printUUIDColumnList(List<HColumn<UUID, String>> columns){
+		// print for test TODO rem the code
+		System.out.println("get data result size=" + columns.size());
+		for (HColumn<UUID, String> data : columns) {
+			System.out.println("column[" + data.getName() + "]="
+					+ data.getValue());
+		}		
+	}
+	
+	@SuppressWarnings("unused")
+	private void printStringRowList(List<Row<String, String, String>> rows){
+		for (Row<String, String, String> row : rows) {
+			System.out.println("row key : " + row.getKey());
+			ColumnSlice<String, String> columns = row.getColumnSlice();
+			List<HColumn<String, String>> list = columns.getColumns();
+			for (HColumn<String, String> data : list) {
+				System.out.println("column[" + data.getName() + "]="
+						+ data.getValue());
+			}
+		}		
+	}
+	
 	public List<HColumn<String, String>> getColumnKey(String columnFamilyName,
 			String key, String... columnNames) {
 		StringSerializer se = StringSerializer.get();
@@ -179,12 +211,6 @@ public class CassandraClient {
 
 		List<HColumn<String, String>> result = slices.getColumns();
 
-		// print for test TODO rem the code
-		System.out.println("get data result size=" + result.size());
-		for (HColumn<String, String> data : result) {
-			System.out.println("column[" + data.getName() + "]="
-					+ data.getValue());
-		}
 
 		return result;
 	}
@@ -206,13 +232,6 @@ public class CassandraClient {
 		}
 
 		List<HColumn<String, String>> result = r.get().getColumns();
-
-		// print for test TODO rem the code
-		System.out.println("get data result size=" + result.size());
-		for (HColumn<String, String> data : result) {
-			System.out.println("column[" + data.getName() + "]="
-					+ data.getValue());
-		}
 
 		return result;
 	}
@@ -240,12 +259,6 @@ public class CassandraClient {
 
 		List<HColumn<UUID, String>> result = r.get().getColumns();
 
-		// print for test TODO rem the code
-		System.out.println("get data result size=" + result.size());
-		for (HColumn<UUID, String> data : result) {
-			System.out.println("column[" + data.getName() + "]="
-					+ data.getValue());
-		}
 
 		return result;
 	}
@@ -269,12 +282,6 @@ public class CassandraClient {
 
 		List<HColumn<String, String>> result = r.get().getColumns();
 
-		// print for test TODO rem the code
-		System.out.println("get data result size=" + result.size());
-		for (HColumn<String, String> data : result) {
-			System.out.println("column[" + data.getName() + "]="
-					+ data.getValue());
-		}
 		return result;
 	}
 
@@ -300,17 +307,6 @@ public class CassandraClient {
 			return null;
 		}
 
-		// for test, TODO rem the code
-		for (Row<String, String, String> row : rows) {
-			System.out.println("row key : " + row.getKey());
-			ColumnSlice<String, String> columns = row.getColumnSlice();
-			List<HColumn<String, String>> list = columns.getColumns();
-			for (HColumn<String, String> data : list) {
-				System.out.println("column[" + data.getName() + "]="
-						+ data.getValue());
-			}
-		}
-
 		return rows;
 	}
 
@@ -328,16 +324,6 @@ public class CassandraClient {
 			return null;
 		}
 
-		// for test, TODO rem the code
-		for (Row<String, String, String> row : rows) {
-			System.out.println("row key : " + row.getKey());
-			ColumnSlice<String, String> columns = row.getColumnSlice();
-			List<HColumn<String, String>> list = columns.getColumns();
-			for (HColumn<String, String> data : list) {
-				System.out.println("column[" + data.getName() + "]="
-						+ data.getValue());
-			}
-		}
 		return rows;
 	}
 
@@ -354,17 +340,6 @@ public class CassandraClient {
 		OrderedRows<String, String, String> rows = result.get();
 		if (rows == null) {
 			return null;
-		}
-
-		// for test, TODO rem the code
-		for (Row<String, String, String> row : rows) {
-			System.out.println("row key : " + row.getKey());
-			ColumnSlice<String, String> columns = row.getColumnSlice();
-			List<HColumn<String, String>> list = columns.getColumns();
-			for (HColumn<String, String> data : list) {
-				System.out.println("column[" + data.getName() + "]="
-						+ data.getValue());
-			}
 		}
 
 		return rows;

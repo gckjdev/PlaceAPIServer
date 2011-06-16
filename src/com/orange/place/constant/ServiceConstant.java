@@ -37,6 +37,8 @@ public class ServiceConstant {
 	public static final String METHOD_UPDATEPLACE = "up";
 	public static final String METHOD_GETAPPS = "ga";
 	public static final String METHOD_GETUPDATES = "gu";
+	public static final String METHOD_GETPLACE = "gtp";
+
 	
 	// request parameters
 
