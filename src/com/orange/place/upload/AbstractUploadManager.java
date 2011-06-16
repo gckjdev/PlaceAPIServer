@@ -125,12 +125,13 @@ public abstract class AbstractUploadManager {
 
 	private String getTimeFilePath() {
 		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String datePath = formatter.format(now);
 		String pathString = ServiceConstant.FILE_LOCAL_PATH + datePath;
 		File path = new File(pathString);
 		if (!path.exists()) {
 			path.mkdirs();
+			log.info("create file path for today : "+pathString);
 		}
 		return datePath;
 	}

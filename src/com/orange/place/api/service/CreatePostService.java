@@ -40,6 +40,7 @@ public class CreatePostService extends CommonService {
 			return;
 		}
 
+		// upload image content if needed
 		int contenTypeInt = Integer.parseInt(contentType);
 		String imageURL = null;
 		if (contenTypeInt != DBConstants.CONTENT_TYPE_TEXT) {
@@ -57,13 +58,14 @@ public class CreatePostService extends CommonService {
 			}
 		}
 
+		// check upload content result
 		if (resultCode != ErrorCode.ERROR_SUCCESS) {
 			log.info("<createPost> fail to upload/save image, result code="
 					+ resultCode);
 			return;
 		}
 
-		// create post
+		// create post in DB
 		Post post = PostManager.createPost(cassandraClient, userId, appId,
 				placeId, longitude, latitude, userLongitude, userLatitude,
 				textContent, contentType, srcPostId, replyPostId, imageURL);
@@ -73,8 +75,6 @@ public class CreatePostService extends CommonService {
 			resultCode = ErrorCode.ERROR_CREATE_POST;
 			return;
 		}
-
-		// TODO return image URL if it's a image
 
 		String postId = post.getPostId();
 		String createDate = post.getCreateDate();
@@ -95,8 +95,13 @@ public class CreatePostService extends CommonService {
 
 		// if there is a reply post, add into user ME post index
 		if (replyPostId != null && replyPostId.length() > 0) {
-			PostManager.createUserMePostIndex(cassandraClient, userId,
-					replyPostId);
+			Post replyPost = PostManager.getPostById(cassandraClient, replyPostId);
+			if (replyPost != null){
+				PostManager.createUserMePostIndex(cassandraClient, replyPost.getUserId(), postId);
+			}
+			else{
+				log.warning("<createPost> reply post doens't exist! reply post Id="+replyPostId);
+			}
 			// TODO: log reply here.
 		}
 

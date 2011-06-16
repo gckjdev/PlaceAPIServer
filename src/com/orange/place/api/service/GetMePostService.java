@@ -26,7 +26,7 @@ public class GetMePostService extends CommonService {
 			resultCode = ErrorCode.ERROR_GET_ME_MESSAGE;
 			return;
 		}
-		resultData = CommonServiceUtils.postListToJSON(postList);
+		resultData = CommonServiceUtils.postListToJSON(postList, beforeTimeStamp);
 	}
 
 	@Override

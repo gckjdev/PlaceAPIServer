@@ -28,7 +28,7 @@ public class GetPlacePostService extends CommonService {
 			return;
 		}
 
-		resultData = CommonServiceUtils.postListToJSON(resultList);
+		resultData = CommonServiceUtils.postListToJSON(resultList, beforeTimeStamp);
 	}
 
 	@Override

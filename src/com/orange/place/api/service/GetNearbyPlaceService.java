@@ -30,7 +30,7 @@ public class GetNearbyPlaceService extends CommonService {
 			log.info("fail to get nearby places");
 			return;
 		}
-		resultData = CommonServiceUtils.placeListToJSON(placeList);
+		resultData = CommonServiceUtils.placeListToJSON(placeList, beforeTimeStamp);
 	}
 
 	@Override

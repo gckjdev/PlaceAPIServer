@@ -41,7 +41,7 @@ public class CommonServiceUtils {
 		return json;
 	}
 	
-	public static JSONArray postListToJSON(List<Post> postList){
+	private static JSONArray postListToJSON(List<Post> postList){
 		// TODO if JSON value is null, don't put into the JSON object
 		// set result data, return postArray
 		JSONArray obj = new JSONArray();
@@ -53,11 +53,38 @@ public class CommonServiceUtils {
 	}
 	
 	public static JSONArray postListToJSON(List<Post> postList, String excludePostId){
-		// TODO if JSON value is null, don't put into the JSON object
-		// set result data, return postArray
+
+		if (excludePostId == null || excludePostId.length() == 0){
+			return postListToJSON(postList);
+		}
+		
+		boolean found = false;
 		JSONArray obj = new JSONArray();
 		for (Post post : postList){
 			
+			if (!found){
+				String postId = post.getPostId();
+				if (excludePostId.equalsIgnoreCase(postId)){
+					found = true;
+					continue;
+				}
+			}
+			
+			obj.add(postToJSON(post));
+		}
+		
+		return obj;
+	}
+		
+	private static JSONArray postListToJSON(List<Post> postList, String excludePostId, boolean ignoreFirstPost){
+		JSONArray obj = new JSONArray();
+		int count = 0;
+		for (Post post : postList){
+			count ++;
+			if (count == 1 && ignoreFirstPost){
+				continue;
+			}
+
 			String postId = post.getPostId();
 			if (excludePostId != null && excludePostId.equalsIgnoreCase(postId))
 				continue;
@@ -65,7 +92,7 @@ public class CommonServiceUtils {
 			obj.add(postToJSON(post));
 		}
 		
-		return obj;
+		return obj;		
 	}
 	
 	public static JSONObject placeToJSON(Place place){
@@ -82,13 +109,37 @@ public class CommonServiceUtils {
 		return json;
 	}	
 	
-	public static JSONArray placeListToJSON(List<Place> placeList){
+	private static JSONArray placeListToJSON(List<Place> placeList){
 		// TODO if JSON value is null, don't put into the JSON object
 		// set result data, return postArray
 		JSONArray obj = new JSONArray();
 		for (Place place : placeList){
 			obj.add(placeToJSON(place));
 		}		
+		return obj;
+	}
+	
+	public static JSONArray placeListToJSON(List<Place> placeList, String excludePlaceId){
+		
+		if (excludePlaceId == null || excludePlaceId.length() == 0){
+			return placeListToJSON(placeList);
+		}
+		
+		boolean found = false;
+		JSONArray obj = new JSONArray();
+		for (Place place : placeList){
+			
+			if (!found){
+				String placeId = place.getPlaceId();
+				if (excludePlaceId.equalsIgnoreCase(placeId)){
+					found = true;
+					continue;
+				}
+			}
+			
+			obj.add(placeToJSON(place));
+		}
+		
 		return obj;
 	}
 

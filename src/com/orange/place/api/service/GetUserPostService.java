@@ -26,7 +26,7 @@ public class GetUserPostService extends CommonService {
 			resultCode = ErrorCode.ERROR_GET_USER_TIMELINE;
 			return;
 		}
-		resultData = CommonServiceUtils.postListToJSON(postList);
+		resultData = CommonServiceUtils.postListToJSON(postList, beforeTimeStamp);
 	}
 
 	@Override

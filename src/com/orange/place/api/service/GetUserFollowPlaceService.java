@@ -22,7 +22,7 @@ public class GetUserFollowPlaceService extends CommonService {
 			return;
 		}
 		
-		resultData = CommonServiceUtils.placeListToJSON(placeList);
+		resultData = CommonServiceUtils.placeListToJSON(placeList, null);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
+import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 
 public class PostManager extends CommonManager {
@@ -151,6 +152,15 @@ public class PostManager extends CommonManager {
 		}
 
 		return postList;
+	}
+	
+	public static Post getPostById(CassandraClient cassandraClient,
+			String postId){
+		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(DBConstants.POST, postId);
+		if (columns == null)
+			return null;
+		
+		return new Post(columns); 
 	}
 
 	public static List<Post> getPostByPlace(CassandraClient cassandraClient,

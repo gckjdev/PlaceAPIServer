@@ -27,7 +27,7 @@ public class GetUserTimelineService extends CommonService {
 			return;
 		}
 
-		resultData = CommonServiceUtils.postListToJSON(postList);
+		resultData = CommonServiceUtils.postListToJSON(postList, beforeTimeStamp);
 	}
 
 	@Override

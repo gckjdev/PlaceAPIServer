@@ -26,7 +26,7 @@ public class GetNearbyPostService extends CommonService {
 			log.info("fail to get nearby posts");
 			return;
 		}
-		resultData = CommonServiceUtils.postListToJSON(postList);
+		resultData = CommonServiceUtils.postListToJSON(postList, beforeTimeStamp);
 	}
 
 	@Override
