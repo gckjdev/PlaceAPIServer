@@ -1,23 +1,21 @@
 package com.orange.place.analysis.domain;
 
-import com.orange.place.dao.Post;
-
 public class ScorablePost implements Comparable<ScorablePost> {
 
-	private Post post;
+	private CompactPost post;
 
 	private double score;
 
-	public ScorablePost(Post post, double score) {
+	public ScorablePost(CompactPost post, double score) {
 		this.post = post;
 		this.score = score;
 	}
 
-	public Post getPost() {
+	public CompactPost getPost() {
 		return post;
 	}
 
-	public void setPost(Post post) {
+	public void setPost(CompactPost post) {
 		this.post = post;
 	}
 

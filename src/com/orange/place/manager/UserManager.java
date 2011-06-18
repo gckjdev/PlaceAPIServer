@@ -195,6 +195,17 @@ public class UserManager extends CommonManager {
 
 		String userId = cassandraClient.getColumnValue(DBConstants.INDEX_USER,
 				DBConstants.KEY_DEVICEID, deviceId);
+		
+		User user =  getUserById(cassandraClient, userId);
+		if(user==null){
+			log.warning("<getUserByDevice> deviceId(" + deviceId
+					+ ") is bind but userId not found");
+		}
+		return user;
+	}
+
+	public static User getUserById(CassandraClient cassandraClient,
+			String userId) {
 		if (userId == null) {
 			return null;
 		}
@@ -202,8 +213,6 @@ public class UserManager extends CommonManager {
 		Rows<String, String, String> rows = cassandraClient.getMultiRow(
 				DBConstants.USER, userId);
 		if (rows == null || rows.getCount() <= 0) {
-			log.warning("<getUserByDevice> deviceId(" + deviceId
-					+ ") is bind but userId not found");
 			return null;
 		}
 

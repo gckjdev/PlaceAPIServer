@@ -310,6 +310,24 @@ public class CassandraClient {
 		return rows;
 	}
 
+	//TODO: key start end?
+	public Rows<String, String, String> getMultiRowByRange(String columnFamilyName,
+			String[] keys, String start, String end) {
+		MultigetSliceQuery<String, String, String> multigetSliceQuery = HFactory
+				.createMultigetSliceQuery(keyspace, ss, ss, ss);
+		multigetSliceQuery.setColumnFamily(columnFamilyName);
+		multigetSliceQuery.setKeys(keys);
+		multigetSliceQuery.setRange(start, end, true, MAX_COUNT_FOR_MULTI_ROW);
+		QueryResult<Rows<String, String, String>> result = multigetSliceQuery
+				.execute();
+		Rows<String, String, String> rows = result.get();
+		if (rows == null) {
+			return null;
+		}
+
+		return rows;
+	}
+	
 	public Rows<String, String, String> getMultiRow(String columnFamilyName,
 			String... keys) {
 		MultigetSliceQuery<String, String, String> multigetSliceQuery = HFactory
