@@ -43,4 +43,9 @@ public class DateUtil {
 		else
 			return date.toString();
 	}
+
+	public static long getCurrentTime() {
+		Date date = new Date();
+		return date.getTime();
+	}
 }
