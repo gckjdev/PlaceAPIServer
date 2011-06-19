@@ -67,6 +67,54 @@ public class ProximitySearchUtilTest {
 	}
 
 	@Test
+	public void testGetNearBy_MiddleRadius_Performance() {
+		int count = 1000;
+		long start = System.currentTimeMillis();
+		util.setPrecision(7);
+		for (int i = 0; i < count; i++) {
+			double latitude = 23.1291630;
+			double longitude = 113.2644350;
+			double[] radiusArray = new double[] { 500, 800, 1000 };
+			for (double radius : radiusArray) {
+				List<String> result = util.getNearBy(latitude, longitude,
+						radius);
+			}
+		}
+		long end = System.currentTimeMillis();
+		long time = end -start;
+		double avg = (double)time/ (double)count;
+		double countPerSec = 1000 / avg;
+		
+		System.out.println("time :" + time);
+		System.out.println("avg :" + avg);
+		System.out.println("countPerSec :" + countPerSec);
+	}
+	
+	@Test
+	public void testGetNearBy_MiddleRadius_Performance2() {
+		int count = 1000;
+		long start = System.currentTimeMillis();
+		util.setPrecision(6);
+		for (int i = 0; i < count; i++) {
+			double latitude = 23.1291630;
+			double longitude = 113.2644350;
+			double[] radiusArray = new double[] { 1000, 2000, 4000 };
+			for (double radius : radiusArray) {
+				List<String> result = util.getNearBy(latitude, longitude,
+						radius);
+			}
+		}
+		long end = System.currentTimeMillis();
+		long time = end -start;
+		double avg = (double)time/ (double)count;
+		double countPerSec = 1000 / avg;
+		
+		System.out.println("time :" + time);
+		System.out.println("avg :" + avg);
+		System.out.println("countPerSec :" + countPerSec);
+	}
+	
+	@Test
 	public void testGetNearBy_MiddleRadius_SeveralRange() {
 		double latitude = 23.1291630;
 		double longitude = 113.2644350;
