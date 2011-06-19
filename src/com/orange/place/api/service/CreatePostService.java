@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 
+import com.orange.place.analysis.domain.AnalysisLogContent;
+import com.orange.place.analysis.domain.PostType;
+import com.orange.place.analysis.log.AnalysisLogUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
@@ -84,8 +87,10 @@ public class CreatePostService extends CommonService {
 		PostManager.createUserPostIndex(cassandraClient, userId, postId);
 		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId,
 				createDate);
-		// TODO: create index for geohash , hash : postId, createDate
-		PostManager.createPostLocationIndex(cassandraClient, postId, createDate, latitude, longitude);
+		// TODO: test needed
+		// create index for geohash , hash : postId, createDate
+		// PostManager.createPostLocationIndex(cassandraClient, postId,
+		// createDate, latitude, longitude);
 
 		// create post related post index
 		if (srcPostId == null || srcPostId.length() == 0) {
@@ -96,17 +101,30 @@ public class CreatePostService extends CommonService {
 
 		// if there is a reply post, add into user ME post index
 		if (replyPostId != null && replyPostId.length() > 0) {
-			Post replyPost = PostManager.getPostById(cassandraClient, replyPostId);
-			if (replyPost != null){
-				PostManager.createUserMePostIndex(cassandraClient, replyPost.getUserId(), postId);
+			Post replyPost = PostManager.getPostById(cassandraClient,
+					replyPostId);
+			if (replyPost != null) {
+				PostManager.createUserMePostIndex(cassandraClient,
+						replyPost.getUserId(), postId);
+			} else {
+				log.warning("<createPost> reply post doens't exist! reply post Id="
+						+ replyPostId);
 			}
-			else{
-				log.warning("<createPost> reply post doens't exist! reply post Id="+replyPostId);
-			}
-			// TODO: log reply here.
+			// TODO: test
+			// log reply here.
+			AnalysisLogContent content = new AnalysisLogContent()
+					.setLatitude(latitude).setLongitude(longitude)
+					.setPlaceId(placeId).setPostId(replyPostId)
+					.setPostType(PostType.REPLY).setUserId(userId);
+			AnalysisLogUtil.log(content);
 		}
 
-		// TODO: log create post here.
+		// TODO: test, log create post here.
+		AnalysisLogContent content = new AnalysisLogContent()
+				.setLatitude(latitude).setLongitude(longitude)
+				.setPlaceId(placeId).setPostId(postId)
+				.setPostType(PostType.CREATE).setUserId(userId);
+		AnalysisLogUtil.log(content);
 
 		// set result data, return postId, nick name, and create date
 		JSONObject obj = new JSONObject();

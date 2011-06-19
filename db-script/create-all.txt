@@ -2,6 +2,7 @@ create keyspace PlaceKS
     with replication_factor = 1
     and placement_strategy = 'org.apache.cassandra.locator.SimpleStrategy';
 
+
     
 use PlaceKS;
 
@@ -14,6 +15,27 @@ create column family place_place
 create column family place_post
     with comparator = AsciiType;
 
+create column family place_message
+    with comparator = AsciiType;
+
+create column family place_user_similarity
+    with comparator = AsciiType;
+        
+create column family place_user_post_stat
+    with comparator = AsciiType;
+
+create column family place_app
+    with comparator = AsciiType;
+    
+create column family place_update
+    with comparator = AsciiType;
+
+create column family place_localize_dict
+    with comparator = AsciiType;
+    
+ create column family place_recommend_apps
+    with comparator = AsciiType;  
+    
 
 
 use PlaceKS;
@@ -42,20 +64,24 @@ create column family idx_place_posts
 create column family idx_post_replies
     with comparator = TimeUUIDType;
 
+create column family idx_post_location
+    with comparator = TimeUUIDType;
+    
 create column family idx_user_posts
     with comparator = TimeUUIDType;
 
 create column family idx_user_timeline
     with comparator = TimeUUIDType;
-    
+
 create column family idx_user_me_posts
-    with comparator = TimeUUIDType;    
+    with comparator = TimeUUIDType;
 
 create column family idx_post_related_posts
     with comparator = TimeUUIDType;
-    
+
 create column family idx_my_messages
     with comparator = TimeUUIDType;
 
 create column family idx_id_long_to_string
-    with comparator = AsciiType;    
+    with comparator = AsciiType;
+    

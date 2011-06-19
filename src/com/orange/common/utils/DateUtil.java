@@ -14,6 +14,10 @@ public class DateUtil {
 		return DateUtil.dateToStringByFormat(date, DATE_FORMAT);
 	}
 
+	public static String dateToString(Date date){
+		return dateToStringByFormat(date, DATE_FORMAT);
+	}
+	
 	// format example "dd/MM/yyyy-hh:mm:ss"
 	public static String dateToStringByFormat(Date date, String format) {
 		if (date == null || format == null)
@@ -24,6 +28,10 @@ public class DateUtil {
 		return dateFormat.format(date);
 	}
 
+	public static Date dateFromString(String dateString){
+		return dateFromStringByFormat(dateString, DATE_FORMAT);
+	}
+			
 	public static Date dateFromStringByFormat(String dateString, String format) {
 		if (dateString == null || format == null)
 			return null;
