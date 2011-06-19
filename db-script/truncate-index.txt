@@ -15,3 +15,13 @@ truncate idx_post_replies;
 truncate idx_user_posts;
 
 truncate idx_user_timeline;
+
+truncate idx_user_me_posts;
+
+truncate idx_post_related_posts;
+
+truncate column family idx_my_messages;
+
+truncate idx_id_long_to_string;
+    
+truncate idx_gohash_to_place;

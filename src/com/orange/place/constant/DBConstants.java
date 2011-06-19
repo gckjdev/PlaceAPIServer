@@ -3,7 +3,7 @@ package com.orange.place.constant;
 public class DBConstants {
 
 	// public static final String SERVER = "localhost:9160";
-	public static final String SERVER = "192.168.1.9160";
+	public static final String SERVER = "192.168.1.101:9160";
 	public static final String CLUSTERNAME = "Test Cluster";
 
 	public static final String KEYSPACE = "PlaceKS";
@@ -26,7 +26,8 @@ public class DBConstants {
 	public static final String INDEX_POST_RELATED_POST = "idx_post_related_posts";
 	public static final String INDEX_ME_POST = "idx_user_me_posts";
 	public static final String INDEX_MY_MESSAGE = "idx_my_messages";
-
+	public static final String INDEX_GOHASH_PLACEID = "idx_gohash_to_place";
+	
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
 
@@ -125,6 +126,7 @@ public class DBConstants {
 	public static final String F_TO_USERID = "toUserId";
 	public static final String F_SRC_MESSAGEID = "srcMessageId";
 
+	
 	// Value
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";

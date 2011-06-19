@@ -58,4 +58,4 @@ create column family idx_my_messages
     with comparator = TimeUUIDType;
 
 create column family idx_id_long_to_string
-    with comparator = AsciiType;    
+    with comparator = AsciiType;

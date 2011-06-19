@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class ProximitySearchUtil {
 
-	private static final int precision = 7;
+	private static final int precision = GeoHashUtil.DEFAULT_PRECISION;
 
 	private static final double EARTH_RADIUS = 6378137;
 	private static final double RAD = Math.PI / 180.0;

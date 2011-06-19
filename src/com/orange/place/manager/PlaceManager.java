@@ -12,6 +12,7 @@ import me.prettyprint.hector.api.beans.Rows;
 
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
+import com.orange.common.utils.geohash.ProximitySearchUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
 import com.orange.place.dao.Place;
@@ -78,13 +79,15 @@ public class PlaceManager extends CommonManager {
 		}
 		return placeList;
 	}
-	
-	public static Place getPlaceById(CassandraClient cassandraClient, String placeId){
-		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(DBConstants.PLACE, placeId);
+
+	public static Place getPlaceById(CassandraClient cassandraClient,
+			String placeId) {
+		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(
+				DBConstants.PLACE, placeId);
 		if (columns == null)
 			return null;
-		
-		return new Place(columns); 
+
+		return new Place(columns);
 	}
 
 	public static List<Place> getAllPlaces(CassandraClient cassandraClient) {
@@ -213,5 +216,109 @@ public class PlaceManager extends CommonManager {
 		safePutMap(map, DBConstants.F_POST_TYPE, postType);
 		safePutMap(map, DBConstants.F_DESC, desc);
 		cassandraClient.insert(DBConstants.PLACE, placeId, map);
+	}
+
+	private static List<HColumn<String, String>> getNearyPlaceColumn(
+			CassandraClient cassandraClient, double latitude, double longitude,
+			double radius) {
+		ProximitySearchUtil proximitySearchUtil = new ProximitySearchUtil();
+		List<String> result = proximitySearchUtil.getNearBy(latitude,
+				longitude, radius);
+		String resultArray[] = new String[result.size()];
+		resultArray = result.toArray(resultArray);
+
+		Rows<String, String, String> rows = cassandraClient
+				.getMultiRow(DBConstants.INDEX_GOHASH_PLACEID,
+						resultArray);
+		int count = result.size();
+		if (count < 1)
+			return null;
+		List<HColumn<String, String>> columnList = new ArrayList<HColumn<String, String>>();
+
+		for (int i = 0; i < count; i++) {
+			Row<String, String, String> row = rows.getByKey(result.get(i));
+			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
+			if (columnSlice != null) {
+				List<HColumn<String, String>> columns = columnSlice.getColumns();
+				if (columns != null && !columns.isEmpty()) {
+					columnList.addAll(columns);
+				}
+			}
+		}
+		return columnList;
+	}
+
+	public static List<String> getNearbyPlaceId(
+			CassandraClient cassandraClient, double latitude, double longitude,
+			double radius) {
+		List<HColumn<String, String>> columnList = getNearyPlaceColumn(
+				cassandraClient, latitude, longitude, radius);
+		if (columnList != null && !columnList.isEmpty()) {
+			List<String> placeIdList = new ArrayList<String>();
+			for (HColumn<String, String> column : columnList) {
+				placeIdList.add(column.getName());
+			}
+			return placeIdList;
+		}
+		return null;
+	}
+
+	public static List<String> getNearbyPlaceName(
+			CassandraClient cassandraClient, double latitude, double longitude,
+			double radius) {
+		List<HColumn<String, String>> columnList = getNearyPlaceColumn(
+				cassandraClient, latitude, longitude, radius);
+		if (columnList != null && !columnList.isEmpty()) {
+			List<String> placeNameList = new ArrayList<String>();
+			for (HColumn<String, String> column : columnList) {
+				placeNameList.add(column.getValue());
+			}
+			return placeNameList;
+		}
+		return null;
+	}
+
+	private static List<Place> getPlaceByPlaceId(
+			CassandraClient cassandraClient, String[] placeIds) {
+		Rows<String, String, String> rows = cassandraClient.getMultiRow(
+				DBConstants.PLACE, placeIds);
+		List<Place> placeList = new ArrayList<Place>();
+		int count = placeIds.length;
+		for (int i = 0; i < count; i++) {
+			Row<String, String, String> row = rows.getByKey(placeIds[i]);
+			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
+			if (columnSlice != null) {
+				List<HColumn<String, String>> columns = columnSlice
+						.getColumns();
+				if (columns != null) {
+					placeList.add(new Place(columns));
+				}
+			}
+		}
+		return placeList;
+	}
+
+	public static List<Place> getNearbyPlace(CassandraClient cassandraClient,
+			double latitude, double longitude, double radius) {
+		List<String> placeIds = getNearbyPlaceId(cassandraClient, latitude,
+				longitude, radius);
+		if (placeIds != null && placeIds.size() > 0) {
+			String[] placeIdsArr = new String[placeIds.size()];
+			placeIdsArr = placeIds.toArray(placeIdsArr);
+			return getPlaceByPlaceId(cassandraClient, placeIdsArr);
+		}
+		return null;
+	}
+
+	public static boolean isPlaceNameUnique(CassandraClient cassandraClient,
+			String placeName, double latitude, double longitude, double radius) {
+		List<String> placeNames = getNearbyPlaceName(cassandraClient, radius,
+				radius, radius);
+		for (String name : placeNames) {
+			if (name.equals(placeName)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

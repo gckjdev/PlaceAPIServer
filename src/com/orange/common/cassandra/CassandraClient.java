@@ -165,6 +165,12 @@ public class CassandraClient {
 	}
 	
 	@SuppressWarnings("unused")
+	private void printStringColumnList(HColumn<String, String> column){
+			System.out.println("column[" + column.getName() + "]="
+					+ column.getValue());
+	}
+	
+	@SuppressWarnings("unused")
 	private void printUUIDColumnList(List<HColumn<UUID, String>> columns){
 		// print for test TODO rem the code
 		System.out.println("get data result size=" + columns.size());
@@ -186,7 +192,18 @@ public class CassandraClient {
 			}
 		}		
 	}
+	@SuppressWarnings("unused")
+	private void printStringRow(Row<String, String, String> row){
 	
+			System.out.println("row key : " + row.getKey());
+			ColumnSlice<String, String> columns = row.getColumnSlice();
+			List<HColumn<String, String>> list = columns.getColumns();
+			for (HColumn<String, String> data : list) {
+				System.out.println("column[" + data.getName() + "]="
+						+ data.getValue());
+			
+		}		
+	}
 	public List<HColumn<String, String>> getColumnKey(String columnFamilyName,
 			String key, String... columnNames) {
 		StringSerializer se = StringSerializer.get();
@@ -309,7 +326,7 @@ public class CassandraClient {
 
 		return rows;
 	}
-
+	
 	public Rows<String, String, String> getMultiRow(String columnFamilyName,
 			String... keys) {
 		MultigetSliceQuery<String, String, String> multigetSliceQuery = HFactory
