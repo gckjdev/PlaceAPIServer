@@ -15,3 +15,5 @@ truncate idx_post_replies;
 truncate idx_user_posts;
 
 truncate idx_user_timeline;
+
+truncate idx_post_location;
