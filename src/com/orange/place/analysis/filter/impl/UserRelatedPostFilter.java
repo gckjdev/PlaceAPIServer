@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.orange.place.analysis.dao.PostDao;
+import com.orange.place.analysis.domain.CompactPost;
 import com.orange.place.analysis.filter.PostFilter;
-import com.orange.place.dao.Post;
 import com.orange.place.dao.User;
 
 public class UserRelatedPostFilter implements PostFilter {
@@ -15,12 +15,12 @@ public class UserRelatedPostFilter implements PostFilter {
 	private PostDao postDao;
 
 	@Override
-	public List<Post> filter(User user, List<Post> candidates) {
+	public List<CompactPost> filter(User user, List<CompactPost> candidates) {
 		Set<String> relatedSet = getRelatedPostId(user);
 
-		Iterator<Post> it = candidates.iterator();
+		Iterator<CompactPost> it = candidates.iterator();
 		while (it.hasNext()) {
-			Post candidate = it.next();
+			CompactPost candidate = it.next();
 			if (relatedSet.contains(candidate.getPostId())) {
 				it.remove();
 			}

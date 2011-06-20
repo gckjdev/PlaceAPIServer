@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ProximitySearchUtil {
-
-	private static final int precision = GeoHashUtil.DEFAULT_PRECISION;
-
+	private static final int DEFAULT_PRECISION = 7;
 	private static final double EARTH_RADIUS = 6378137;
 	private static final double RAD = Math.PI / 180.0;
 	public static final int NORTH = 0;
@@ -38,6 +36,21 @@ public class ProximitySearchUtil {
 	private final static String odd_borders[] = { "bcfguvyz", "prxz",
 			"0145hjnp", "028b" };
 
+
+	private  int precision;
+
+	public void setPrecision(int precision) {
+		this.precision = precision;
+	}
+
+	public ProximitySearchUtil(){
+		this.precision = DEFAULT_PRECISION;
+	}
+	
+	public ProximitySearchUtil(int precision){
+		this.precision = precision;
+	}
+	
 	public List<String> getNearBy(double latitude, double longitude,
 			double radius) {
 		Set<String> resultSet = new HashSet<String>();

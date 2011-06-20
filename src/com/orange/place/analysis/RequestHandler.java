@@ -8,13 +8,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.orange.place.analysis.domain.CompactPost;
 import com.orange.place.analysis.domain.ParseResult;
 import com.orange.place.analysis.domain.Request;
 import com.orange.place.analysis.fetcher.PostFetcher;
 import com.orange.place.analysis.fetcher.UserFetcher;
 import com.orange.place.analysis.parser.RequestParser;
 import com.orange.place.analysis.recommender.PostRecommender;
-import com.orange.place.dao.Post;
 import com.orange.place.dao.User;
 
 public class RequestHandler {
@@ -28,30 +28,30 @@ public class RequestHandler {
 
 	private UserFetcher userFetcher;
 
-	private PostRecommender rankingGenerator;
+	private PostRecommender postRecommender;
 
 	private final int fetchPostDaysBefore = 30;
 
 	private final int fetchPostLimitation = 1000;
 
-	public List<Post> execute(Request request) {
-		List<Post> result = new ArrayList<Post>();
+	public List<CompactPost> execute(Request request) {
+		List<CompactPost> result = new ArrayList<CompactPost>();
 
 		ParseResult parseResult = requestParser.parse(request);
 		if (!parseResult.isSuccess()) {
 			// empty list if parse failed.
-			return new ArrayList<Post>();
+			return new ArrayList<CompactPost>();
 		}
 
 		try {
-			List<Post> candaidatePost = storyFetcher.fetchStroy(
+			List<CompactPost> candaidatePost = storyFetcher.fetchStroy(
 					parseResult.getPlaceRange(), getDateSince(),
 					fetchPostLimitation);
 			User user = userFetcher.fetchUserById(parseResult.getUserId());
 
 			// TODO: consider put the user/candidate story/parse result to
 			// context;
-			result = rankingGenerator.getTopPost(parseResult, user,
+			result = postRecommender.getTopPost(parseResult, user,
 					candaidatePost);
 
 		} catch (Exception e) {
@@ -79,7 +79,7 @@ public class RequestHandler {
 		this.userFetcher = userFetcher;
 	}
 
-	public void setRankingGenerator(PostRecommender rankingGenerator) {
-		this.rankingGenerator = rankingGenerator;
+	public void setPostRecommender(PostRecommender postRecommender) {
+		this.postRecommender = postRecommender;
 	}
 }

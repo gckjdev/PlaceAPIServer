@@ -8,8 +8,8 @@ import java.util.UUID;
 import me.prettyprint.hector.api.beans.HColumn;
 
 import com.orange.common.utils.geohash.GeoRange;
+import com.orange.place.analysis.domain.CompactPost;
 import com.orange.place.constant.DBConstants;
-import com.orange.place.dao.Post;
 
 public class PostDao extends AbstractCassandraDao {
 
@@ -21,9 +21,14 @@ public class PostDao extends AbstractCassandraDao {
 	 * @param sinceAfter
 	 *            story happened after specified time
 	 */
-	public List<Post> findPostByLocation(List<GeoRange> geoRange,
+	public List<CompactPost> findPostByLocation(List<GeoRange> geoRanges,
 			Date sinceAfter, int limitation) {
-		return new ArrayList<Post>();
+		//
+		List<CompactPost> posts = new ArrayList<CompactPost>();
+		for(GeoRange range: geoRanges){
+			
+		}
+		return posts;
 	}
 
 	public List<String> findRelatedPostByUserId(String userId) {

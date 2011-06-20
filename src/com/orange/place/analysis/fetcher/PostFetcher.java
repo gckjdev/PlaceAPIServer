@@ -5,15 +5,15 @@ import java.util.List;
 
 import com.orange.common.utils.geohash.GeoRange;
 import com.orange.place.analysis.dao.PostDao;
-import com.orange.place.dao.Post;
+import com.orange.place.analysis.domain.CompactPost;
 
 public class PostFetcher {
 
 	private PostDao postDao;
 
-	public List<Post> fetchStroy(List<GeoRange> geoRange, Date sinceAfter,
+	public List<CompactPost> fetchStroy(List<GeoRange> geoRange, Date sinceAfter,
 			int limitation) {
-		List<Post> sotry = postDao.findPostByLocation(geoRange, sinceAfter,
+		List<CompactPost> sotry = postDao.findPostByLocation(geoRange, sinceAfter,
 				limitation);
 		return sotry;
 	}

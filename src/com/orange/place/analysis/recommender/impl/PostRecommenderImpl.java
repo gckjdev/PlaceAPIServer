@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.orange.place.analysis.domain.CompactPost;
 import com.orange.place.analysis.domain.ParseResult;
 import com.orange.place.analysis.domain.ScorablePost;
 import com.orange.place.analysis.filter.PostFilter;
@@ -19,14 +20,14 @@ public class PostRecommenderImpl implements PostRecommender {
 	private PostFilter storyFilter;
 
 	@Override
-	public List<Post> getTopPost(ParseResult parseResult, User user,
-			List<Post> candidates) {
+	public List<CompactPost> getTopPost(ParseResult parseResult, User user,
+			List<CompactPost> candidates) {
 
 		// filter some story, like have related.
-		List<Post> scoreCandidates = storyFilter.filter(user, candidates);
+		List<CompactPost> scoreCandidates = storyFilter.filter(user, candidates);
 
 		List<ScorablePost> scoreList = new LinkedList<ScorablePost>();
-		for (Post story : scoreCandidates) {
+		for (CompactPost story : scoreCandidates) {
 			double score = scoreCalculator.calculateScore(parseResult, user,
 					story);
 			ScorablePost scorable = new ScorablePost(story, score);
@@ -37,8 +38,8 @@ public class PostRecommenderImpl implements PostRecommender {
 		return convert(scoreList);
 	}
 
-	public List<Post> convert(List<ScorablePost> scoreList) {
-		List<Post> storyList = new LinkedList<Post>();
+	public List<CompactPost> convert(List<ScorablePost> scoreList) {
+		List<CompactPost> storyList = new LinkedList<CompactPost>();
 		for (ScorablePost scorable : scoreList) {
 			storyList.add(scorable.getPost());
 		}
