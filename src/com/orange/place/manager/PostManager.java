@@ -15,7 +15,6 @@ import com.orange.common.utils.DateUtil;
 import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
-import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 
 public class PostManager extends CommonManager {

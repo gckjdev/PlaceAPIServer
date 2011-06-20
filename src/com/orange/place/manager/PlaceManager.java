@@ -3,8 +3,10 @@ package com.orange.place.manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import me.prettyprint.cassandra.model.HColumnImpl;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
@@ -12,6 +14,7 @@ import me.prettyprint.hector.api.beans.Rows;
 
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
+import com.orange.common.utils.StringSimilarityUtil;
 import com.orange.common.utils.geohash.ProximitySearchUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
@@ -76,7 +79,9 @@ public class PlaceManager extends CommonManager {
 				Place place = new Place(columns);
 				placeList.add(place);
 			}
+			System.out.println("**********class: " + columns.get(0).toString());
 		}
+
 		return placeList;
 	}
 
@@ -222,14 +227,16 @@ public class PlaceManager extends CommonManager {
 			CassandraClient cassandraClient, double latitude, double longitude,
 			double radius) {
 		ProximitySearchUtil proximitySearchUtil = new ProximitySearchUtil();
+		proximitySearchUtil
+				.setPrecision(CommonManager.NEARBY_PLACE_GEOHASH_PRECISION);
 		List<String> result = proximitySearchUtil.getNearBy(latitude,
 				longitude, radius);
+
 		String resultArray[] = new String[result.size()];
 		resultArray = result.toArray(resultArray);
 
-		Rows<String, String, String> rows = cassandraClient
-				.getMultiRow(DBConstants.INDEX_GOHASH_PLACEID,
-						resultArray);
+		Rows<String, String, String> rows = cassandraClient.getMultiRow(
+				DBConstants.INDEX_GEOHASH6_PLACEID, resultArray);
 		int count = result.size();
 		if (count < 1)
 			return null;
@@ -239,7 +246,8 @@ public class PlaceManager extends CommonManager {
 			Row<String, String, String> row = rows.getByKey(result.get(i));
 			ColumnSlice<String, String> columnSlice = row.getColumnSlice();
 			if (columnSlice != null) {
-				List<HColumn<String, String>> columns = columnSlice.getColumns();
+				List<HColumn<String, String>> columns = columnSlice
+						.getColumns();
 				if (columns != null && !columns.isEmpty()) {
 					columnList.addAll(columns);
 				}
@@ -253,14 +261,7 @@ public class PlaceManager extends CommonManager {
 			double radius) {
 		List<HColumn<String, String>> columnList = getNearyPlaceColumn(
 				cassandraClient, latitude, longitude, radius);
-		if (columnList != null && !columnList.isEmpty()) {
-			List<String> placeIdList = new ArrayList<String>();
-			for (HColumn<String, String> column : columnList) {
-				placeIdList.add(column.getName());
-			}
-			return placeIdList;
-		}
-		return null;
+		return getNearbyPlaceId(columnList);
 	}
 
 	public static List<String> getNearbyPlaceName(
@@ -268,12 +269,29 @@ public class PlaceManager extends CommonManager {
 			double radius) {
 		List<HColumn<String, String>> columnList = getNearyPlaceColumn(
 				cassandraClient, latitude, longitude, radius);
+		return getNearbyPlaceName(columnList);
+	}
+
+	private static List<String> getNearbyPlaceName(
+			List<HColumn<String, String>> columnList) {
 		if (columnList != null && !columnList.isEmpty()) {
 			List<String> placeNameList = new ArrayList<String>();
 			for (HColumn<String, String> column : columnList) {
 				placeNameList.add(column.getValue());
 			}
 			return placeNameList;
+		}
+		return null;
+	}
+
+	private static List<String> getNearbyPlaceId(
+			List<HColumn<String, String>> columnList) {
+		if (columnList != null && !columnList.isEmpty()) {
+			List<String> placeIdList = new ArrayList<String>();
+			for (HColumn<String, String> column : columnList) {
+				placeIdList.add(column.getName());
+			}
+			return placeIdList;
 		}
 		return null;
 	}
@@ -320,5 +338,50 @@ public class PlaceManager extends CommonManager {
 			}
 		}
 		return true;
+	}
+
+	public static List<HColumn<String, String>> getNearbySimilarPlace(
+			CassandraClient cassandraClient, String placeName, double latitude,
+			double longitude, double radius) {
+		if (placeName == null || placeName.length() < 1)
+			return null;
+
+		List<HColumn<String, String>> columnList = getNearyPlaceColumn(
+				cassandraClient, latitude, longitude, radius);
+
+		List<String> placeIds = getNearbyPlaceId(columnList);
+		List<String> placeNames = getNearbyPlaceName(columnList);
+
+		if (placeIds == null || placeIds.isEmpty() || placeName == null
+				|| placeNames.isEmpty())
+			return null;
+
+		Map<String, String> nameToId = new HashMap<String, String>();
+		int length = Math.min(placeIds.size(), placeNames.size());
+		for (int i = 0; i < length; ++i) {
+			nameToId.put(placeNames.get(i), placeIds.get(i));
+		}
+		System.out.println(nameToId);
+		if (placeNames == null || placeNames.isEmpty())
+			return null;
+		String[] srcs = new String[placeNames.size()];
+		srcs = placeNames.toArray(srcs);
+		String[] result = null;
+		result = StringSimilarityUtil.getSortedLCSArray(srcs, placeName,
+				CommonManager.MIN_PLACE_NAME_SIMILARITY,
+				CommonManager.MAX_SIMILARITY_PLACE_COUNT);
+		if (result == null || result.length < 1)
+			return null;
+
+		List<HColumn<String, String>> placeList = new ArrayList<HColumn<String, String>>();
+		for (String name : result) {
+			if (nameToId.containsKey(name)) {
+				HColumn<String, String> column = new HColumnImpl<String, String>(
+						nameToId.get(name), name, 0);
+				placeList.add(column);
+			}
+		}
+		System.out.println(placeList);
+		return placeList;
 	}
 }
