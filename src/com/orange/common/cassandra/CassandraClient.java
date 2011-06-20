@@ -327,15 +327,14 @@ public class CassandraClient {
 		return rows;
 	}
 
-	//TODO: key start end?
 	public Rows<String, String, String> getMultiRowByRange(String columnFamilyName,
-			String[] keys, String start, String end) {
-		MultigetSliceQuery<String, String, String> multigetSliceQuery = HFactory
-				.createMultigetSliceQuery(keyspace, ss, ss, ss);
-		multigetSliceQuery.setColumnFamily(columnFamilyName);
-		multigetSliceQuery.setKeys(keys);
-		multigetSliceQuery.setRange(start, end, true, MAX_COUNT_FOR_MULTI_ROW);
-		QueryResult<Rows<String, String, String>> result = multigetSliceQuery
+			String keyStart, String keyEnd, String start, String end, int maxCount) {
+		RangeSlicesQuery<String, String, String> sliceQuery = HFactory.createRangeSlicesQuery(keyspace, ss, ss, ss);
+		sliceQuery.setColumnFamily(columnFamilyName);
+		sliceQuery.setKeys(keyStart, keyEnd);
+		sliceQuery.setRange(start, end, true, maxCount);
+		//TODO:share this method with Benson.
+		QueryResult<OrderedRows<String, String, String>> result = sliceQuery
 				.execute();
 		Rows<String, String, String> rows = result.get();
 		if (rows == null) {

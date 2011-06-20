@@ -6,14 +6,12 @@
 			<name>local nexus</name>
 			<url>http://192.168.1.101:8091/nexus/content/groups/public</url>
 		</repository>
+		<repository>
+			<id>repo1 central</id>
+			<name>Maven Central Repo1</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus</id>
-			<name>local nexus</name>
-			<url>http://192.168.1.101:8091/nexus/content/groups/public</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.orange</groupId>
@@ -99,7 +97,11 @@
 			<artifactId>weibo4j</artifactId>
 			<version>20110610</version>
 		</dependency>
-
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

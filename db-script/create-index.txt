@@ -24,6 +24,9 @@ create column family idx_place_posts
 create column family idx_post_replies
     with comparator = TimeUUIDType;
 
+create column family idx_post_location
+    with comparator = TimeUUIDType;
+    
 create column family idx_user_posts
     with comparator = TimeUUIDType;
 

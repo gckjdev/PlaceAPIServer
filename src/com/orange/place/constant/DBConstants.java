@@ -26,7 +26,8 @@ public class DBConstants {
 	public static final String INDEX_POST_RELATED_POST = "idx_post_related_posts";
 	public static final String INDEX_ME_POST = "idx_user_me_posts";
 	public static final String INDEX_MY_MESSAGE = "idx_my_messages";
-	public static final String INDEX_GOHASH_PLACEID = "idx_gohash_to_place";
+	public static final String INDEX_GOHASH_PLACEID = "idx_geohash6_to_place";
+	public static final String INDEX_POST_LOCATION = "idx_post_location";
 	
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";

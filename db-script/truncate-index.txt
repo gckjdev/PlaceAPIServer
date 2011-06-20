@@ -20,8 +20,12 @@ truncate idx_user_me_posts;
 
 truncate idx_post_related_posts;
 
-truncate column family idx_my_messages;
+truncate idx_my_messages;
 
 truncate idx_id_long_to_string;
     
-truncate idx_gohash_to_place;
+truncate idx_geohash6_to_place;
+
+truncate idx_post_location;
+
+
