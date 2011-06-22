@@ -24,7 +24,7 @@ public class GeoHashUtil {
 	private static int[] bits = { 16, 8, 4, 2, 1 };
 
 	public String encode(String latitude, String longitude) {
-		return encode(String.valueOf(latitude), String.valueOf(latitude));
+		return encode(Double.valueOf(latitude), Double.valueOf(latitude));
 	}
 	
 	public String encode(double latitude, double longitude) {

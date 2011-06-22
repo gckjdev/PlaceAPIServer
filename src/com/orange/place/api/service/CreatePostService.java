@@ -89,8 +89,8 @@ public class CreatePostService extends CommonService {
 				createDate);
 		// TODO: test needed
 		// create index for geohash , hash : postId, createDate
-		// PostManager.createPostLocationIndex(cassandraClient, postId,
-		// createDate, latitude, longitude);
+		PostManager.createPostLocationIndex(cassandraClient, postId,
+				createDate, latitude, longitude);
 
 		// create post related post index
 		if (srcPostId == null || srcPostId.length() == 0) {
@@ -110,7 +110,6 @@ public class CreatePostService extends CommonService {
 				log.warning("<createPost> reply post doens't exist! reply post Id="
 						+ replyPostId);
 			}
-			// TODO: test
 			// log reply here.
 			AnalysisLogContent content = new AnalysisLogContent()
 					.setLatitude(latitude).setLongitude(longitude)
