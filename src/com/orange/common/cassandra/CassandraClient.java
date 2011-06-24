@@ -310,16 +310,16 @@ public class CassandraClient {
 		return rows;
 	}
 
-	public Rows<String, String, String> getMultiRowByRange(String columnFamilyName,
-			String keyStart, String keyEnd, String start, String end, int maxCount) {
-		RangeSlicesQuery<String, String, String> sliceQuery = HFactory.createRangeSlicesQuery(keyspace, ss, ss, ss);
+	public Rows<String, UUID, String> getMultiRowByRange(String columnFamilyName,
+			String keyStart, String keyEnd, UUID start, UUID end, int maxCount) {
+		RangeSlicesQuery<String, UUID, String> sliceQuery = HFactory.createRangeSlicesQuery(keyspace, ss, us, ss);
 		sliceQuery.setColumnFamily(columnFamilyName);
 		sliceQuery.setKeys(keyStart, keyEnd);
 		sliceQuery.setRange(start, end, true, maxCount);
 		//TODO:share this method with Benson.
-		QueryResult<OrderedRows<String, String, String>> result = sliceQuery
+		QueryResult<OrderedRows<String, UUID, String>> result = sliceQuery
 				.execute();
-		Rows<String, String, String> rows = result.get();
+		Rows<String, UUID, String> rows = result.get();
 		if (rows == null) {
 			return null;
 		}

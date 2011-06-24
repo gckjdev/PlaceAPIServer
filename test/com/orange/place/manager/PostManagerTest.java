@@ -37,6 +37,7 @@ public class PostManagerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		
 	}
 
 	@After
@@ -49,18 +50,25 @@ public class PostManagerTest {
 		String createDate = DateUtil.formatDate(new Date());
 		String latitude = "-12.345";
 		String longitude = "56.878";
+
+		GeoHashUtil util = new GeoHashUtil();
+		String geoHashValue = util.encode(latitude, longitude);
+		System.out.println(geoHashValue);
+		
+		//cleanup
+		cassandraClient.deleteMultipleRows(DBConstants.INDEX_POST_LOCATION, new String[]{geoHashValue});
+		
 		PostManager.createPostLocationIndex(cassandraClient, postId, createDate, latitude, longitude);
 		
 		
-		GeoHashUtil util = new GeoHashUtil();
-		String geoHashValue = util.encode(latitude, longitude);
 		List<GeoRange> geoRanges = new ArrayList<GeoRange>();
 		GeoRange r = new GeoRange();
+		geoRanges.add(r);
 		r.setMax(geoHashValue);
 		r.setMin(geoHashValue);
 		DateTime weeksBefore = new DateTime(2011, 6, 20, 0, 0, 0, 0);
 		List<CompactPost> posts = postDao.findPostByLocation(geoRanges, weeksBefore.toDate(), 100);
-		
+
 		Assert.assertEquals("1 value found in near.",1, posts.size());
 		CompactPost post = posts.get(0);
 		Assert.assertEquals("postId shoud be match",postId, post.getPostId());

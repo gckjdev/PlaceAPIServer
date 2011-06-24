@@ -207,7 +207,7 @@ public class PostManager extends CommonManager {
 		UUID uuid = UUID.fromString(postId);
 		GeoHashUtil util = new GeoHashUtil();
 		String geoHash = util.encode(latitude, longitude);
-		cassandraClient.insert(DBConstants.INDEX_PLACE_POST, geoHash, uuid, createDate);
+		cassandraClient.insert(DBConstants.INDEX_POST_LOCATION, geoHash, uuid, createDate);
 	}
 	
 	public static void createUserViewPostIndex(CassandraClient cassandraClient,
