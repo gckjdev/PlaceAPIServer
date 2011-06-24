@@ -34,32 +34,61 @@ public class PostDao extends AbstractCassandraDao {
 		List<CompactPost> posts = new ArrayList<CompactPost>();
 		for (GeoRange range : geoRanges) {
 			// TODO: time limitation should exist.
-			String start = null;
-			String end = null;
-			Rows<String, String, String> rows = cassandraClient
-					.getMultiRowByRange(DBConstants.INDEX_POST_LOCATION, range.getMin(),
-							range.getMax(), start, end, limitation);
+			UUID start = null;
+			UUID end = null;
+			Rows<String, UUID, String> rows = cassandraClient
+					.getMultiRowByRange(DBConstants.INDEX_POST_LOCATION,
+							range.getMin(), range.getMax(), start, end,
+							limitation);
 			if (rows != null) {
-				Iterator<Row<String, String, String>> it = rows.iterator();
+				Iterator<Row<String, UUID, String>> it = rows.iterator();
 				while (it.hasNext()) {
-					Row<String, String, String> row = it.next();
-					if (row.getColumnSlice()!=null && row.getColumnSlice().getColumns() != null) {
-						Iterator<HColumn<String, String>> columnIter = row
+					Row<String, UUID, String> row = it.next();
+					if (row.getColumnSlice() != null
+							&& row.getColumnSlice().getColumns() != null) {
+						Iterator<HColumn<UUID, String>> columnIter = row
 								.getColumnSlice().getColumns().iterator();
 
 						String geohash = row.getKey();
-						while(columnIter.hasNext()){
-							HColumn<String, String> column = columnIter.next();
-							
-							String postId = column.getName();
-							String createDate  = column.getValue();
+						while (columnIter.hasNext()) {
+							HColumn<UUID, String> column = columnIter.next();
 
-							CompactPost post = createCompactPost(geohash, postId,
-									createDate);
+							UUID postId = column.getName();
+							String createDate = column.getValue();
+
+							CompactPost post = createCompactPost(geohash,
+									postId.toString(), createDate);
 							posts.add(post);
 						}
 					}
 				}
+			}
+		}
+		return posts;
+	}
+
+	public List<CompactPost> findPostByLocation(String geohash,
+			Date sinceAfter, int limitation) {
+		List<CompactPost> posts = new ArrayList<CompactPost>();
+		// TODO: time limitation should exist.
+		UUID start = null;
+		UUID end = null;
+		List<HColumn<UUID, String>> reslut = cassandraClient
+				.getColumnKeyByRange(DBConstants.INDEX_POST_LOCATION,
+						geohash, start, end, limitation);
+
+		if (reslut != null) {
+			Iterator<HColumn<UUID, String>> columnIter = reslut.iterator();
+
+			while (columnIter.hasNext()) {
+				HColumn<UUID, String> column = columnIter.next();
+
+				UUID postId = column.getName();
+				String createDate = column.getValue();
+
+				CompactPost post = createCompactPost(geohash, postId.toString(),
+						createDate);
+				posts.add(post);
 			}
 		}
 		return posts;
