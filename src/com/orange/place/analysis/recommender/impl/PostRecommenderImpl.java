@@ -10,21 +10,20 @@ import com.orange.place.analysis.domain.ScorablePost;
 import com.orange.place.analysis.filter.PostFilter;
 import com.orange.place.analysis.recommender.PostRecommender;
 import com.orange.place.analysis.score.ScoreCalculator;
-import com.orange.place.dao.Post;
 import com.orange.place.dao.User;
 
 public class PostRecommenderImpl implements PostRecommender {
 
 	private ScoreCalculator scoreCalculator;
 
-	private PostFilter storyFilter;
+	private PostFilter postFilter;
 
 	@Override
 	public List<CompactPost> getTopPost(ParseResult parseResult, User user,
 			List<CompactPost> candidates) {
 
 		// filter some story, like have related.
-		List<CompactPost> scoreCandidates = storyFilter.filter(user, candidates);
+		List<CompactPost> scoreCandidates = postFilter.filter(user, candidates);
 
 		List<ScorablePost> scoreList = new LinkedList<ScorablePost>();
 		for (CompactPost story : scoreCandidates) {
@@ -49,6 +48,10 @@ public class PostRecommenderImpl implements PostRecommender {
 
 	public void setScoreCalculator(ScoreCalculator scoreCalculator) {
 		this.scoreCalculator = scoreCalculator;
+	}
+
+	public void setPostFilter(PostFilter postFilter) {
+		this.postFilter = postFilter;
 	}
 
 }

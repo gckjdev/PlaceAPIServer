@@ -24,15 +24,15 @@ public class RequestHandler {
 
 	private RequestParser requestParser;
 
-	private PostFetcher storyFetcher;
+	private PostFetcher postFetcher;
 
 	private UserFetcher userFetcher;
 
 	private PostRecommender postRecommender;
 
-	private final int fetchPostDaysBefore = 30;
+	private int fetchPostDaysBefore = 30;
 
-	private final int fetchPostLimitation = 1000;
+	private int fetchPostLimitation = 1000;
 
 	public List<CompactPost> execute(Request request) {
 		List<CompactPost> result = new ArrayList<CompactPost>();
@@ -44,7 +44,7 @@ public class RequestHandler {
 		}
 
 		try {
-			List<CompactPost> candaidatePost = storyFetcher.fetchStroy(
+			List<CompactPost> candaidatePost = postFetcher.fetchStroy(
 					parseResult.getPlaceRange(), getDateSince(),
 					fetchPostLimitation);
 			User user = userFetcher.fetchUserById(parseResult.getUserId());
@@ -71,8 +71,8 @@ public class RequestHandler {
 		this.requestParser = requestParser;
 	}
 
-	public void setPostFetcher(PostFetcher storyFetcher) {
-		this.storyFetcher = storyFetcher;
+	public void setPostFetcher(PostFetcher postFetcher) {
+		this.postFetcher = postFetcher;
 	}
 
 	public void setUserFetcher(UserFetcher userFetcher) {
@@ -81,5 +81,13 @@ public class RequestHandler {
 
 	public void setPostRecommender(PostRecommender postRecommender) {
 		this.postRecommender = postRecommender;
+	}
+
+	public void setFetchPostDaysBefore(int fetchPostDaysBefore) {
+		this.fetchPostDaysBefore = fetchPostDaysBefore;
+	}
+
+	public void setFetchPostLimitation(int fetchPostLimitation) {
+		this.fetchPostLimitation = fetchPostLimitation;
 	}
 }
