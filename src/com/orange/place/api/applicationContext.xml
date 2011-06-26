@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- common -->
+	<bean id="springContextUtil" class="com.orange.common.context.SpringContextUtil" />
+
+	<!-- cassandra data source -->
+	<bean id="cassandraClient" class="com.orange.common.cassandra.CassandraClient">
+		<constructor-arg name="serverNameAndPort" value="localhost:9160" />
+		<constructor-arg name="clusterName" value="Test Cluster" />
+		<constructor-arg name="keyspaceName" value="PlaceKS" />
+	</bean>
+
+	<!-- dao -->
+	<bean id="postDao" class="com.orange.place.analysis.dao.PostDao">
+		<property name="cassandraClient" ref="cassandraClient" />
+	</bean>
+	<bean id="statisticDao" class="com.orange.place.analysis.dao.StatisticDao">
+		<property name="cassandraClient" ref="cassandraClient" />
+	</bean>
+
+	<!-- manager -->
+	<bean id="userManager" class="com.orange.place.manager.UserManager">
+	</bean>
+
+	<!-- fetcher -->
+	<bean id="postFetcher" class="com.orange.place.analysis.fetcher.PostFetcher">
+		<property name="postDao" ref="postDao" />
+	</bean>
+	<bean id="userFetcher" class="com.orange.place.analysis.fetcher.UserFetcher">
+		<property name="userManager" ref="userManager" />
+		<property name="cassandraClient" ref="cassandraClient" />
+	</bean>
+	<!-- post filter -->	<bean id="aggregatePostFilter"		class="com.orange.place.analysis.filter.impl.AggregatePostFilter">
+		<property name="filters">
+			<list>
+				<ref bean="acceptAllPostFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="acceptAllPostFilter"
+		class="com.orange.place.analysis.filter.impl.AcceptAllPostFilter">
+	</bean>
+	<!-- TODO: not used -->
+	<bean id="userRelatedPostFilter"
+		class="com.orange.place.analysis.filter.impl.UserRelatedPostFilter">
+		<property name="postDao" ref="postDao" />
+	</bean>
+
+	<!-- request parser -->
+	<bean id="requestParser" class="com.orange.place.analysis.parser.impl.RequestParserImpl">
+		<property name="proximitySearchUtil" ref="placePostProximitySearchUtil" />
+		<property name="geoRangeUtil" ref="geoRangeUtil" />
+	</bean>
+
+	<!-- geohash util -->
+	<bean id="geoHashUtil" class="com.orange.common.utils.geohash.GeoHashUtil">
+		<property name="precision" value="26" />
+	</bean>
+	<bean id="placePostProximitySearchUtil" class="com.orange.common.utils.geohash.ProximitySearchUtil">
+		<property name="precision" value="7" />
+	</bean>
+	<bean id="geoRangeUtil" class="com.orange.common.utils.geohash.GeoRangeUtil">
+	</bean>
+
+
+	<!-- recommender -->
+	<bean id="postRecommender"
+		class="com.orange.place.analysis.recommender.impl.PostRecommenderImpl">
+		<property name="scoreCalculator" ref="multipleScoreCalculator" />
+		<property name="postFilter" ref="aggregatePostFilter" />
+	</bean>
+
+	<!-- score -->
+	<bean id="multipleScoreCalculator"
+		class="com.orange.place.analysis.score.aggregate.MultipleScoreCalculator">
+		<property name="calculators">
+			<list>
+				<ref bean="locationScoreCalculator" />
+				<ref bean="postDateScoreCalculator" />
+				<ref bean="userRelatedPostScoreCalculator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="locationScoreCalculator"
+		class="com.orange.place.analysis.score.impl.LocationScoreCalculator">
+		<property name="proximitySearchUtil" ref="placePostProximitySearchUtil" />
+		<property name="geoHashUtil" ref="geoHashUtil" />
+	</bean>
+	<bean id="postDateScoreCalculator"
+		class="com.orange.place.analysis.score.impl.PostDateScoreCalculator">
+	</bean>
+	<bean id="userRelatedPostScoreCalculator"
+		class="com.orange.place.analysis.score.impl.UserRelatedPostScoreCalculator">
+		<property name="statisticDao" ref="statisticDao" />
+		<property name="userFetcher" ref="userFetcher" />
+	</bean>
+
+	<!-- RequestHandler -->
+	<bean id="requestHandler" class="com.orange.place.analysis.RequestHandler">
+		<property name="requestParser" ref="requestParser" />
+		<property name="postFetcher" ref="postFetcher" />
+		<property name="userFetcher" ref="userFetcher" />
+		<property name="postRecommender" ref="postRecommender" />
+		<property name="fetchPostDaysBefore" value="30" />
+		<property name="fetchPostLimitation" value="1000" />
+	</bean>
+</beans>

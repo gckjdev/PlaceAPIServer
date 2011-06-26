@@ -10,7 +10,7 @@ public class GeoRangeUtil {
 	 * @param geohash
 	 * @return
 	 */
-	List<GeoRange> getGeoRange(List<String> geohashList) {
+	public List<GeoRange> getGeoRange(List<String> geohashList) {
 		List<GeoRange> result = new ArrayList<GeoRange>();
 		int size = geohashList.size();
 		for (int i = 0; i < size; i++) {
@@ -29,7 +29,7 @@ public class GeoRangeUtil {
 		return result;
 	}
 
-	boolean canMerged(String smaller, String bigger) {
+	private boolean canMerged(String smaller, String bigger) {
 		String smallerPrefix = smaller.substring(0, smaller.length() - 1);
 		String biggerPrefix = bigger.substring(0, bigger.length() - 1);
 		if (!smallerPrefix.equals(biggerPrefix)) {
