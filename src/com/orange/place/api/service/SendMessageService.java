@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 
+import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.Message;
@@ -24,8 +25,17 @@ public class SendMessageService extends CommonService {
 		String messageId = message.getMessageId();
 		MessageManager.createUserPostIndex(cassandraClient, userId, toUserId,
 				messageId);
+
+		String nickName = cassandraClient.getColumnValue(DBConstants.USER,
+				userId, DBConstants.F_NICKNAME);
+		String avatar = cassandraClient.getColumnValue(DBConstants.USER,
+				userId, DBConstants.F_AVATAR);
+		String createDate = message.getCreateDate();
 		JSONObject obj = new JSONObject();
 		obj.put(ServiceConstant.PARA_MESSAGE_ID, messageId);
+		obj.put(ServiceConstant.PARA_NICKNAME, nickName);
+		obj.put(ServiceConstant.PARA_AVATAR, avatar);
+		obj.put(ServiceConstant.PARA_CREATE_DATE, createDate);
 		resultData = obj;
 	}
 

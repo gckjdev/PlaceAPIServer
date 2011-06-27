@@ -13,20 +13,21 @@ public class GetMyMessageService extends CommonService {
    
 	String userId;
 	String appId;
-	String beforeTimeStamp;
+	String afterTimeStamp;
 	String maxCount;
 	
 	@Override
 	public void handleData() {
 		List<Message> messageList = MessageManager.getMyMessage(cassandraClient,
-				userId, beforeTimeStamp, maxCount);
+				userId, afterTimeStamp, maxCount);
 		if (messageList == null) {
 			log.info("fail to get user message, userId=" + userId);
 			resultCode = ErrorCode.ERROR_GET_MY_MESSAGE;
 			return;
 		}
 //need to add into json
-		resultData = CommonServiceUtils.messageListToJSON(messageList);
+		resultData = CommonServiceUtils.messageListToJSON(messageList,afterTimeStamp);
+		//date avatar nickname
 
 	}
 
@@ -46,8 +47,8 @@ public class GetMyMessageService extends CommonService {
 	public boolean setDataFromRequest(HttpServletRequest request) {
 		appId = request.getParameter(ServiceConstant.PARA_APPID);
 		userId = request.getParameter(ServiceConstant.PARA_USERID);
-		beforeTimeStamp = request
-				.getParameter(ServiceConstant.PARA_BEFORE_TIMESTAMP);
+		afterTimeStamp = request
+				.getParameter(ServiceConstant.PARA_AFTER_TIMESTAMP);
 		maxCount = request.getParameter(ServiceConstant.PARA_MAX_COUNT);
 
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY,

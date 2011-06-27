@@ -14,8 +14,9 @@ import me.prettyprint.hector.api.beans.Rows;
 
 import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
-import com.orange.common.utils.StringSimilarityUtil;
 import com.orange.common.utils.geohash.ProximitySearchUtil;
+import com.orange.common.utils.similarity.EDAlgorithm;
+import com.orange.common.utils.similarity.StringSimilarityUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
 import com.orange.place.dao.Place;
@@ -79,7 +80,6 @@ public class PlaceManager extends CommonManager {
 				Place place = new Place(columns);
 				placeList.add(place);
 			}
-			System.out.println("**********class: " + columns.get(0).toString());
 		}
 
 		return placeList;
@@ -361,7 +361,6 @@ public class PlaceManager extends CommonManager {
 		for (int i = 0; i < length; ++i) {
 			nameToId.put(placeNames.get(i), placeIds.get(i));
 		}
-		System.out.println(nameToId);
 		if (placeNames == null || placeNames.isEmpty())
 			return null;
 		String[] srcs = new String[placeNames.size()];
@@ -369,7 +368,7 @@ public class PlaceManager extends CommonManager {
 		String[] result = null;
 		result = StringSimilarityUtil.getSortedLCSArray(srcs, placeName,
 				CommonManager.MIN_PLACE_NAME_SIMILARITY,
-				CommonManager.MAX_SIMILARITY_PLACE_COUNT);
+				CommonManager.MAX_SIMILARITY_PLACE_COUNT, new EDAlgorithm());
 		if (result == null || result.length < 1)
 			return null;
 
@@ -381,7 +380,6 @@ public class PlaceManager extends CommonManager {
 				placeList.add(column);
 			}
 		}
-		System.out.println(placeList);
 		return placeList;
 	}
 }
