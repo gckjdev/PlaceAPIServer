@@ -42,4 +42,17 @@ public class Message extends CommonData {
 	public String getMessageContent() {
 		return getKey(DBConstants.F_MESSAGE_CONTENT);
 	}
+	
+	public String getUserNickName() {
+		return getKey(DBConstants.F_NICKNAME);
+	}
+	
+	public String getUserAvatar() {
+		return getKey(DBConstants.F_AVATAR);
+	}
+	
+	public String getMessageType() {
+		return getKey(DBConstants.F_MESSAGE_TYPE);
+	}
+	
 }

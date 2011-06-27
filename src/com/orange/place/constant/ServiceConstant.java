@@ -155,6 +155,7 @@ public class ServiceConstant {
 	public static final String PARA_QQ_APPSECRET = "qas";
 	public static final String PARA_RENREN_APPKEY = "rak";
 	public static final String PARA_RENREN_APPSECRET = "ras";
+	public static final String PARA_MESSAGE_TYPE = "mt";
 	
 
 

@@ -21,7 +21,11 @@ public class CommonManager {
 	public static final double MIN_PLACE_NAME_SIMILARITY = 60;
 
 	public static final int NEARBY_PLACE_GEOHASH_PRECISION = 6;
-
+	public static final int DEFAULE_MESSAGE_COUNT = 200;
+	
+	public static final String MESSAGE_TYPE_SEND = "send";
+	public static final String MESSAGE_TYPE_RECEIVE = "receive";
+	
 	public static int getMaxCount(String maxCount) {
 		int max = MAX_COUNT;
 		if (maxCount != null) {
@@ -30,10 +34,10 @@ public class CommonManager {
 		return max;
 	}
 
-	public static UUID getStartUUID(String beforeTimeStamp) {
+	public static UUID getTimeStampUUID(String timeStamp) {
 		UUID startUUID = null;
-		if (beforeTimeStamp != null && beforeTimeStamp.length() > 0) {
-			startUUID = UUID.fromString(beforeTimeStamp);
+		if (timeStamp != null && timeStamp.length() > 0) {
+			startUUID = UUID.fromString(timeStamp);
 		}
 		return startUUID;
 	}

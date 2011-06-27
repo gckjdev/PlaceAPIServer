@@ -166,7 +166,7 @@ public class PostManager extends CommonManager {
 	public static List<Post> getPostByPlace(CassandraClient cassandraClient,
 			String placeId, String beforeTimeStamp, String maxCount) {
 
-		UUID startUUID = getStartUUID(beforeTimeStamp);
+		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 
 		List<HColumn<UUID, String>> resultList = cassandraClient
@@ -235,7 +235,7 @@ public class PostManager extends CommonManager {
 	public static List<Post> getUserTimeline(CassandraClient cassandraClient,
 			String userId, String beforeTimeStamp, String maxCount) {
 
-		UUID startUUID = getStartUUID(beforeTimeStamp);
+		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 
 		List<HColumn<UUID, String>> resultList = cassandraClient
@@ -252,7 +252,7 @@ public class PostManager extends CommonManager {
 	public static List<Post> getUserPosts(CassandraClient cassandraClient,
 			String userId, String beforeTimeStamp,
 			String maxCount) {
-		UUID startUUID = getStartUUID(beforeTimeStamp);
+		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 		List<HColumn<UUID, String>> resultList = cassandraClient
 				.getColumnKeyByRange(DBConstants.INDEX_USER_POST, userId,
@@ -289,7 +289,7 @@ public class PostManager extends CommonManager {
 			CassandraClient cassandraClient, String postId,
 			String beforeTimeStamp, String maxCount) {
 
-		UUID startUUID = getStartUUID(beforeTimeStamp);
+		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 
 		List<HColumn<UUID, String>> resultList = cassandraClient
@@ -339,7 +339,7 @@ public class PostManager extends CommonManager {
 
 	public static List<Post> getMePosts(CassandraClient cassandraClient,
 			String userId, String beforeTimeStamp, String maxCount) {
-		UUID startUUID = getStartUUID(beforeTimeStamp);
+		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 		List<HColumn<UUID, String>> resultList = cassandraClient
 				.getColumnKeyByRange(DBConstants.INDEX_ME_POST, userId,
