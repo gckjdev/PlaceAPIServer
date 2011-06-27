@@ -12,6 +12,12 @@ public class DeleteMeMessageService extends CommonService {
 	String messageId;
 
 	@Override
+	public String toString() {
+		return "DeleteMeMessageService [appId=" + appId + ", messageId="
+				+ messageId + ", userId=" + userId + "]";
+	}
+
+	@Override
 	public void handleData() {
 		// TODO Auto-generated method stub
 		MessageManager.deleteMessage(cassandraClient, userId, messageId);
@@ -25,8 +31,7 @@ public class DeleteMeMessageService extends CommonService {
 
 	@Override
 	public void printData() {
-		// TODO Auto-generated method stub
-
+		log.info(toString());
 	}
 
 	@Override
