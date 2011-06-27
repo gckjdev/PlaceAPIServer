@@ -1,6 +1,5 @@
 package com.orange.common.snsrequest;
 
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
 import com.orange.common.utils.DateUtil;

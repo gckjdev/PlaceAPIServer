@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ProximitySearchUtil {
-
 	private static final int DEFAULT_PRECISION = 7;
-	
 	private static final double EARTH_RADIUS = 6378137;
 	private static final double RAD = Math.PI / 180.0;
 	public static final int NORTH = 0;

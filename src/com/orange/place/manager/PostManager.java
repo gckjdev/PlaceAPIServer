@@ -15,7 +15,6 @@ import com.orange.common.utils.DateUtil;
 import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
-import com.orange.place.dao.Place;
 import com.orange.place.dao.Post;
 
 public class PostManager extends CommonManager {
@@ -207,7 +206,7 @@ public class PostManager extends CommonManager {
 		UUID uuid = UUID.fromString(postId);
 		GeoHashUtil util = new GeoHashUtil();
 		String geoHash = util.encode(latitude, longitude);
-		cassandraClient.insert(DBConstants.INDEX_PLACE_POST, geoHash, uuid, createDate);
+		cassandraClient.insert(DBConstants.INDEX_POST_LOCATION, geoHash, uuid, createDate);
 	}
 	
 	public static void createUserViewPostIndex(CassandraClient cassandraClient,

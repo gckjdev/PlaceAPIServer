@@ -84,4 +84,3 @@ create column family idx_my_messages
 
 create column family idx_id_long_to_string
     with comparator = AsciiType;
-    

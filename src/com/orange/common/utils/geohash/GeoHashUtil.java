@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class GeoHashUtil {
 
-	private static final int DEFAULT_PRECISION = 26;
+	public static final int DEFAULT_PRECISION = 6;
 
 	// geohash's char map
 	public static final char[] _base32 = { '0', '1', '2', '3', '4', '5', '6',
@@ -24,7 +24,7 @@ public class GeoHashUtil {
 	private static int[] bits = { 16, 8, 4, 2, 1 };
 
 	public String encode(String latitude, String longitude) {
-		return encode(String.valueOf(latitude), String.valueOf(latitude));
+		return encode(Double.valueOf(latitude), Double.valueOf(latitude));
 	}
 	
 	public String encode(double latitude, double longitude) {

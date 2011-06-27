@@ -17,6 +17,10 @@ public class CommonManager {
 	public static final int UNLIMITED_COUNT = Integer.MAX_VALUE;
 	public static final int MAX_DELETE_UNFOLLOWPLACE_COUNT = 3;
 	public static final int MAX_ADD_FOLLOWPLACE_COUNT = 30;
+	public static final int MAX_SIMILARITY_PLACE_COUNT = 10;
+	public static final double MIN_PLACE_NAME_SIMILARITY = 60;
+
+	public static final int NEARBY_PLACE_GEOHASH_PRECISION = 6;
 
 	public static int getMaxCount(String maxCount) {
 		int max = MAX_COUNT;
@@ -39,5 +43,5 @@ public class CommonManager {
 		if (value != null && value.length() > 0) {
 			map.put(key, value);
 		}
-	}		
+	}
 }

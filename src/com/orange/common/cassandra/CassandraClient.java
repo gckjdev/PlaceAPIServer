@@ -165,6 +165,12 @@ public class CassandraClient {
 	}
 	
 	@SuppressWarnings("unused")
+	private void printStringColumnList(HColumn<String, String> column){
+			System.out.println("column[" + column.getName() + "]="
+					+ column.getValue());
+	}
+	
+	@SuppressWarnings("unused")
 	private void printUUIDColumnList(List<HColumn<UUID, String>> columns){
 		// print for test TODO rem the code
 		System.out.println("get data result size=" + columns.size());
@@ -186,7 +192,18 @@ public class CassandraClient {
 			}
 		}		
 	}
+	@SuppressWarnings("unused")
+	private void printStringRow(Row<String, String, String> row){
 	
+			System.out.println("row key : " + row.getKey());
+			ColumnSlice<String, String> columns = row.getColumnSlice();
+			List<HColumn<String, String>> list = columns.getColumns();
+			for (HColumn<String, String> data : list) {
+				System.out.println("column[" + data.getName() + "]="
+						+ data.getValue());
+			
+		}		
+	}
 	public List<HColumn<String, String>> getColumnKey(String columnFamilyName,
 			String key, String... columnNames) {
 		StringSerializer se = StringSerializer.get();
@@ -310,22 +327,23 @@ public class CassandraClient {
 		return rows;
 	}
 
-	public Rows<String, String, String> getMultiRowByRange(String columnFamilyName,
-			String keyStart, String keyEnd, String start, String end, int maxCount) {
-		RangeSlicesQuery<String, String, String> sliceQuery = HFactory.createRangeSlicesQuery(keyspace, ss, ss, ss);
+	public Rows<String, UUID, String> getMultiRowByRange(String columnFamilyName,
+			String keyStart, String keyEnd, UUID start, UUID end, int maxCount) {
+		RangeSlicesQuery<String, UUID, String> sliceQuery = HFactory.createRangeSlicesQuery(keyspace, ss, us, ss);
 		sliceQuery.setColumnFamily(columnFamilyName);
 		sliceQuery.setKeys(keyStart, keyEnd);
 		sliceQuery.setRange(start, end, true, maxCount);
 		//TODO:share this method with Benson.
-		QueryResult<OrderedRows<String, String, String>> result = sliceQuery
+		QueryResult<OrderedRows<String, UUID, String>> result = sliceQuery
 				.execute();
-		Rows<String, String, String> rows = result.get();
+		Rows<String, UUID, String> rows = result.get();
 		if (rows == null) {
 			return null;
 		}
 
 		return rows;
 	}
+
 	
 	public Rows<String, String, String> getMultiRow(String columnFamilyName,
 			String... keys) {

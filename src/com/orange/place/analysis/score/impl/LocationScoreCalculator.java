@@ -1,5 +1,7 @@
 package com.orange.place.analysis.score.impl;
 
+import org.springframework.beans.factory.annotation.Required;
+
 import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.common.utils.geohash.ProximitySearchUtil;
 import com.orange.place.analysis.domain.CompactPost;
@@ -30,4 +32,15 @@ public class LocationScoreCalculator implements ScoreCalculator {
 		}
 		return STANDRAD_DISTANCE / distance;
 	}
+	
+	@Required
+	public void setProximitySearchUtil(ProximitySearchUtil proximitySearchUtil) {
+		this.proximitySearchUtil = proximitySearchUtil;
+	}
+
+	@Required
+	public void setGeoHashUtil(GeoHashUtil geoHashUtil) {
+		this.geoHashUtil = geoHashUtil;
+	}
+
 }

@@ -19,6 +19,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.orange.place.api.service.ServiceHandler;
 
@@ -28,8 +29,8 @@ public class PlaceAPIServer extends AbstractHandler
 	
 	public static AtomicInteger uniqueId = new AtomicInteger();
 	
-//	private int port;
-	
+	public static final String SPRING_CONTEXT_FILE = "classpath:/com/orange/place/api/applicationContext.xml";
+
 	public int getPort(){		
 		return 8000;
 	}
@@ -52,6 +53,15 @@ public class PlaceAPIServer extends AbstractHandler
 		   }   		   		   
 	}
 		
+	public static void initSpringContext(String... context){
+		try {
+			new ClassPathXmlApplicationContext(
+					context );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void printLog(long requestId, String logString){
 		Date date = new Date();
 		log.info(String.format("%s [%010d] %s", date.toString(), requestId, logString));
@@ -92,7 +102,11 @@ public class PlaceAPIServer extends AbstractHandler
     	
     	PlaceAPIServer handler = new PlaceAPIServer();    	
     	//handler.readConfig(filename);
-    	    	
+    	
+    	//init the spring context
+    	String[] springFiles = new String[]{SPRING_CONTEXT_FILE};
+    	initSpringContext(springFiles);
+    	
         Server server = new Server(handler.getPort());
         server.setHandler(handler);
         QueuedThreadPool threadPool = new QueuedThreadPool();  
