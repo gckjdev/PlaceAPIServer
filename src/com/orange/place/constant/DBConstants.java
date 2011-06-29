@@ -130,6 +130,7 @@ public class DBConstants {
 	public static final String F_TO_USERID = "toUserId";
 	public static final String F_SRC_MESSAGEID = "srcMessageId";
 
+	public static final String F_MESSAGE_TYPE = "messageType";
 	
 	// Value
 	public static final String STATUS_NORMAL = "1";
