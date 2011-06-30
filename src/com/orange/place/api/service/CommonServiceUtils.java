@@ -185,7 +185,6 @@ public class CommonServiceUtils {
 		json.put(ServiceConstant.PARA_MESSAGE_TYPE, message.getMessageType());
 		json.put(ServiceConstant.PARA_AVATAR, message.getUserAvatar());
 		json.put(ServiceConstant.PARA_NICKNAME, message.getUserNickName());
-		json.put(ServiceConstant.PARA_NICKNAME, message.getUserGender());
 		return json;
 	}
 
