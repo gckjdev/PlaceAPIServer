@@ -81,12 +81,12 @@ public class CreatePostService extends CommonService {
 
 		String postId = post.getPostId();
 		String createDate = post.getCreateDate();
-
 		// add post into index
 		PostManager.createPlacePostIndex(cassandraClient, placeId, postId);
 		PostManager.createUserPostIndex(cassandraClient, userId, postId);
 		PostManager.createUserViewPostIndex(cassandraClient, placeId, postId,
 				createDate);
+		PostManager.createAppIdPostIndex(cassandraClient, postId, appId);
 		// TODO: test needed
 		// create index for geohash , hash : postId, createDate
 		PostManager.createPostLocationIndex(cassandraClient, postId,
@@ -104,25 +104,26 @@ public class CreatePostService extends CommonService {
 			Post replyPost = PostManager.getPostById(cassandraClient,
 					replyPostId);
 			if (replyPost != null) {
-				PostManager.createUserMePostIndex(cassandraClient,
-						replyPost.getUserId(), postId);
+				PostManager.createUserMePostIndex(cassandraClient, replyPost
+						.getUserId(), postId);
 			} else {
-				log.warning("<createPost> reply post doens't exist! reply post Id="
-						+ replyPostId);
+				log
+						.warning("<createPost> reply post doens't exist! reply post Id="
+								+ replyPostId);
 			}
 			// log reply here.
-			AnalysisLogContent content = new AnalysisLogContent()
-					.setLatitude(latitude).setLongitude(longitude)
-					.setPlaceId(placeId).setPostId(replyPostId)
-					.setPostType(PostType.REPLY).setUserId(userId);
+			AnalysisLogContent content = new AnalysisLogContent().setLatitude(
+					latitude).setLongitude(longitude).setPlaceId(placeId)
+					.setPostId(replyPostId).setPostType(PostType.REPLY)
+					.setUserId(userId);
 			AnalysisLogUtil.log(content);
 		}
 
 		// TODO: test, log create post here.
-		AnalysisLogContent content = new AnalysisLogContent()
-				.setLatitude(latitude).setLongitude(longitude)
-				.setPlaceId(placeId).setPostId(postId)
-				.setPostType(PostType.CREATE).setUserId(userId);
+		AnalysisLogContent content = new AnalysisLogContent().setLatitude(
+				latitude).setLongitude(longitude).setPlaceId(placeId)
+				.setPostId(postId).setPostType(PostType.CREATE).setUserId(
+						userId);
 		AnalysisLogUtil.log(content);
 
 		// set result data, return postId, nick name, and create date
@@ -142,12 +143,15 @@ public class CreatePostService extends CommonService {
 	@Override
 	public void printData() {
 		// TODO Auto-generated method stub
-		log.info(String
-				.format("userId=%s, appId=%s, placeId=%s,"
-						+ "longitude=%s, latitude=%s, userLongitude=%s, userLatitude=%s,"
-						+ "textContent=%s, contentType=%s, syncSNS=%s", userId,
-						appId, placeId, longitude, latitude, userLongitude,
-						userLatitude, textContent, contentType, syncSNS));
+		log
+				.info(String
+						.format(
+								"userId=%s, appId=%s, placeId=%s,"
+										+ "longitude=%s, latitude=%s, userLongitude=%s, userLatitude=%s,"
+										+ "textContent=%s, contentType=%s, syncSNS=%s",
+								userId, appId, placeId, longitude, latitude,
+								userLongitude, userLatitude, textContent,
+								contentType, syncSNS));
 	}
 
 	@Override

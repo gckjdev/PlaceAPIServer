@@ -19,7 +19,7 @@ public class PostFetcher {
 			Date sinceAfter, int limitation) {
 		List<CompactPost> posts = postDao.findPostByLocation(geoRange,
 				sinceAfter, limitation);
-		log.info("postFetcher list size : {}, limitation : {}", posts.size(),
+		log.debug("postFetcher list size : {}, limitation : {}", posts.size(),
 				limitation);
 		return posts;
 	}

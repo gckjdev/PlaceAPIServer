@@ -34,3 +34,9 @@ truncate idx_post_related_posts;
 truncate idx_my_messages;
 
 truncate idx_id_long_to_string;
+
+truncate idx_geohash6_to_place;
+
+truncate idx_post_location;
+
+truncate idx_app_post;

@@ -232,18 +232,19 @@ public class UserManager extends CommonManager {
 
 	public static void updateUser(CassandraClient cassandraClient,
 			String userId, String mobile, String eMail, String nickName,
-			String password, String avatarUrl) {
+			String password, String avatarUrl, String gender) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		safePutMap(map, DBConstants.F_MOBILE, mobile);
 		safePutMap(map, DBConstants.F_EMAIL, eMail);
 
 		safePutMap(map, DBConstants.F_NICKNAME, nickName);
 		safePutMap(map, DBConstants.F_PASSWORD, password);
+		safePutMap(map, DBConstants.F_GENDER, gender);
 		safePutMap(map, DBConstants.F_AVATAR, avatarUrl);
 		cassandraClient.insert(DBConstants.USER, userId, map);
 		
 		log.info("<updateUser> userId="+userId+",mobile="+mobile+
-				",nickName="+nickName+",email="+eMail+",avatar="+avatarUrl);
+				",nickName="+nickName+",email="+eMail+",avatar="+avatarUrl+",gender="+gender);
 	}
 
 	public static boolean isUserExist(CassandraClient cassandraClient,

@@ -100,7 +100,7 @@ public class ProximitySearchUtil {
 
 		double distance = getDistance(latitude, longitude, location[0],
 				location[1]);
-		log.info(
+		log.debug(
 				"distance={}, radius={} ; latitude={}, longitude={}; location[0]={}, location[1]={}",
 				new Object[] { distance, radius, latitude, longitude,
 						location[0], location[1] });

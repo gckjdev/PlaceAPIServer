@@ -1,5 +1,6 @@
 package com.orange.place.constant;
 
+
 public class ServiceConstant {
 
 	// server name
@@ -39,7 +40,8 @@ public class ServiceConstant {
 	public static final String METHOD_GETAPPS = "ga";
 	public static final String METHOD_GETUPDATES = "gu";
 	public static final String METHOD_GETPLACE = "gtp";
-
+	public static final String METHOD_GETPUBLICTIMELINE = "gpt";
+	public static final String METHOD_ACTIONONPOST = "aop";	
 	
 	// request parameters
 
@@ -137,14 +139,18 @@ public class ServiceConstant {
 
 	public static final String PARA_TO_USERID = "tuid";
 	public static final String PARA_MESSAGE_ID = "mid";
+	
+	public static final String PARA_POST_ACTION_TYPE = "pat";
 
+	//request parameters value
+	public static final String POST_ACTION_TYPE_LIKE = "like";
+	
 	// response parameters
 
 	public static final String RET_MESSAGE = "msg";
 	public static final String RET_CODE = "ret";
 	public static final String RET_DATA = "dat";
-
-
+	
 	//app service response parameters
 
 	public static final String PARA_APPURL = "au";
@@ -156,7 +162,5 @@ public class ServiceConstant {
 	public static final String PARA_RENREN_APPKEY = "rak";
 	public static final String PARA_RENREN_APPSECRET = "ras";
 	public static final String PARA_MESSAGE_TYPE = "mt";
-	
-
 
 }

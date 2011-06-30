@@ -14,6 +14,7 @@ import com.orange.common.cassandra.CassandraClient;
 import com.orange.common.utils.DateUtil;
 import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.place.constant.DBConstants;
+import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.IdGenerator;
 import com.orange.place.dao.Post;
 
@@ -39,8 +40,8 @@ public class PostManager extends CommonManager {
 		map.put(DBConstants.F_USER_LATITUDE, userLatitude);
 		map.put(DBConstants.F_TEXT_CONTENT, textContent);
 		map.put(DBConstants.F_CONTENT_TYPE, contentType);
-		
-		if (imageURL != null){
+
+		if (imageURL != null) {
 			map.put(DBConstants.F_IMAGE_URL, imageURL);
 		}
 
@@ -59,6 +60,7 @@ public class PostManager extends CommonManager {
 		map.put(DBConstants.F_CREATE_DATE, DateUtil.currentDate());
 		map.put(DBConstants.F_CREATE_SOURCE_ID, appId);
 		map.put(DBConstants.F_STATUS, DBConstants.STATUS_NORMAL);
+		map.put(DBConstants.F_LIKE_COUNT, "0");
 
 		log.info("<createPost> postId=" + postId + ", userId=" + userId);
 		cassandraClient.insert(DBConstants.POST, postId, map);
@@ -111,24 +113,23 @@ public class PostManager extends CommonManager {
 				}
 			}
 		}
-		
+
 		// get user nickname and avatar
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
-				DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
+				DBConstants.F_NICKNAME, DBConstants.F_AVATAR, DBConstants.F_GENDER);
 
 		// get place Id & name
 		Rows<String, String, String> placeRows = cassandraClient.getMultiRow(
-				DBConstants.PLACE, placeIds,
-				DBConstants.F_NAME);
+				DBConstants.PLACE, placeIds, DBConstants.F_NAME);
 
-		
 		for (Post post : postList) {
-			// set user nickname and avatar to post
+			// set user nickname and avatar and gender to post
 			String userId = post.getUserId();
 			if (userId != null) {
 				Row<String, String, String> userRow = userRows.getByKey(userId);
-				ColumnSlice<String, String> columnSlice = userRow.getColumnSlice();
+				ColumnSlice<String, String> columnSlice = userRow
+						.getColumnSlice();
 				if (columnSlice != null) {
 					List<HColumn<String, String>> columns = columnSlice
 							.getColumns();
@@ -137,19 +138,21 @@ public class PostManager extends CommonManager {
 					}
 				}
 			}
-			
+
 			// set place name to post
 			String placeId = post.getPlaceId();
-			if (placeId != null){
-				Row<String, String, String> placeRow = placeRows.getByKey(placeId);
-				ColumnSlice<String, String> columnSlice = placeRow.getColumnSlice();
+			if (placeId != null) {
+				Row<String, String, String> placeRow = placeRows
+						.getByKey(placeId);
+				ColumnSlice<String, String> columnSlice = placeRow
+						.getColumnSlice();
 				if (columnSlice != null) {
 					List<HColumn<String, String>> columns = columnSlice
 							.getColumns();
 					if (columns != null) {
 						post.addValues(columns);
 					}
-				}				
+				}
 			}
 
 			// set related post number to post
@@ -161,14 +164,15 @@ public class PostManager extends CommonManager {
 
 		return postList;
 	}
-	
+
 	public static Post getPostById(CassandraClient cassandraClient,
-			String postId){
-		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(DBConstants.POST, postId);
+			String postId) {
+		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(
+				DBConstants.POST, postId);
 		if (columns == null)
 			return null;
-		
-		return new Post(columns); 
+
+		return new Post(columns);
 	}
 
 	public static List<Post> getPostByPlace(CassandraClient cassandraClient,
@@ -194,7 +198,7 @@ public class PostManager extends CommonManager {
 		UUID uuid = UUID.fromString(postId);
 		cassandraClient.insert(DBConstants.INDEX_PLACE_POST, placeId, uuid, "");
 	}
-	
+
 	public static void createUserPostIndex(CassandraClient cassandraClient,
 			String userId, String postId) {
 		UUID uuid = UUID.fromString(postId);
@@ -215,9 +219,18 @@ public class PostManager extends CommonManager {
 		GeoHashUtil util = new GeoHashUtil();
 		util.setPrecision(POST_LOCATION_PRECISION);
 		String geoHash = util.encode(latitude, longitude);
-		cassandraClient.insert(DBConstants.INDEX_POST_LOCATION, geoHash, uuid, createDate);
+		cassandraClient.insert(DBConstants.INDEX_POST_LOCATION, geoHash, uuid,
+				createDate);
 	}
-	
+
+	public static void createAppIdPostIndex(CassandraClient cassandraClient,
+			String postId, String appId) {
+		UUID uuid = UUID.fromString(postId);
+		cassandraClient.insert(DBConstants.INDEX_APPID_POST, appId, uuid, "");
+		cassandraClient.insert(DBConstants.INDEX_APPID_POST,
+				DBConstants.R_APPID_ALL, uuid, "");
+	}
+
 	public static void createUserViewPostIndex(CassandraClient cassandraClient,
 			String placeId, String postId, String createDate) {
 
@@ -259,8 +272,7 @@ public class PostManager extends CommonManager {
 	}
 
 	public static List<Post> getUserPosts(CassandraClient cassandraClient,
-			String userId, String beforeTimeStamp,
-			String maxCount) {
+			String userId, String beforeTimeStamp, String maxCount) {
 		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
 		int max = getMaxCount(maxCount);
 		List<HColumn<UUID, String>> resultList = cassandraClient
@@ -358,5 +370,45 @@ public class PostManager extends CommonManager {
 		}
 		List<Post> postList = getPostList(cassandraClient, resultList);
 		return postList;
+	}
+
+	public static List<Post> getPublicTimeLine(CassandraClient cassandraClient,
+			String appId, String beforeTimeStamp, String maxCount) {
+		// TODO Auto-generated method stub
+		if (appId == null || appId.length() < 1)
+			return null;
+		UUID startUUID = getTimeStampUUID(beforeTimeStamp);
+		int max = (startUUID == null && maxCount == null) ? getPostCount(maxCount)
+				: getMaxCount(maxCount);
+		List<HColumn<UUID, String>> resultList = cassandraClient
+				.getColumnKeyByRange(DBConstants.INDEX_APPID_POST, appId,
+						startUUID, max);
+		if (resultList == null) {
+			return null;
+		}
+		List<Post> postList = getPostList(cassandraClient, resultList);
+		return postList;
+	}
+
+	public static boolean actionOnPost(CassandraClient cassandraClient,
+			String postId, String userId, String postActionType) {
+		if (postActionType
+				.equalsIgnoreCase(ServiceConstant.POST_ACTION_TYPE_LIKE)) {
+			return likePost(cassandraClient, userId, postId);
+		}
+		return false;
+	}
+
+	private static boolean likePost(CassandraClient cassandraClient,
+			String userId, String postId) {
+		String likeCount = cassandraClient.getColumnValue(DBConstants.POST,
+				postId, DBConstants.F_LIKE_COUNT);
+		if (likeCount == null || likeCount.length() < 1)
+			return false;
+		int count = Integer.parseInt(likeCount) + 1;
+		String newCount = Integer.toString(count);
+		cassandraClient.insert(DBConstants.POST, postId,
+				DBConstants.F_LIKE_COUNT, newCount);
+		return true;
 	}
 }

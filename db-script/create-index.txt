@@ -45,5 +45,8 @@ create column family idx_my_messages
 create column family idx_id_long_to_string
     with comparator = AsciiType;
     
-create column family idx_gohash_to_place
+create column family idx_geohash6_to_place
     with comparator = AsciiType;
+    
+ create column family idx_app_post
+    with comparator = TimeUUIDType;   
