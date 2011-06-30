@@ -19,10 +19,19 @@ public class UpdateUserService extends CommonService {
 	String eMail;
 	String nickName;
 	String password;
+	String gender;
 
 	// post & return
 	String avatar;	
 	boolean hasAvatar = false;
+
+	@Override
+	public String toString() {
+		return "UpdateUserService [appId=" + appId + ", eMail=" + eMail
+				+ ", gender=" + gender + ", mobile=" + mobile + ", nickName="
+				+ nickName + ", password=" + password + ", userId=" + userId
+				+ "]";
+	}
 
 	@Override
 	public void handleData() {
@@ -42,7 +51,7 @@ public class UpdateUserService extends CommonService {
 		}
 
 		UserManager.updateUser(cassandraClient, userId, mobile, eMail,
-				nickName, password, avatar);
+				nickName, password, avatar, gender);
 		
 		// return avatar
 		if (avatar != null){
@@ -61,9 +70,7 @@ public class UpdateUserService extends CommonService {
 	@Override
 	public void printData() {
 		// TODO Auto-generated method stub
-		log.info(String.format("userId=%s, password=%s, appId=%s, mobile=%s, avatar=%s, "
-				+ "eMail=%s, nickName=%s", userId, password, appId, mobile, avatar,
-				eMail, nickName, avatar));
+		log.info(toString());
 	}
 
 	@Override
@@ -76,6 +83,7 @@ public class UpdateUserService extends CommonService {
 		password = request.getParameter(ServiceConstant.PARA_PASSWORD);
 		mobile = request.getParameter(ServiceConstant.PARA_MOBILE);
 		eMail = request.getParameter(ServiceConstant.PARA_EMAIL);
+		gender = request.getParameter(ServiceConstant.PARA_GENDER);
 
 		String hasAvatarPara = request.getParameter(ServiceConstant.PARA_AVATAR);		
 		if (hasAvatarPara != null && hasAvatarPara.length() > 0){

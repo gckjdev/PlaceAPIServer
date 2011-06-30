@@ -2,10 +2,6 @@
 package com.orange.place.api;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,9 +10,13 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
- 
-import org.eclipse.jetty.server.Server;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -30,6 +30,9 @@ public class PlaceAPIServer extends AbstractHandler
 	public static AtomicInteger uniqueId = new AtomicInteger();
 	
 	public static final String SPRING_CONTEXT_FILE = "classpath:/com/orange/place/api/applicationContext.xml";
+	
+	public static final String LOG4J_FLE = "classpath:/log4j.properties";
+	
 
 	public int getPort(){		
 		return 8000;
@@ -60,6 +63,11 @@ public class PlaceAPIServer extends AbstractHandler
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void initLog4j(){
+		log.info("Initializing log4j with: " + LOG4J_FLE);
+		//PropertyConfigurator.configure(LOG4J_FLE);
 	}
 	
 	public void printLog(long requestId, String logString){

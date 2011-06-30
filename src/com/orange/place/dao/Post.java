@@ -115,4 +115,13 @@ public class Post extends CommonData {
 	public String getLikeCount(){
 		return getKey(DBConstants.F_LIKE_COUNT);
 	}
+
+	public String getActionLikeCount() {
+		return getKey(DBConstants.F_ACTION_LIKE_COUNT);
+	}
+
+	public String getUserGender() {
+		return getKey(DBConstants.F_GENDER);
+	}
+
 }

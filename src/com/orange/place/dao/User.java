@@ -64,4 +64,8 @@ public class User extends CommonData {
 	public String getTwitterId() {
 		return getKey(DBConstants.F_TWITTERID);
 	}
+
+	public String getGender() {
+		return getKey(DBConstants.F_GENDER);
+	}
 }

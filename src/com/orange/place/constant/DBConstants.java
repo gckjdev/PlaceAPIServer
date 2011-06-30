@@ -2,8 +2,9 @@ package com.orange.place.constant;
 
 public class DBConstants {
 
-	 public static final String SERVER = "localhost:9160";
-	//public static final String SERVER = "192.168.1.101:9160";
+
+	//public static final String SERVER = "localhost:9160";
+	public static final String SERVER = "192.168.1.101:9160";
 	public static final String CLUSTERNAME = "Test Cluster";
 
 	public static final String KEYSPACE = "PlaceKS";
@@ -106,6 +107,9 @@ public class DBConstants {
 	public static final String F_SRC_POSTID = "srcPostId";
 	public static final String F_REPLY_POSTID = "replyPostId";
 
+	// to be refactored
+	public static final String F_ACTION_LIKE_COUNT = "$action$like";		// for post action LIKE, store counter
+	
 	//DB App fields
 //	public static final String F_APPID = "appid";
 //	public static final String F_NAME = "name";
@@ -162,8 +166,10 @@ public class DBConstants {
 	//DB UPDATE Row Key
 	public static final String R_UPDATE_DATA = "update_data";
 	public static final String R_RECOMMEND_APPS = "recommend_apps";
-
+	
+	// appID type
 	public static final String R_APPID_ALL = "ALL";
+
 	
 
 	

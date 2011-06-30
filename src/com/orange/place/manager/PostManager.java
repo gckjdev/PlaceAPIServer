@@ -109,14 +109,14 @@ public class PostManager extends CommonManager {
 		// get user nickname and avatar
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
-				DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
+				DBConstants.F_NICKNAME, DBConstants.F_AVATAR, DBConstants.F_GENDER);
 
 		// get place Id & name
 		Rows<String, String, String> placeRows = cassandraClient.getMultiRow(
 				DBConstants.PLACE, placeIds, DBConstants.F_NAME);
 
 		for (Post post : postList) {
-			// set user nickname and avatar to post
+			// set user nickname and avatar and gender to post
 			String userId = post.getUserId();
 			if (userId != null) {
 				Row<String, String, String> userRow = userRows.getByKey(userId);
