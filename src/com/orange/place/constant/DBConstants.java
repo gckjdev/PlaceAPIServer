@@ -2,8 +2,8 @@ package com.orange.place.constant;
 
 public class DBConstants {
 
-	// public static final String SERVER = "localhost:9160";
-	public static final String SERVER = "192.168.1.101:9160";
+	 public static final String SERVER = "localhost:9160";
+	//public static final String SERVER = "192.168.1.101:9160";
 	public static final String CLUSTERNAME = "Test Cluster";
 
 	public static final String KEYSPACE = "PlaceKS";
@@ -28,6 +28,7 @@ public class DBConstants {
 	public static final String INDEX_MY_MESSAGE = "idx_my_messages";
 	public static final String INDEX_GEOHASH6_PLACEID = "idx_geohash6_to_place";
 	public static final String INDEX_POST_LOCATION = "idx_post_location";
+	public static final String INDEX_APPID_POST = "idx_app_post";
 	
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
@@ -50,7 +51,8 @@ public class DBConstants {
 	public static final String F_CREATE_SOURCE_ID = "createSourceId";
 	public static final String F_MODIFY_DATE = "modifyDate";
 	public static final String F_MODIFY_SOURCE_ID = "modifySourceId";
-
+	public static final String F_LIKE_COUNT = "likeCount";
+		
 	public static final String F_EMAIL = "user_email";
 	public static final String F_MOBILE = "mobile";
 	public static final String F_PASSWORD = "password";
@@ -160,6 +162,8 @@ public class DBConstants {
 	//DB UPDATE Row Key
 	public static final String R_UPDATE_DATA = "update_data";
 	public static final String R_RECOMMEND_APPS = "recommend_apps";
+
+	public static final String R_APPID_ALL = "ALL";
 	
 
 	

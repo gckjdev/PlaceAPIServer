@@ -1,7 +1,10 @@
 package com.orange.place.api.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import me.prettyprint.hector.api.beans.HColumn;
 import net.sf.json.JSONObject;
 
 import com.orange.place.constant.DBConstants;
@@ -26,10 +29,19 @@ public class SendMessageService extends CommonService {
 		MessageManager.createUserPostIndex(cassandraClient, userId, toUserId,
 				messageId);
 
-		String nickName = cassandraClient.getColumnValue(DBConstants.USER,
-				userId, DBConstants.F_NICKNAME);
-		String avatar = cassandraClient.getColumnValue(DBConstants.USER,
-				userId, DBConstants.F_AVATAR);
+		List<HColumn<String, String>> clist = cassandraClient.getColumnKey(
+				DBConstants.USER, toUserId, DBConstants.F_NICKNAME,
+				DBConstants.F_AVATAR);
+		String nickName = null;
+		String avatar = null;
+		for (int i = 0; i < clist.size(); i++) {
+			HColumn<String, String> column = clist.get(i);
+			if (column.getName().equals(DBConstants.F_NICKNAME)) {
+				nickName = column.getValue();
+			} else if (column.getName().equals(DBConstants.F_AVATAR)) {
+				avatar = column.getValue();
+			}
+		}
 		String createDate = message.getCreateDate();
 		JSONObject obj = new JSONObject();
 		obj.put(ServiceConstant.PARA_MESSAGE_ID, messageId);

@@ -22,9 +22,18 @@ public class CommonManager {
 
 	public static final int NEARBY_PLACE_GEOHASH_PRECISION = 6;
 	public static final int DEFAULE_MESSAGE_COUNT = 200;
+	public static final int DEFAULT_POST_MAX_COUNT = 50;
 	
 	public static final String MESSAGE_TYPE_SEND = "send";
 	public static final String MESSAGE_TYPE_RECEIVE = "receive";
+	
+	public static int getPostCount(String count){
+		int max = DEFAULT_POST_MAX_COUNT;
+		if (count != null) {
+			max = Integer.parseInt(count);
+		}
+		return max;
+	}
 	
 	public static int getMaxCount(String maxCount) {
 		int max = MAX_COUNT;

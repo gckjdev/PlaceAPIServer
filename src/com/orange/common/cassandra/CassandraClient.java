@@ -156,32 +156,32 @@ public class CassandraClient {
 	}
 
 	@SuppressWarnings("unused")
-	private void printStringColumnList(List<HColumn<String, String>> columns){
+	private void printStringColumnList(List<HColumn<String, String>> columns) {
 		System.out.println("get data result size=" + columns.size());
 		for (HColumn<String, String> data : columns) {
 			System.out.println("column[" + data.getName() + "]="
 					+ data.getValue());
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
-	private void printStringColumnList(HColumn<String, String> column){
-			System.out.println("column[" + column.getName() + "]="
-					+ column.getValue());
+	private void printStringColumnList(HColumn<String, String> column) {
+		System.out.println("column[" + column.getName() + "]="
+				+ column.getValue());
 	}
-	
+
 	@SuppressWarnings("unused")
-	private void printUUIDColumnList(List<HColumn<UUID, String>> columns){
+	private void printUUIDColumnList(List<HColumn<UUID, String>> columns) {
 		// print for test TODO rem the code
 		System.out.println("get data result size=" + columns.size());
 		for (HColumn<UUID, String> data : columns) {
 			System.out.println("column[" + data.getName() + "]="
 					+ data.getValue());
-		}		
+		}
 	}
-	
+
 	@SuppressWarnings("unused")
-	private void printStringRowList(List<Row<String, String, String>> rows){
+	private void printStringRowList(List<Row<String, String, String>> rows) {
 		for (Row<String, String, String> row : rows) {
 			System.out.println("row key : " + row.getKey());
 			ColumnSlice<String, String> columns = row.getColumnSlice();
@@ -190,20 +190,22 @@ public class CassandraClient {
 				System.out.println("column[" + data.getName() + "]="
 						+ data.getValue());
 			}
-		}		
+		}
 	}
+
 	@SuppressWarnings("unused")
-	private void printStringRow(Row<String, String, String> row){
-	
-			System.out.println("row key : " + row.getKey());
-			ColumnSlice<String, String> columns = row.getColumnSlice();
-			List<HColumn<String, String>> list = columns.getColumns();
-			for (HColumn<String, String> data : list) {
-				System.out.println("column[" + data.getName() + "]="
-						+ data.getValue());
-			
-		}		
+	private void printStringRow(Row<String, String, String> row) {
+
+		System.out.println("row key : " + row.getKey());
+		ColumnSlice<String, String> columns = row.getColumnSlice();
+		List<HColumn<String, String>> list = columns.getColumns();
+		for (HColumn<String, String> data : list) {
+			System.out.println("column[" + data.getName() + "]="
+					+ data.getValue());
+
+		}
 	}
+
 	public List<HColumn<String, String>> getColumnKey(String columnFamilyName,
 			String key, String... columnNames) {
 		StringSerializer se = StringSerializer.get();
@@ -227,7 +229,6 @@ public class CassandraClient {
 		}
 
 		List<HColumn<String, String>> result = slices.getColumns();
-
 
 		return result;
 	}
@@ -275,7 +276,6 @@ public class CassandraClient {
 		}
 
 		List<HColumn<UUID, String>> result = r.get().getColumns();
-
 
 		return result;
 	}
@@ -327,20 +327,21 @@ public class CassandraClient {
 		return rows;
 	}
 
-	public Rows<String, UUID, String> getMultiRowByRange(String columnFamilyName,
-			String keyStart, String keyEnd, UUID start, UUID end, int maxCount) {
-		RangeSlicesQuery<String, UUID, String> sliceQuery = HFactory.createRangeSlicesQuery(keyspace, ss, us, ss);
+	public Rows<String, UUID, String> getMultiRowByRange(
+			String columnFamilyName, String keyStart, String keyEnd,
+			UUID start, UUID end, int maxCount) {
+		RangeSlicesQuery<String, UUID, String> sliceQuery = HFactory
+				.createRangeSlicesQuery(keyspace, ss, us, ss);
 		sliceQuery.setColumnFamily(columnFamilyName);
 		sliceQuery.setKeys(keyStart, keyEnd);
 		sliceQuery.setRange(start, end, true, maxCount);
-		//TODO:share this method with Benson.
+		// TODO:share this method with Benson.
 		QueryResult<OrderedRows<String, UUID, String>> result = sliceQuery
 				.execute();
 		Rows<String, UUID, String> rows = result.get();
 		if (rows == null) {
 			return null;
 		}
-
 		return rows;
 	}
 
@@ -435,5 +436,4 @@ public class CassandraClient {
 		mutator.execute();
 		return true;
 	}
-
 }
