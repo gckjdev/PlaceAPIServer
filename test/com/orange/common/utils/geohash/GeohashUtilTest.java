@@ -1,14 +1,11 @@
 package com.orange.common.utils.geohash;
 
-import java.util.Random;
-
-import org.junit.AfterClass;
-import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class GeohashUtilTest {
+public class GeoHashUtilTest {
 
 	private static final double ACCURANCY_DELTA_DEGREE = 0.0000001;
 
@@ -151,5 +148,17 @@ public class GeohashUtilTest {
 
 	private double getLat() {
 		return getRanageValue(seed.nextDouble(), 90);
+	}
+
+	@Test
+	public void testEncodeDoubleDouble() {
+		String value = util.encode(23.129666, 113.273073);
+		System.out.print(value);
+	}
+
+	@Test
+	public void testEncodeStringString() {
+		String value = util.encode("23.129666", "113.273073");
+		System.out.print(value);
 	}
 }
