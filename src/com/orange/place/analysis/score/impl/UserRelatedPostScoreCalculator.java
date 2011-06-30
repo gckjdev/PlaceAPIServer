@@ -33,11 +33,15 @@ public class UserRelatedPostScoreCalculator implements ScoreCalculator {
 				UserPostStatistic storyStati = statisticDao
 						.findUserPostStatistic(userId, story.getPostId());
 
-				double interactionStatInStatObj = storyStati
-						.getInteractionCount() / userStat.getInteractionCount();
+				double interactionStatInStatObj = getPropotion(
+						storyStati.getInteractionCount(),
+						userStat.getInteractionCount());
 
-				double storySimilarityInStatObj = similarity.getSimilarity()
-						.get(userId);
+				double storySimilarityInStatObj = 0;
+				if (similarity.getSimilarity().containsKey(userId)) {
+					storySimilarityInStatObj = similarity
+							.getSimilarity().get(userId);
+				}
 				// TODO: what if the user id not in the similarity list.
 				double storyScoreInStatObj = interactionStatInStatObj
 						* storySimilarityInStatObj;
@@ -46,6 +50,11 @@ public class UserRelatedPostScoreCalculator implements ScoreCalculator {
 			}
 		}
 		return score;
+	}
+
+	private int getPropotion(int devided, int devide) {
+		return devide == 0 ? 0 : devided
+				/ devide;
 	}
 
 	public void setStatisticDao(StatisticDao statisticDao) {

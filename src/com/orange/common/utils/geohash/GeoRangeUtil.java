@@ -6,11 +6,32 @@ import java.util.List;
 public class GeoRangeUtil {
 
 	/**
+	 * Get the max and min.
+	 * 
+	 * @param geohashList
+	 * @return
+	 */
+	public List<GeoRange> getGeoRange(List<String> geohashList, double radius) {
+		List<GeoRange> result = new ArrayList<GeoRange>();
+		int size = geohashList.size();
+		if (size > 0) {
+			String start = geohashList.get(0);
+			String end = geohashList.get(size - 1);
+			GeoRange range = new GeoRange();
+			range.setMin(start);
+			range.setMax(end);
+			range.setRadius(radius);
+			result.add(range);
+		}
+		return result;
+	}
+
+	/**
 	 * 
 	 * @param geohash
 	 * @return
 	 */
-	public List<GeoRange> getGeoRange(List<String> geohashList) {
+	private List<GeoRange> getDetailGeoRange(List<String> geohashList) {
 		List<GeoRange> result = new ArrayList<GeoRange>();
 		int size = geohashList.size();
 		for (int i = 0; i < size; i++) {
@@ -37,7 +58,7 @@ public class GeoRangeUtil {
 			return false;
 		}
 		int diff = getLastChar(bigger) - getLastChar(smaller);
-		return diff <= 1;
+		return diff == 1;
 	}
 
 	private int getLastChar(String geohash) {

@@ -42,9 +42,8 @@ public class RequestHandlerTest {
 		String userId = IdGenerator.generateId();
 		Request request = new Request();
 		request.setLatitude(120.345);
-		request.setLatitude(-5.345);
+		request.setLongitude(-5.345);
 		request.setRadius(200);
-		
 		request.setUserId(userId);
 		requestHandler.execute(request);
 		
