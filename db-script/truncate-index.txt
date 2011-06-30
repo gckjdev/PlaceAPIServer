@@ -28,4 +28,5 @@ truncate idx_geohash6_to_place;
 
 truncate idx_post_location;
 
+truncate idx_app_post;
 
