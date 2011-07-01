@@ -61,8 +61,7 @@ public abstract class CommonService {
 				DeviceLoginService.class);
 		methodMap.put(ServiceConstant.METHOD_GETPOSTRELATEDPOST,
 				GetPostRelatedPostService.class);
-		methodMap.put(ServiceConstant.METHOD_BINDUSER, 
-				BindUserService.class);
+		methodMap.put(ServiceConstant.METHOD_BINDUSER, BindUserService.class);
 		methodMap.put(ServiceConstant.METHOD_GETMYPOSTS,
 				GetUserPostService.class);
 		methodMap.put(ServiceConstant.METHOD_SENDMESSAGE,
@@ -71,18 +70,18 @@ public abstract class CommonService {
 				GetMyMessageService.class);
 		methodMap.put(ServiceConstant.METHOD_DELETEMESSAGE,
 				DeleteMeMessageService.class);
-		methodMap.put(ServiceConstant.METHOD_GETMEPOST,
-				GetMePostService.class);
+		methodMap.put(ServiceConstant.METHOD_GETMEPOST, GetMePostService.class);
 		methodMap.put(ServiceConstant.METHOD_UPDATEUSER,
 				UpdateUserService.class);
 		methodMap.put(ServiceConstant.METHOD_UPDATEPLACE,
 				UpdatePlaceService.class);
-		methodMap.put(ServiceConstant.METHOD_GETAPPS,
-				GetAppsService.class);
-		methodMap.put(ServiceConstant.METHOD_GETUPDATES,
-				GetUpdates.class);
-		methodMap.put(ServiceConstant.METHOD_GETPLACE,
-				GetPlaceService.class);
+		methodMap.put(ServiceConstant.METHOD_GETAPPS, GetAppsService.class);
+		methodMap.put(ServiceConstant.METHOD_GETUPDATES, GetUpdates.class);
+		methodMap.put(ServiceConstant.METHOD_GETPLACE, GetPlaceService.class);
+		methodMap.put(ServiceConstant.METHOD_GETPUBLICTIMELINE,
+				GetPublicTimeline.class);
+		methodMap.put(ServiceConstant.METHOD_ACTIONONPOST,
+				ActionOnPostService.class);
 	}
 
 	public CassandraClient getCassandraClient() {
@@ -108,7 +107,8 @@ public abstract class CommonService {
 
 		CommonService obj = (CommonService) classObj.newInstance();
 		if (obj == null) {
-			log.warning("Cannot create service object by given class for method = "
+			log
+					.warning("Cannot create service object by given class for method = "
 							+ method);
 		}
 		return obj;

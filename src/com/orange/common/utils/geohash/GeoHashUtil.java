@@ -23,10 +23,18 @@ public class GeoHashUtil {
 
 	private static int[] bits = { 16, 8, 4, 2, 1 };
 
-	public String encode(String latitude, String longitude) {
-		return encode(Double.valueOf(latitude), Double.valueOf(latitude));
+	public GeoHashUtil() {
+
 	}
-	
+
+	public GeoHashUtil(int precision) {
+		this.precision = precision;
+	}
+
+	public String encode(String latitude, String longitude) {
+		return encode(Double.valueOf(latitude), Double.valueOf(longitude));
+	}
+
 	public String encode(double latitude, double longitude) {
 		double[] lat_interval = { -90.0, 90.0 };
 		double[] lon_interval = { -180.0, 180.0 };

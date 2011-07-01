@@ -7,7 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ProximitySearchUtil {
+
+	private static Logger log = LoggerFactory
+			.getLogger(ProximitySearchUtil.class);
+
 	private static final int DEFAULT_PRECISION = 7;
 	private static final double EARTH_RADIUS = 6378137;
 	private static final double RAD = Math.PI / 180.0;
@@ -36,21 +43,20 @@ public class ProximitySearchUtil {
 	private final static String odd_borders[] = { "bcfguvyz", "prxz",
 			"0145hjnp", "028b" };
 
-
-	private  int precision;
+	private int precision;
 
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
 
-	public ProximitySearchUtil(){
+	public ProximitySearchUtil() {
 		this.precision = DEFAULT_PRECISION;
 	}
-	
-	public ProximitySearchUtil(int precision){
+
+	public ProximitySearchUtil(int precision) {
 		this.precision = precision;
 	}
-	
+
 	public List<String> getNearBy(double latitude, double longitude,
 			double radius) {
 		Set<String> resultSet = new HashSet<String>();
@@ -94,6 +100,10 @@ public class ProximitySearchUtil {
 
 		double distance = getDistance(latitude, longitude, location[0],
 				location[1]);
+		log.debug(
+				"distance={}, radius={} ; latitude={}, longitude={}; location[0]={}, location[1]={}",
+				new Object[] { distance, radius, latitude, longitude,
+						location[0], location[1] });
 		return distance <= radius;
 	}
 

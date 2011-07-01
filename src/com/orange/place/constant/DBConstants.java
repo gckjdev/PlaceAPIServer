@@ -1,9 +1,8 @@
 package com.orange.place.constant;
 
 public class DBConstants {
-
-	public static final String SERVER = "localhost:9160";
-	//public static final String SERVER = "192.168.1.101:9160";
+	// public static final String SERVER = "localhost:9160";
+	public static final String SERVER = "192.168.1.101:9160";
 	public static final String CLUSTERNAME = "Test Cluster";
 
 	public static final String KEYSPACE = "PlaceKS";
@@ -28,7 +27,8 @@ public class DBConstants {
 	public static final String INDEX_MY_MESSAGE = "idx_my_messages";
 	public static final String INDEX_GEOHASH6_PLACEID = "idx_geohash6_to_place";
 	public static final String INDEX_POST_LOCATION = "idx_post_location";
-	
+	public static final String INDEX_APPID_POST = "idx_app_post";
+
 	public static final String KEY_LOGINID = "loginId";
 	public static final String KEY_DEVICEID = "deviceId";
 
@@ -50,6 +50,7 @@ public class DBConstants {
 	public static final String F_CREATE_SOURCE_ID = "createSourceId";
 	public static final String F_MODIFY_DATE = "modifyDate";
 	public static final String F_MODIFY_SOURCE_ID = "modifySourceId";
+	public static final String F_LIKE_COUNT = "likeCount";
 
 	public static final String F_EMAIL = "user_email";
 	public static final String F_MOBILE = "mobile";
@@ -105,16 +106,20 @@ public class DBConstants {
 	public static final String F_REPLY_POSTID = "replyPostId";
 
 	// to be refactored
-	public static final String F_ACTION_LIKE_COUNT = "$action$like";		// for post action LIKE, store counter
-	
-	//DB App fields
-//	public static final String F_APPID = "appid";
-//	public static final String F_NAME = "name";
-//	public static final String F_DESC = "desc";
+	public static final String F_ACTION_LIKE_COUNT = "$action$like"; // for post
+																		// action
+																		// LIKE,
+																		// store
+																		// counter
+
+	// DB App fields
+	// public static final String F_APPID = "appid";
+	// public static final String F_NAME = "name";
+	// public static final String F_DESC = "desc";
 	public static final String F_APPURL = "appUrl";
 	public static final String F_VERSION = "version";
 	public static final String F_ICON = "icon";
-	
+
 	public static final String F_SINA_APPKEY = "sinaAppKey";
 	public static final String F_SINA_APPSECRET = "sinaAppSecret";
 	public static final String F_QQ_APPKEY = "qqAppKey";
@@ -131,7 +136,7 @@ public class DBConstants {
 	public static final String F_SRC_MESSAGEID = "srcMessageId";
 
 	public static final String F_MESSAGE_TYPE = "messageType";
-	
+
 	// Value
 	public static final String STATUS_NORMAL = "1";
 	public static final String STATUS_SUSPEND = "2";
@@ -159,13 +164,12 @@ public class DBConstants {
 	public static final String USER_POST_STATISTIC = "place_user_post_stat";
 
 	public static final String F_USER_POST_STATISTIC_TOTOAL = "totalPost";
-	
-	//DB UPDATE Row Key
+
+	// DB UPDATE Row Key
 	public static final String R_UPDATE_DATA = "update_data";
 	public static final String R_RECOMMEND_APPS = "recommend_apps";
 
-	
-	
+	// appID type
+	public static final String R_APPID_ALL = "ALL";
 
-	
 }

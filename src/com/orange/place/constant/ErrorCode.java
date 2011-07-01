@@ -61,6 +61,9 @@ public class ErrorCode {
 	public static final int ERROR_PARAMETER_MESSAGECONTENT_NULL = 10053;
 	public static final int ERROR_PARAMETER_MESSAGEID_EMPTY 	= 10054;
 	public static final int ERROR_PARAMETER_MESSAGEID_NULL 		= 10055;
+	public static final int ERROR_PARAMETER_POSTACTIONTYPE_EMPTY = 10056;
+	public static final int ERROR_PARAMETER_POSTACTIONTYPE_NULL = 10057;
+	
 	// User Errors
 	static public final int ERROR_LOGINID_EXIST             = 20001;
 	static public final int ERROR_DEVICEID_BIND            	= 20002;
@@ -87,6 +90,8 @@ public class ErrorCode {
 	public static final int ERROR_GET_USER_FOLLOW_PLACE		= 40005;
 	public static final int ERROR_GET_RELATED_POST_BY_POST 	= 40006;
 	public static final int ERROR_GET_ME_MESSAGE 			= 40007;
+	public static final int ERROR_GET_PUBLIC_POST 			= 40008;
+	public static final int ERROR_ACTION_ON_POST 			= 40009;
 	//Message Error
 	
 	public static final int ERROR_GET_MY_MESSAGE 			= 50001;
@@ -109,31 +114,9 @@ public class ErrorCode {
 	public static final int ERROR_CREATE_THUNMB_FILEPATH 	= 90007;
 	public static final int ERROR_CREATE_THUNMB_FILE 		= 90008;
 
-	
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 		
 	static public String getJSONByErrorCode(int errorCode){
 		return String.format("{\"%s\":%d}", ServiceConstant.RET_CODE, errorCode);		
