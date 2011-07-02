@@ -19,6 +19,8 @@ import com.orange.place.dao.Post;
 
 public class PostManager extends CommonManager {
 
+	private static final int POST_LOCATION_PRECISION = 13;
+
 	public static Post createPost(CassandraClient cassandraClient,
 			String userId, String appId, String placeId, String longitude,
 			String latitude, String userLongitude, String userLatitude,
@@ -76,6 +78,12 @@ public class PostManager extends CommonManager {
 			postIds[i++] = postId;
 		}
 
+		return getPostList(cassandraClient, postIds);
+	}
+
+	public static List<Post> getPostList(CassandraClient cassandraClient,
+			String[] postIds) {
+		int i;
 		Rows<String, String, String> rows = cassandraClient.getMultiRow(
 				DBConstants.POST, postIds);
 		if (rows == null) {
@@ -86,8 +94,9 @@ public class PostManager extends CommonManager {
 		Rows<String, String, String> counterRows = cassandraClient.getMultiRow(
 				DBConstants.COUNTER_POST, postIds);
 
-		String[] userIds = new String[size];
-		String[] placeIds = new String[size];
+
+		String[] userIds = new String[postIds.length];
+		String[] placeIds = new String[postIds.length];
 
 		// convert rows to List<Post>
 		// change the implementation to sort the return result in right order
@@ -223,6 +232,7 @@ public class PostManager extends CommonManager {
 			String postId, String createDate, String latitude, String longitude) {
 		UUID uuid = UUID.fromString(postId);
 		GeoHashUtil util = new GeoHashUtil();
+		util.setPrecision(POST_LOCATION_PRECISION);
 		String geoHash = util.encode(latitude, longitude);
 		cassandraClient.insert(DBConstants.INDEX_POST_LOCATION, geoHash, uuid,
 				createDate);

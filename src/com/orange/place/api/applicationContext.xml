@@ -59,10 +59,10 @@
 
 	<!-- geohash util -->
 	<bean id="geoHashUtil" class="com.orange.common.utils.geohash.GeoHashUtil">
-		<property name="precision" value="26" />
+		<property name="precision" value="13" />
 	</bean>
 	<bean id="placePostProximitySearchUtil" class="com.orange.common.utils.geohash.ProximitySearchUtil">
-		<property name="precision" value="7" />
+		<property name="precision" value="8" />
 	</bean>
 	<bean id="geoRangeUtil" class="com.orange.common.utils.geohash.GeoRangeUtil">
 	</bean>

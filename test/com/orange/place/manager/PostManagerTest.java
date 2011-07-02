@@ -6,7 +6,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.apache.commons.httpclient.util.DateUtil;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -14,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.orange.common.cassandra.CassandraClient;
+import com.orange.common.utils.DateUtil;
 import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.common.utils.geohash.GeoRange;
 import com.orange.place.analysis.dao.PostDao;
@@ -47,11 +47,12 @@ public class PostManagerTest {
 	@Test
 	public void testCreatePostLocationIndex() {
 		String postId = IdGenerator.generateId();
-		String createDate = DateUtil.formatDate(new Date());
+		String createDate = DateUtil.dateToString(new Date());
 		String latitude = "-12.345";
 		String longitude = "56.878";
 
 		GeoHashUtil util = new GeoHashUtil();
+		util.setPrecision(13);
 		String geoHashValue = util.encode(latitude, longitude);
 		System.out.println(geoHashValue);
 		
@@ -60,12 +61,15 @@ public class PostManagerTest {
 		
 		PostManager.createPostLocationIndex(cassandraClient, postId, createDate, latitude, longitude);
 		
-		
+		GeoHashUtil searchUtil = new GeoHashUtil();
+		searchUtil.setPrecision(7);
+		String searchGeoHash = util.encode(latitude, longitude);
+
 		List<GeoRange> geoRanges = new ArrayList<GeoRange>();
 		GeoRange r = new GeoRange();
 		geoRanges.add(r);
-		r.setMax(geoHashValue);
-		r.setMin(geoHashValue);
+		r.setMax(searchGeoHash);
+		r.setMin(searchGeoHash);
 		DateTime weeksBefore = new DateTime(2011, 6, 20, 0, 0, 0, 0);
 		List<CompactPost> posts = postDao.findPostByLocation(geoRanges, weeksBefore.toDate(), 100);
 

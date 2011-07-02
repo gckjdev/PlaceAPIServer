@@ -13,7 +13,9 @@ import me.prettyprint.hector.api.beans.Rows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.common.utils.geohash.GeoRange;
+import com.orange.common.utils.geohash.ProximitySearchUtil;
 import com.orange.place.analysis.domain.CompactPost;
 import com.orange.place.constant.DBConstants;
 
@@ -34,12 +36,18 @@ public class PostDao extends AbstractCassandraDao {
 		List<CompactPost> posts = new ArrayList<CompactPost>();
 		for (GeoRange range : geoRanges) {
 			// TODO: time limitation should exist.
+			// UUID start = IdGenerator.getUUIDFromTime(sinceAfter.getTime());
 			UUID start = null;
 			UUID end = null;
+			String startKey = range.getMin();
+			// String endKey = range.getMax();
+			// TODO: should use the limitation here instead of end key for key
+			// range query. extract work for filter location needed.
+			String endKey = null;
 			Rows<String, UUID, String> rows = cassandraClient
 					.getMultiRowByRange(DBConstants.INDEX_POST_LOCATION,
-							range.getMin(), range.getMax(), start, end,
-							limitation);
+							startKey,
+							endKey, start, end, limitation);
 			if (rows != null) {
 				Iterator<Row<String, UUID, String>> it = rows.iterator();
 				while (it.hasNext()) {
@@ -58,7 +66,17 @@ public class PostDao extends AbstractCassandraDao {
 
 							CompactPost post = createCompactPost(geohash,
 									postId.toString(), createDate);
-							posts.add(post);
+
+							ProximitySearchUtil util = new ProximitySearchUtil();
+
+							// TODO: temp solution
+							GeoHashUtil geoUtil = new GeoHashUtil();
+							geoUtil.setPrecision(13);
+							double[] loc = geoUtil.decode(startKey);
+							if (util.isGeohashInRange(loc[0], loc[1],
+									range.getRadius(), geohash)) {
+								posts.add(post);
+							}
 						}
 					}
 				}
@@ -74,8 +92,8 @@ public class PostDao extends AbstractCassandraDao {
 		UUID start = null;
 		UUID end = null;
 		List<HColumn<UUID, String>> reslut = cassandraClient
-				.getColumnKeyByRange(DBConstants.INDEX_POST_LOCATION,
-						geohash, start, end, limitation);
+				.getColumnKeyByRange(DBConstants.INDEX_POST_LOCATION, geohash,
+						start, end, limitation);
 
 		if (reslut != null) {
 			Iterator<HColumn<UUID, String>> columnIter = reslut.iterator();
@@ -86,8 +104,8 @@ public class PostDao extends AbstractCassandraDao {
 				UUID postId = column.getName();
 				String createDate = column.getValue();
 
-				CompactPost post = createCompactPost(geohash, postId.toString(),
-						createDate);
+				CompactPost post = createCompactPost(geohash,
+						postId.toString(), createDate);
 				posts.add(post);
 			}
 		}

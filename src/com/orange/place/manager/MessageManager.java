@@ -124,7 +124,7 @@ public class MessageManager extends CommonManager {
 
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
-				DBConstants.F_NICKNAME, DBConstants.F_AVATAR);
+				DBConstants.F_NICKNAME, DBConstants.F_AVATAR, DBConstants.F_GENDER);
 
 		for (Message message : messageList) {
 			// set user nickname and avatar to message

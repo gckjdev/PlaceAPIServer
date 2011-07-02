@@ -54,5 +54,9 @@ public class Message extends CommonData {
 	public String getMessageType() {
 		return getKey(DBConstants.F_MESSAGE_TYPE);
 	}
+
+	public String getUserGender() {
+		return getKey(DBConstants.F_GENDER);
+	}
 	
 }

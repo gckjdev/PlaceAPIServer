@@ -40,7 +40,7 @@ public class GeoRangeUtilTest {
 		System.out.println(Arrays.asList(result));
 		// Assert.assertEquals("source point is included ", 1, result.size());
 
-		List<GeoRange> ranges = util.getGeoRange(result);
+		List<GeoRange> ranges = util.getGeoRange(result, 1);
 		System.out.println(ranges.size());
 	}
 
@@ -62,7 +62,7 @@ public class GeoRangeUtilTest {
 						longitude, loc[0], loc[1]);
 				System.out.println(distan + " : " + loc[0] + " : " + loc[1]);
 			}
-			List<GeoRange> ranges = util.getGeoRange(result);
+			List<GeoRange> ranges = util.getGeoRange(result, 1);
 			System.out.println(ranges.size());
 			System.out.println(Arrays.asList(ranges));
 		}

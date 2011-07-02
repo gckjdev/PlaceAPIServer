@@ -6,6 +6,8 @@ public class GeoRange {
 
 	private String min;
 
+	private double radius;
+
 	public String getMax() {
 		return max;
 	}
@@ -20,6 +22,14 @@ public class GeoRange {
 
 	public void setMin(String min) {
 		this.min = min;
+	}
+
+	public double getRadius() {
+		return radius;
+	}
+
+	public void setRadius(double radius) {
+		this.radius = radius;
 	}
 
 	@Override

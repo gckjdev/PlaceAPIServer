@@ -3,6 +3,8 @@ package com.orange.place.analysis.parser.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.orange.common.utils.geohash.GeoRange;
@@ -13,6 +15,9 @@ import com.orange.place.analysis.domain.Request;
 import com.orange.place.analysis.parser.RequestParser;
 
 public class RequestParserImpl implements RequestParser {
+
+	public static final Logger log = LoggerFactory
+			.getLogger(RequestParserImpl.class);
 
 	private ProximitySearchUtil proximitySearchUtil;
 
@@ -27,12 +32,13 @@ public class RequestParserImpl implements RequestParser {
 			List<String> geohashList = proximitySearchUtil.getNearBy(
 					request.getLatitude(), request.getLongitude(),
 					request.getRadius());
-			List<GeoRange> geoRanges = geoRangeUtil.getGeoRange(geohashList);
+			List<GeoRange> geoRanges = geoRangeUtil.getGeoRange(geohashList,
+					request.getRadius());
 			result.setPlaceRange(geoRanges);
 
 			result.setSuccess(true);
 		} catch (Exception e) {
-			// TODO: log here?
+			log.error("invalid exception while parse the search request.", e);
 			result.setSuccess(false);
 		}
 

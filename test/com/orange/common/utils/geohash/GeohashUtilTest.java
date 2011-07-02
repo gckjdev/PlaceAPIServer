@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class GeohashUtilTest {
+public class GeoHashUtilTest {
 
 	private static final double ACCURANCY_DELTA_DEGREE = 0.0000001;
 
