@@ -141,9 +141,6 @@ public class ServiceConstant {
 	public static final String PARA_MESSAGE_ID = "mid";
 	
 	public static final String PARA_POST_ACTION_TYPE = "pat";
-
-	//request parameters value
-	public static final String POST_ACTION_TYPE_LIKE = "like";
 	
 	// response parameters
 
@@ -162,5 +159,6 @@ public class ServiceConstant {
 	public static final String PARA_RENREN_APPKEY = "rak";
 	public static final String PARA_RENREN_APPSECRET = "ras";
 	public static final String PARA_MESSAGE_TYPE = "mt";
+
 
 }
