@@ -11,7 +11,10 @@ import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.CounterRows;
+import me.prettyprint.hector.api.beans.CounterSlice;
 import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
@@ -19,9 +22,12 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.CountQuery;
+import me.prettyprint.hector.api.query.CounterQuery;
+import me.prettyprint.hector.api.query.MultigetSliceCounterQuery;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
+import me.prettyprint.hector.api.query.SliceCounterQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
 
 import com.orange.place.manager.CommonManager;
@@ -345,7 +351,6 @@ public class CassandraClient {
 		return rows;
 	}
 
-	
 	public Rows<String, String, String> getMultiRow(String columnFamilyName,
 			String... keys) {
 		MultigetSliceQuery<String, String, String> multigetSliceQuery = HFactory
@@ -435,5 +440,16 @@ public class CassandraClient {
 		}
 		mutator.execute();
 		return true;
+	}
+
+	public long increaseCounterColumn(String columnFamilyName, String rowKey,
+			String columnName, long value) {
+		String countStr = getColumnValue(columnFamilyName, rowKey, columnName);
+		long count = 1;
+		if (countStr != null && countStr.length() > 0)
+			count = Long.parseLong(countStr) + 1;
+		String columnValue = Long.toString(count);
+		insert(columnFamilyName, rowKey, columnName, columnValue);
+		return count;
 	}
 }

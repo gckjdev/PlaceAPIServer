@@ -1,11 +1,11 @@
 package com.orange.place.api.service;
 
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.App;
 import com.orange.place.dao.Message;
@@ -42,9 +42,12 @@ public class CommonServiceUtils {
 		json.put(ServiceConstant.PARA_IMAGE_URL, post.getImageURL());
 		json.put(ServiceConstant.PARA_NAME, post.getPlaceName());
 		json.put(ServiceConstant.PARA_GENDER, post.getUserGender());
+
+		// put action type counter
+		Map<String, String> map = post.getActionCounterMap();
+		if (map != null && map.size() > 0)
+			json.putAll(post.getActionCounterMap());
 		
-		// action type is a special parameter, so use DBConstants instead of defining a parameter
-		json.put(DBConstants.F_ACTION_LIKE_COUNT, post.getActionLikeCount());
 		return json;
 	}
 
