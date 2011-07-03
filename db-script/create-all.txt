@@ -93,4 +93,4 @@ create column family idx_app_post
     
     
     
-create column family counter_post with default_validation_class = CounterColumnType and comparator=UTF8Type and replicate_on_write=true;
+create column family counter_post with comparator=UTF8TypeType;
