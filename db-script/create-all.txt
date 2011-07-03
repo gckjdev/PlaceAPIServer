@@ -93,4 +93,4 @@ create column family idx_app_post
     
     
     
-create column family counter_post with comparator=UTF8TypeType;
+create column family counter_post with comparator=UTF8Type;
