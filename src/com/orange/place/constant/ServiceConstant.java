@@ -38,7 +38,7 @@ public class ServiceConstant {
 	public static final String METHOD_UPDATEUSER = "uu";
 	public static final String METHOD_UPDATEPLACE = "up";
 	public static final String METHOD_GETAPPS = "ga";
-	public static final String METHOD_GETUPDATES = "gu";
+	public static final String METHOD_GETAPPUPDATE = "gau";
 	public static final String METHOD_GETPLACE = "gtp";
 	public static final String METHOD_GETPUBLICTIMELINE = "gpt";
 	public static final String METHOD_ACTIONONPOST = "aop";	

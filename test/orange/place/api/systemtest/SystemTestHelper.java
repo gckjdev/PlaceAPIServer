@@ -149,7 +149,7 @@ public class SystemTestHelper {
 		String id = data.getString(ServiceConstant.PARA_POSTID);
 		Assert.assertTrue(id != null);
 
-		System.out.println("get neary by post.");
+		System.out.println("get neary by post, postId="+id);
 		return id;
 	}
 

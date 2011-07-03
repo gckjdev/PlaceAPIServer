@@ -182,7 +182,7 @@ public class PostManager extends CommonManager {
 			String postId) {
 		List<HColumn<String, String>> columns = cassandraClient.getAllColumns(
 				DBConstants.POST, postId);
-		if (columns == null)
+		if (columns == null || columns.size() == 0)
 			return null;
 
 		return new Post(columns);
