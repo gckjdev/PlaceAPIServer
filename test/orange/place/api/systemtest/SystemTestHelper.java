@@ -135,6 +135,23 @@ public class SystemTestHelper {
 				+ rpi);
 		return id;
 	}
+	
+	public static String actionOnPost(String serverURL, String uid, String postId,
+			String action) {
+		// send request
+		String url = String
+				.format("%s/api/i?&m=aop&uid=%s&app=PLACE&ct=1&lat=23.129666&lo=113.273073&ula=153.220001&ulo=113.110001&pi=%s&pat=%s",
+						serverURL, uid, postId, action);
+		JSONObject data = sendHttpGetRequest(url);
+
+		// get action counter
+		String actionCounter = data.getString(action);
+		Assert.assertTrue(actionCounter != null);
+
+		System.out.println("action on post successfully. action counter :"
+				+ actionCounter);
+		return actionCounter;
+	}	
 
 	public static String getNearByPost(String serverURL, String uid) {
 		// send request

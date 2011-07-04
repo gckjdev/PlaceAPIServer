@@ -83,6 +83,10 @@ public class PostManager extends CommonManager {
 
 	public static List<Post> getPostList(CassandraClient cassandraClient,
 			String[] postIds) {
+		
+		if (postIds == null || postIds.length == 0)
+			return null;
+		
 		int i;
 		Rows<String, String, String> rows = cassandraClient.getMultiRow(
 				DBConstants.POST, postIds);

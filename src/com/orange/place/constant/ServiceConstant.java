@@ -160,5 +160,5 @@ public class ServiceConstant {
 	public static final String PARA_RENREN_APPSECRET = "ras";
 	public static final String PARA_MESSAGE_TYPE = "mt";
 
-
+	public static final int DEFAULT_MAX_COUNT = 30;
 }
