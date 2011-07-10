@@ -1,6 +1,5 @@
 package com.orange.place.api.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ public class GetNearbyPostService extends CommonService {
 	String longitude;
 	String latitude;
 	String beforeTimeStamp;
-	String maxCount;
+	int maxCount;
 
 	@Override
 	public void handleData() {
@@ -35,21 +34,38 @@ public class GetNearbyPostService extends CommonService {
 		request.setRadius(DEFAULT_RADIUS_METERS);
 		request.setUserId(userId);
 
-		List<CompactPost> compactPostList = requestHandler.execute(request);
-		// TODO: paging
-		List<Post> postList = new ArrayList<Post>();
-		for (CompactPost cp : compactPostList) {
-			Post post = PostManager
-					.getPostById(cassandraClient, cp.getPostId());
-			postList.add(post);
+		List<CompactPost> compactPostList = requestHandler.execute(request);		
+		log.info("<GetNearbyPostService> total "+compactPostList.size()+" return");
+		
+		// set the right range for search
+		CompactPost cp = new CompactPost();
+		cp.setPostId(beforeTimeStamp);
+		int index = 0;
+		if (beforeTimeStamp == null || 
+			beforeTimeStamp.length() == 0 || 
+			(index = compactPostList.lastIndexOf(cp)) == -1){
+			index = 0;
 		}
+
+		// get postId array by given index and size
+		int size = compactPostList.size();
+		int count = maxCount < (size-index) ? maxCount : (size-index); 
+		String[] postIds = new String[count];
+		int j=0;
+		for (int i=index; j<maxCount && i<size; i++){
+			postIds[j] = compactPostList.get(i).getPostId();
+			j++;
+		}
+		log.info("<GetNearbyPostService> final "+postIds.length+" return, start from "+index);
+				
+		List<Post> postList = PostManager.getPostList(cassandraClient, postIds);
 		if (postList == null) {
 			resultCode = ErrorCode.ERROR_GET_NEARBY_POSTS;
-			log.info("fail to get nearby posts");
+			log.info("<GetNearbyPostService> return postList is null");
 			return;
 		}
-		resultData = CommonServiceUtils.postListToJSON(postList,
-				beforeTimeStamp);
+
+		resultData = CommonServiceUtils.postListToJSON(postList, beforeTimeStamp);
 	}
 
 	@Override
@@ -72,7 +88,7 @@ public class GetNearbyPostService extends CommonService {
 		latitude = request.getParameter(ServiceConstant.PARA_LATITUDE);
 		beforeTimeStamp = request
 				.getParameter(ServiceConstant.PARA_BEFORE_TIMESTAMP);
-		maxCount = request.getParameter(ServiceConstant.PARA_MAX_COUNT);
+		String maxCountStr = request.getParameter(ServiceConstant.PARA_MAX_COUNT);
 
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_APPID_NULL))
@@ -91,6 +107,12 @@ public class GetNearbyPostService extends CommonService {
 			return false;
 
 		// TODO need to check maxCount is valid decimal/number
+		if (maxCountStr == null || maxCountStr.length() == 0){
+			maxCount = ServiceConstant.DEFAULT_MAX_COUNT;
+		}
+		else{
+			maxCount = Integer.parseInt(maxCountStr);
+		}
 
 		return true;
 	}

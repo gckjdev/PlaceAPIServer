@@ -10,6 +10,21 @@ import me.prettyprint.hector.api.beans.HColumn;
 public class CommonData {
 
 	Map<String, String> keyValueList;
+	Map<String, String> actionCounterMap;
+
+	public Map<String, String> getActionCounterMap() {
+		return actionCounterMap;
+	}
+
+	public void setActionCounterMap(Map<String, String> actionCounterMap) {
+		this.actionCounterMap = actionCounterMap;
+	}
+
+	public void setActionCounterMap(List<HColumn<String, String>> columns) {
+		for (HColumn<String, String> column : columns) {
+			actionCounterMap.put(column.getName(), column.getValue());
+		}
+	}
 
 	private CommonData() {
 
@@ -17,6 +32,7 @@ public class CommonData {
 
 	public CommonData(List<HColumn<String, String>> columnValues) {
 		keyValueList = new HashMap<String, String>();
+		actionCounterMap = new HashMap<String, String>();
 		for (HColumn<String, String> data : columnValues) {
 			keyValueList.put(data.getName(), data.getValue());
 		}

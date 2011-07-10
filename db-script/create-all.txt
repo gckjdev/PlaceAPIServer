@@ -89,4 +89,8 @@ create column family idx_geohash6_to_place
     with comparator = AsciiType; 
 
 create column family idx_app_post
-    with comparator = TimeUUIDType;  
+    with comparator = TimeUUIDType;
+    
+    
+    
+create column family counter_post with comparator=UTF8Type;

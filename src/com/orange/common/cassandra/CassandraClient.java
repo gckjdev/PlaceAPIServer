@@ -345,7 +345,6 @@ public class CassandraClient {
 		return rows;
 	}
 
-	
 	public Rows<String, String, String> getMultiRow(String columnFamilyName,
 			String... keys) {
 		MultigetSliceQuery<String, String, String> multigetSliceQuery = HFactory
@@ -443,5 +442,16 @@ public class CassandraClient {
 		}
 		mutator.execute();
 		return true;
+	}
+
+	public long increaseCounterColumn(String columnFamilyName, String rowKey,
+			String columnName, long value) {
+		String countStr = getColumnValue(columnFamilyName, rowKey, columnName);
+		long count = 1;
+		if (countStr != null && countStr.length() > 0)
+			count = Long.parseLong(countStr) + 1;
+		String columnValue = Long.toString(count);
+		insert(columnFamilyName, rowKey, columnName, columnValue);
+		return count;
 	}
 }

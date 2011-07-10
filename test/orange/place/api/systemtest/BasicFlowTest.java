@@ -5,6 +5,7 @@ import static orange.place.api.systemtest.SystemTestHelper.createPost;
 import static orange.place.api.systemtest.SystemTestHelper.createReply;
 import static orange.place.api.systemtest.SystemTestHelper.getTopNearByPost;
 import static orange.place.api.systemtest.SystemTestHelper.registerUser;
+import static orange.place.api.systemtest.SystemTestHelper.actionOnPost;
 
 import java.util.Random;
 
@@ -87,6 +88,16 @@ public class BasicFlowTest {
 		String postContent = "testPostContent" + value;
 		replyPostId = createReply(serverURL, userId, placeId, postId,
 				postContent);
+	}
+	
+	@Test
+	public void testActionOnPost() {
+		replyPostId = null;
+		Assert.assertTrue(userId != null && placeId != null && postId != null);
+
+//		String value = generateValue();
+//		String postContent = "testPostContent" + value;
+		String actionCounter = actionOnPost(serverURL, userId, postId, "Like");
 	}
 
 	@Test

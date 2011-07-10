@@ -75,8 +75,8 @@ public abstract class CommonService {
 				UpdateUserService.class);
 		methodMap.put(ServiceConstant.METHOD_UPDATEPLACE,
 				UpdatePlaceService.class);
-		methodMap.put(ServiceConstant.METHOD_GETAPPS, GetAppsService.class);
-		methodMap.put(ServiceConstant.METHOD_GETUPDATES, GetUpdates.class);
+		methodMap.put(ServiceConstant.METHOD_GETAPPS, GetRecommendAppService.class);
+		methodMap.put(ServiceConstant.METHOD_GETAPPUPDATE, GetAppUpdateService.class);
 		methodMap.put(ServiceConstant.METHOD_GETPLACE, GetPlaceService.class);
 		methodMap.put(ServiceConstant.METHOD_GETPUBLICTIMELINE,
 				GetPublicTimeline.class);

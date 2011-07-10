@@ -14,6 +14,14 @@ public class GetPublicTimeline extends CommonService {
 	String appId;
 	String beforeTimeStamp;
 	String maxCount;
+	String userId;
+
+	@Override
+	public String toString() {
+		return "GetPublicTimeline [appId=" + appId + ", beforeTimeStamp="
+				+ beforeTimeStamp + ", maxCount=" + maxCount + ", userId="
+				+ userId + "]";
+	}
 
 	@Override
 	public void handleData() {
@@ -36,8 +44,7 @@ public class GetPublicTimeline extends CommonService {
 
 	@Override
 	public void printData() {
-		// TODO Auto-generated method stub
-
+		log.info(toString());
 	}
 
 	@Override
@@ -46,7 +53,8 @@ public class GetPublicTimeline extends CommonService {
 		beforeTimeStamp = request
 				.getParameter(ServiceConstant.PARA_BEFORE_TIMESTAMP);
 		maxCount = request.getParameter(ServiceConstant.PARA_MAX_COUNT);
-
+		userId = request.getParameter(ServiceConstant.PARA_USERID);
+		
 		if (!check(appId, ErrorCode.ERROR_PARAMETER_APPID_EMPTY,
 				ErrorCode.ERROR_PARAMETER_APPID_NULL))
 			return false;

@@ -1,7 +1,7 @@
 package com.orange.place.analysis.domain;
 
 public enum PostType {
-	CREATE(1), FORWARD(2), REPLY(3);
+	CREATE(1), FORWARD(2), REPLY(3), ACTION(4);
 
 	private int value;
 

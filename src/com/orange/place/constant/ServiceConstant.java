@@ -38,7 +38,7 @@ public class ServiceConstant {
 	public static final String METHOD_UPDATEUSER = "uu";
 	public static final String METHOD_UPDATEPLACE = "up";
 	public static final String METHOD_GETAPPS = "ga";
-	public static final String METHOD_GETUPDATES = "gu";
+	public static final String METHOD_GETAPPUPDATE = "gau";
 	public static final String METHOD_GETPLACE = "gtp";
 	public static final String METHOD_GETPUBLICTIMELINE = "gpt";
 	public static final String METHOD_ACTIONONPOST = "aop";	
@@ -141,9 +141,6 @@ public class ServiceConstant {
 	public static final String PARA_MESSAGE_ID = "mid";
 	
 	public static final String PARA_POST_ACTION_TYPE = "pat";
-
-	//request parameters value
-	public static final String POST_ACTION_TYPE_LIKE = "like";
 	
 	// response parameters
 
@@ -163,4 +160,5 @@ public class ServiceConstant {
 	public static final String PARA_RENREN_APPSECRET = "ras";
 	public static final String PARA_MESSAGE_TYPE = "mt";
 
+	public static final int DEFAULT_MAX_COUNT = 30;
 }

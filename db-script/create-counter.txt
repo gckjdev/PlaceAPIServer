@@ -1,0 +1,1 @@
+create column family counter_post with comparator=UTF8Type;
