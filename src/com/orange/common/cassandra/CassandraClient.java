@@ -400,6 +400,14 @@ public class CassandraClient {
 		return count;
 	}
 
+	public boolean deleteStringColumn(String columnFamilyName, String key,
+			String columnName) {
+		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
+		mutator.delete(key, columnFamilyName, columnName, ss);
+		mutator.execute();
+		return true;
+	}
+
 	public boolean deleteUUIDColumn(String columnFamilyName, String key,
 			UUID uuid) {
 		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);

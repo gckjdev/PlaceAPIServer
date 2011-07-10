@@ -46,7 +46,9 @@ public class UserRelatedPostScoreCalculator implements ScoreCalculator {
 				double storyScoreInStatObj = interactionStatInStatObj
 						* storySimilarityInStatObj;
 
-				score += storyScoreInStatObj;
+				if (!Double.isNaN(storyScoreInStatObj)) {
+					score += storyScoreInStatObj;
+				}
 			}
 		}
 		return score;

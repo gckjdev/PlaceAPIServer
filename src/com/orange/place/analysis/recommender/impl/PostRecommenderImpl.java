@@ -34,6 +34,7 @@ public class PostRecommenderImpl implements PostRecommender {
 		}
 
 		Collections.sort(scoreList);
+		Collections.reverse(scoreList);
 		return convert(scoreList);
 	}
 

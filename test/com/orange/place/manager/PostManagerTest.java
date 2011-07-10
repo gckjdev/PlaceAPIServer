@@ -31,7 +31,7 @@ public class PostManagerTest {
 	/**
 	 * ProximitySearchUtil
 	 */
-	private static final int PROXIMITY_PRECISION = 8;
+	private static final int PROXIMITY_PRECISION = 9;
 	private static CassandraClient cassandraClient;
 	private static PostDao postDao;
 	private static RequestParserImpl requestParser;

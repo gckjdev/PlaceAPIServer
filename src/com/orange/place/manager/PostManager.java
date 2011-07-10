@@ -117,7 +117,8 @@ public class PostManager extends CommonManager {
 		// get user nickname and avatar
 		Rows<String, String, String> userRows = cassandraClient.getMultiRow(
 				DBConstants.USER, userIds, DBConstants.F_USERID,
-				DBConstants.F_NICKNAME, DBConstants.F_AVATAR, DBConstants.F_GENDER);
+				DBConstants.F_NICKNAME, DBConstants.F_AVATAR,
+				DBConstants.F_GENDER);
 
 		// get place Id & name
 		Rows<String, String, String> placeRows = cassandraClient.getMultiRow(
@@ -219,6 +220,8 @@ public class PostManager extends CommonManager {
 		GeoHashUtil util = new GeoHashUtil();
 		util.setPrecision(POST_LOCATION_PRECISION);
 		String geoHash = util.encode(latitude, longitude);
+		log.info("latitude {}, longitude {} , geohash {}", new Object[] {
+				latitude, longitude, geoHash });
 		cassandraClient.insert(DBConstants.INDEX_POST_LOCATION, geoHash, uuid,
 				createDate);
 	}
@@ -328,8 +331,8 @@ public class PostManager extends CommonManager {
 			CassandraClient cassandraClient, String userId, String placeId,
 			int size) {
 		List<HColumn<UUID, String>> list = cassandraClient.getColumnKeyByRange(
-				DBConstants.INDEX_PLACE_POST, placeId, IdGenerator
-						.generateUUId(), size);
+				DBConstants.INDEX_PLACE_POST, placeId,
+				IdGenerator.generateUUId(), size);
 		UUID[] columnNames = new UUID[list.size()];
 		int i = 0;
 		for (HColumn<UUID, String> name : list) {

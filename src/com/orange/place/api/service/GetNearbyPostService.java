@@ -37,12 +37,12 @@ public class GetNearbyPostService extends CommonService {
 
 		List<CompactPost> compactPostList = requestHandler.execute(request);
 		// TODO: paging
-		List<String> postIds = new ArrayList<String>();
+		List<Post> postList = new ArrayList<Post>();
 		for (CompactPost cp : compactPostList) {
-			postIds.add(cp.getPostId());
+			Post post = PostManager
+					.getPostById(cassandraClient, cp.getPostId());
+			postList.add(post);
 		}
-		List<Post> postList = PostManager.getPostList(cassandraClient,
-				postIds.toArray(new String[postIds.size()]));
 		if (postList == null) {
 			resultCode = ErrorCode.ERROR_GET_NEARBY_POSTS;
 			log.info("fail to get nearby posts");

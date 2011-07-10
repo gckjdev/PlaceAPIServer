@@ -64,6 +64,9 @@ public class ProximitySearchUtil {
 		GeoHashUtil util = getGeoHashUtil();
 		String sourcePoint = util.encode(latitude, longitude);
 
+		log.info(
+				"getNearBy source point, latitude {}, longitude {}, geohash {}",
+				new Object[] { latitude, longitude, sourcePoint });
 		List<String> candidates = new ArrayList<String>();
 		candidates.add(sourcePoint);
 		resultSet.add(sourcePoint);
@@ -97,9 +100,6 @@ public class ProximitySearchUtil {
 			double radius, String geohash) {
 		GeoHashUtil util = getGeoHashUtil();
 		double[] location = util.decode(geohash);
-		if ("mmb3y29m1mnwx".equals(geohash)) {
-			System.out.println(geohash);
-		}
 		double distance = getDistance(latitude, longitude, location[0],
 				location[1]);
 		log.debug(

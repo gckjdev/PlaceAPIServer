@@ -59,10 +59,10 @@
 
 	<!-- geohash util -->
 	<bean id="geoHashUtil" class="com.orange.common.utils.geohash.GeoHashUtil">
-		<property name="precision" value="8" />
+		<property name="precision" value="9" />
 	</bean>
 	<bean id="placePostProximitySearchUtil" class="com.orange.common.utils.geohash.ProximitySearchUtil">
-		<property name="precision" value="8" />
+		<property name="precision" value="9" />
 	</bean>
 	<bean id="geoRangeUtil" class="com.orange.common.utils.geohash.GeoRangeUtil">
 	</bean>
@@ -80,9 +80,9 @@
 		class="com.orange.place.analysis.score.aggregate.MultipleScoreCalculator">
 		<property name="calculators">
 			<list>
+				<ref bean="userRelatedPostScoreCalculator" />
 				<ref bean="locationScoreCalculator" />
 				<ref bean="postDateScoreCalculator" />
-				<ref bean="userRelatedPostScoreCalculator" />
 			</list>
 		</property>
 	</bean>

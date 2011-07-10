@@ -14,6 +14,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
+import com.orange.common.utils.geohash.GeoHashUtil;
 import com.orange.place.constant.ServiceConstant;
 
 public class SystemTestHelper {
@@ -105,10 +106,17 @@ public class SystemTestHelper {
 
 	public static String createPost(String serverURL, String uid, String pid,
 			String content) {
+		// lat=23.129666&lo=113.273073
+		return createPost(serverURL, uid, pid, content, "23.129666",
+				"113.273073");
+	}
+
+	public static String createPost(String serverURL, String uid, String pid,
+			String content, String lat, String lo) {
 		// send request
 		String url = String
-				.format("%s/api/i?&m=cp&uid=%s&app=PLACE&ct=1&t=%s&lat=23.129666&lo=113.273073&ula=153.220001&ulo=113.110001&ss=0&pid=%s",
-						serverURL, uid, content, pid);
+				.format("%s/api/i?&m=cp&uid=%s&app=PLACE&ct=1&t=%s&ula=153.220001&ulo=113.110001&ss=0&pid=%s&lat=%s&lo=%s",
+						serverURL, uid, content, pid, lat, lo);
 		JSONObject data = sendHttpGetRequest(url);
 
 		// get place Id, must be not null
@@ -121,10 +129,16 @@ public class SystemTestHelper {
 
 	public static String createReply(String serverURL, String uid, String pid,
 			String rpi, String content) {
+		return createReply(serverURL, uid, pid, rpi, content, "23.129666",
+				"113.273073");
+	}
+
+	public static String createReply(String serverURL, String uid, String pid,
+			String rpi, String content, String latitude, String longitite) {
 		// send request
 		String url = String
-				.format("%s/api/i?&m=cp&uid=%s&app=PLACE&ct=1&t=%s&lat=23.129666&lo=113.273073&ula=153.220001&ulo=113.110001&ss=0&pid=%s&rpi=%s",
-						serverURL, uid, content, pid, rpi);
+				.format("%s/api/i?&m=cp&uid=%s&app=PLACE&ct=1&t=%s&ula=153.220001&ulo=113.110001&ss=0&pid=%s&rpi=%s&lat=%s&lo=%s",
+						serverURL, uid, content, pid, rpi, latitude, longitite);
 		JSONObject data = sendHttpGetRequest(url);
 
 		// get place Id, must be not null
@@ -136,7 +150,32 @@ public class SystemTestHelper {
 		return id;
 	}
 
-	public static String getNearByPost(String serverURL, String uid) {
+	public static String getTopNearByPost(String serverURL, String uid) {
+		// send request
+		// TODO: remove ula, ulo?
+		// lat=23.129666&lo=113.273073
+		return getTopNearByPost(serverURL, uid, "23.129666", "113.273073");
+	}
+
+	public static String getTopNearByPost(String serverURL, String uid,
+			String latitude, String longitude) {
+		// send request
+		// TODO: remove ula, ulo?
+		String url = String
+				.format("%s/api/i?&m=gne&uid=%s&app=PLACE&ula=153.220001&ulo=113.110001&lat=%s&lo=%s",
+						serverURL, uid, latitude, longitude);
+		JSONArray list = sendHttpGetRequestGetArray(url);
+
+		// get place Id, must be not null
+		JSONObject data = list.getJSONObject(0);
+		String id = data.getString(ServiceConstant.PARA_POSTID);
+		Assert.assertTrue(id != null);
+
+		System.out.println("get neary by post.");
+		return id;
+	}
+
+	public static String getNearByPosts(String serverURL, String uid) {
 		// send request
 		// TODO: remove ula, ulo?
 		String url = String
@@ -152,7 +191,7 @@ public class SystemTestHelper {
 		System.out.println("get neary by post.");
 		return id;
 	}
-
+	
 	public static String generateValue() {
 		long time = System.currentTimeMillis();
 		long random_id = new Random().nextLong();
@@ -189,5 +228,12 @@ public class SystemTestHelper {
 		}
 
 		return stringBuffer.toString();
+	}
+
+	public static String getGeoHash(String latitude, String longitude) {
+		GeoHashUtil util = new GeoHashUtil();
+		util.setPrecision(13);
+		String geoHashValue = util.encode(latitude, longitude);
+		return geoHashValue;
 	}
 }
