@@ -94,10 +94,10 @@ public abstract class CommonService {
 				ActionOnPostService.class);
 
 		// group buy methods
-		methodMap.put(ServiceConstant.METHOD_REGISTERDEVICE,
-				RegisterDeviceService.class);
-		methodMap.put(ServiceConstant.METHOD_GROUPBUY_DEVICELOGIN,
-				GroupBuyDeviceLoginService.class);
+//		methodMap.put(ServiceConstant.METHOD_REGISTERDEVICE,
+//				RegisterDeviceService.class);
+//		methodMap.put(ServiceConstant.METHOD_GROUPBUY_DEVICELOGIN,
+//				GroupBuyDeviceLoginService.class);
 
 	}
 
