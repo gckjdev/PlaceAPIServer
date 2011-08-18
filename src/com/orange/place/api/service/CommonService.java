@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONObject;
 
 import com.orange.common.cassandra.CassandraClient;
+import com.orange.common.mongodb.MongoDBClient;
 import com.orange.common.utils.StringUtil;
 import com.orange.place.api.PlaceAPIServer;
 import com.orange.place.constant.ErrorCode;
@@ -19,7 +20,16 @@ public abstract class CommonService {
 	int resultCode = ErrorCode.ERROR_SUCCESS;
 	Object resultData = null;
 	CassandraClient cassandraClient = null;
+	MongoDBClient mongoClient = null;
 	HttpServletRequest request = null;
+
+	public MongoDBClient getMongoClient() {
+		return mongoClient;
+	}
+
+	public void setMongoClient(MongoDBClient mongoClient) {
+		this.mongoClient = mongoClient;
+	}
 
 	public HttpServletRequest getRequest() {
 		return request;
@@ -82,6 +92,13 @@ public abstract class CommonService {
 				GetPublicTimeline.class);
 		methodMap.put(ServiceConstant.METHOD_ACTIONONPOST,
 				ActionOnPostService.class);
+
+		// group buy methods
+		methodMap.put(ServiceConstant.METHOD_REGISTERDEVICE,
+				RegisterDeviceService.class);
+		methodMap.put(ServiceConstant.METHOD_GROUPBUY_DEVICELOGIN,
+				GroupBuyDeviceLoginService.class);
+
 	}
 
 	public CassandraClient getCassandraClient() {

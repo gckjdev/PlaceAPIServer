@@ -6,8 +6,10 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class GeoHashUtilTest {
 
 	private static final double ACCURANCY_DELTA_DEGREE = 0.0000001;

@@ -6,6 +6,9 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.mongodb.DBObject;
+import com.orange.common.mongodb.MongoDBClient;
+import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ServiceConstant;
 import com.orange.place.dao.App;
 import com.orange.place.dao.Message;
@@ -233,6 +236,12 @@ public class CommonServiceUtils {
 			obj.add(json);
 		}
 
+		return obj;
+	}
+
+	public static JSONObject userToJSON(DBObject user) {
+		JSONObject obj = new JSONObject();
+		obj.put(ServiceConstant.PARA_USERID, user.get(MongoDBClient.ID));
 		return obj;
 	}
 

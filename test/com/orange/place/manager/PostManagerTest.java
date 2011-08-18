@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.orange.common.cassandra.CassandraClient;
@@ -26,6 +27,7 @@ import com.orange.place.analysis.parser.impl.RequestParserImpl;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.dao.IdGenerator;
 
+@Ignore
 public class PostManagerTest {
 
 	/**
