@@ -11,6 +11,7 @@ import net.sf.json.JSONException;
 import me.prettyprint.hector.api.exceptions.HectorException;
 
 import com.orange.common.cassandra.CassandraClient;
+import com.orange.common.mongodb.MongoDBClient;
 import com.orange.place.api.PlaceAPIServer;
 import com.orange.place.constant.DBConstants;
 import com.orange.place.constant.ErrorCode;
@@ -20,6 +21,8 @@ public class ServiceHandler {
 
 	public static final CassandraClient cassandraClient = new CassandraClient(
 			DBConstants.SERVER, DBConstants.CLUSTERNAME, DBConstants.KEYSPACE);
+	
+	public static final MongoDBClient mongoClient = new MongoDBClient("localhost", "testdb", "", "");
 
 	private static final Logger log = Logger.getLogger(PlaceAPIServer.class
 			.getName());
@@ -60,6 +63,7 @@ public class ServiceHandler {
 			}
 
 			obj.setCassandraClient(cassandraClient);
+			obj.setMongoClient(mongoClient);
 			obj.setRequest(request);
 			
 			if (!obj.validateSecurity(request)) {

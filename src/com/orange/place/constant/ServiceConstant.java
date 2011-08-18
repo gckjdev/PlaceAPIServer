@@ -43,6 +43,10 @@ public class ServiceConstant {
 	public static final String METHOD_GETPUBLICTIMELINE = "gpt";
 	public static final String METHOD_ACTIONONPOST = "aop";	
 	
+	// for groupbuy
+	public static final String METHOD_REGISTERDEVICE = "rd";
+	public static final String METHOD_GROUPBUY_DEVICELOGIN = "gdl";
+	
 	// request parameters
 
 	public static final String PARA_USERID = "uid";
