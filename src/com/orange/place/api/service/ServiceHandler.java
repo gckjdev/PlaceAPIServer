@@ -22,7 +22,7 @@ public class ServiceHandler {
 	public static final CassandraClient cassandraClient = new CassandraClient(
 			DBConstants.SERVER, DBConstants.CLUSTERNAME, DBConstants.KEYSPACE);
 	
-	public static final MongoDBClient mongoClient = new MongoDBClient("localhost", "testdb", "", "");
+	public static final MongoDBClient mongoClient = null; //new MongoDBClient("localhost", "testdb", "", "");
 
 	private static final Logger log = Logger.getLogger(PlaceAPIServer.class
 			.getName());
