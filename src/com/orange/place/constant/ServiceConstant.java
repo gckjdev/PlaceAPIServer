@@ -7,7 +7,7 @@ public class ServiceConstant {
 //	public static final String FILE_SERVER_NAME = "http://192.168.1.150:80/upload/";
 //	public static final String FILE_LOCAL_PATH = "F:/dipan/upload/";
 	public static final String FILE_LOCAL_PATH = "/Library/WebServer/Documents/upload/";
-	public static final String FILE_SERVER_NAME = "http://127.0.0.1/upload/";
+	public static final String FILE_SERVER_NAME = "http://107.20.223.45/upload/";
 	public static final String SNS_LOG_FILE = "F:/sns.log";
 //	public static final String FILE_SERVER_NAME = "http://192.168.1.151:80/upload/";
 //	public static final String FILE_LOCAL_PATH = "C:/xampp/htdocs/upload/";
