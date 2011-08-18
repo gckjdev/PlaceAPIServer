@@ -41,7 +41,7 @@ public class ActionOnPostService extends CommonService {
 		AnalysisLogUtil.log(content);
 		
 		JSONObject obj = new JSONObject();
-		obj.put(postActionType, Long.toString(count));
+		obj.put(postActionType, count);
 		resultData = obj;
 	}
 
