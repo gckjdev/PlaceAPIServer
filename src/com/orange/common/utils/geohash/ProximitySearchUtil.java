@@ -15,7 +15,7 @@ public class ProximitySearchUtil {
 	private static Logger log = LoggerFactory
 			.getLogger(ProximitySearchUtil.class);
 
-	private static final int DEFAULT_PRECISION = 7;
+	private static final int DEFAULT_PRECISION = 8;
 	private static final double EARTH_RADIUS = 6378137;
 	private static final double RAD = Math.PI / 180.0;
 	public static final int NORTH = 0;
@@ -64,6 +64,9 @@ public class ProximitySearchUtil {
 		GeoHashUtil util = getGeoHashUtil();
 		String sourcePoint = util.encode(latitude, longitude);
 
+		log.info(
+				"getNearBy source point, latitude {}, longitude {}, geohash {}",
+				new Object[] { latitude, longitude, sourcePoint });
 		List<String> candidates = new ArrayList<String>();
 		candidates.add(sourcePoint);
 		resultSet.add(sourcePoint);
@@ -97,7 +100,6 @@ public class ProximitySearchUtil {
 			double radius, String geohash) {
 		GeoHashUtil util = getGeoHashUtil();
 		double[] location = util.decode(geohash);
-
 		double distance = getDistance(latitude, longitude, location[0],
 				location[1]);
 		log.debug(

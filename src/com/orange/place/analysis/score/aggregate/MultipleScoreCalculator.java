@@ -15,7 +15,7 @@ public class MultipleScoreCalculator implements ScoreCalculator {
 
 	@Override
 	public double calculateScore(ParseResult parseResult, User user, CompactPost story) {
-		int score = 1;
+		double score = 1;
 		for (ScoreCalculator cal : calculators) {
 			score *= cal.calculateScore(parseResult, user, story);
 		}

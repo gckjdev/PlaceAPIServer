@@ -3,8 +3,12 @@ package com.orange.common.utils.geohash;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class GeoRangeUtil {
 
+	private Logger log = LoggerFactory.getLogger(GeoRangeUtil.class);
 	/**
 	 * Get the max and min.
 	 * 
@@ -21,6 +25,8 @@ public class GeoRangeUtil {
 			range.setMin(start);
 			range.setMax(end);
 			range.setRadius(radius);
+			log.info("GeoRange max {}, min {}, radius {}", new Object[] { end,
+					start, radius });
 			result.add(range);
 		}
 		return result;

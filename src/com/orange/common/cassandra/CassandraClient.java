@@ -11,10 +11,7 @@ import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
-import me.prettyprint.hector.api.beans.CounterRows;
-import me.prettyprint.hector.api.beans.CounterSlice;
 import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
@@ -22,12 +19,9 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.CountQuery;
-import me.prettyprint.hector.api.query.CounterQuery;
-import me.prettyprint.hector.api.query.MultigetSliceCounterQuery;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
-import me.prettyprint.hector.api.query.SliceCounterQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
 
 import com.orange.place.manager.CommonManager;
@@ -403,6 +397,14 @@ public class CassandraClient {
 			count[i++] = getColumnCount(columnFamilyName, key);
 		}
 		return count;
+	}
+
+	public boolean deleteStringColumn(String columnFamilyName, String key,
+			String columnName) {
+		Mutator<String> mutator = HFactory.createMutator(keyspace, ss);
+		mutator.delete(key, columnFamilyName, columnName, ss);
+		mutator.execute();
+		return true;
 	}
 
 	public boolean deleteUUIDColumn(String columnFamilyName, String key,

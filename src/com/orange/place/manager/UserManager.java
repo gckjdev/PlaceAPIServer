@@ -204,7 +204,7 @@ public class UserManager extends CommonManager {
 		
 		User user =  getUserById(cassandraClient, userId);
 		if(user==null){
-			log.warning("<getUserByDevice> deviceId(" + deviceId
+			log.warn("<getUserByDevice> deviceId(" + deviceId
 					+ ") is bind but userId not found");
 		}
 		return user;

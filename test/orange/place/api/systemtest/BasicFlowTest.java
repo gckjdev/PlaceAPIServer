@@ -3,7 +3,7 @@ package orange.place.api.systemtest;
 import static orange.place.api.systemtest.SystemTestHelper.createPlace;
 import static orange.place.api.systemtest.SystemTestHelper.createPost;
 import static orange.place.api.systemtest.SystemTestHelper.createReply;
-import static orange.place.api.systemtest.SystemTestHelper.getNearByPost;
+import static orange.place.api.systemtest.SystemTestHelper.getTopNearByPost;
 import static orange.place.api.systemtest.SystemTestHelper.registerUser;
 import static orange.place.api.systemtest.SystemTestHelper.actionOnPost;
 
@@ -106,7 +106,7 @@ public class BasicFlowTest {
 	public void testGetNearByPost() {
 		Assert.assertTrue(userId != null);
 
-		String nearByPostId = getNearByPost(serverURL, userId);
+		String nearByPostId = getTopNearByPost(serverURL, userId);
 
 		Assert.assertNotNull(nearByPostId);
 	}

@@ -2,13 +2,16 @@ package com.orange.place.manager;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.orange.place.api.PlaceAPIServer;
 
 public class CommonManager {
 
-	public static final Logger log = Logger.getLogger(PlaceAPIServer.class
+	public static final Logger log = LoggerFactory
+			.getLogger(PlaceAPIServer.class
 			.getName());
 
 	public static final long MAX_FOLLOWPLACE_POSTS_TIMEOFFSET = 24 * 60 * 60 * 1000;

@@ -27,6 +27,11 @@ public class RequestParserImpl implements RequestParser {
 	public ParseResult parse(Request request) {
 		ParseResult result = new ParseResult();
 		try {
+			if (request.getUserId() == null || request.getUserId().isEmpty()) {
+				result.setSuccess(false);
+				return result;
+			}
+			// TODO: what if radius / locations is empty or 0?
 			result.setRequest(request);
 			result.setRequestTime(new Date());
 			List<String> geohashList = proximitySearchUtil.getNearBy(
