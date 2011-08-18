@@ -9,7 +9,7 @@
 
 	<!-- cassandra data source -->
 	<bean id="cassandraClient" class="com.orange.common.cassandra.CassandraClient">
-		<constructor-arg name="serverNameAndPort" value="localhost:9160" />
+		<constructor-arg name="serverNameAndPort" value="127.0.0.1:9160" />
 		<constructor-arg name="clusterName" value="Test Cluster" />
 		<constructor-arg name="keyspaceName" value="PlaceKS" />
 	</bean>
